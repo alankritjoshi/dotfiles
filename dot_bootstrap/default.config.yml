@@ -1,10 +1,6 @@
 ---
 downloads: ~/.ansible-downloads/
 
-configure_dotfiles: true
-configure_terminal: true
-configure_osx: true
-
 # Set to 'true' to configure the Dock via dockutil.
 configure_dock: false
 dockitems_remove: []
@@ -17,50 +13,53 @@ dockitems_persist: []
 #   path: "/Applications/Sublime Text.app/"
 #   pos: 5
 
-configure_sudoers: false
-sudoers_custom_config: ''
-# Example:
-# sudoers_custom_config: |
-#   # Allow users in admin group to use sudo with no password.
-#   %admin ALL=(ALL) NOPASSWD: ALL
-
-# dotfiles_repo: https://github.com/alankritjoshi/dotfiles.git
-# dotfiles_repo_accept_hostkey: true
-# dotfiles_repo_local_destination: ~/Development/GitHub/dotfiles
-# dotfiles_files:
-#   - .zshrc
-#   - .gitignore
-#   - .inputrc
-#   - .osx
-#   - .vimrc
-
 homebrew_installed_packages:
-  # - ansible # Installed via Pip.
+  # gnu
   - autoconf
-  - bash-completion
-  - doxygen
   - gettext
-  - gifsicle
+  - gnu-sed
+
+  # vc
   - git
   - gh
+  - lazygit
+
+  # sh
+  - bash
+  - fish
+  - starship
+  - zellij
+
+  # tiling
+  - koekeishiya/formulae/yabai
+  - koekeishiya/formulae/skhd
+
+  # lang
   - go
-  - httpie
-  - iperf
-  - libevent
-  - sqlite
-  - mcrypt
-  - nmap
+  - delve
+  - pyenv
   - node
   - nvm
-  - php
+
+  # tools
   - ssh-copy-id
-  - cowsay
-  - readline
   - openssl
-  - pv
-  - wget
+  - fzf
+  - zoxide
+  - trash
+  - fd
+  - sd
+  - ripgrep
+  - bat
+  - gum
+  - glow
+
+  # network
+  - httpie
+  - jq
   - wrk
-  - zsh-history-substring-search
+  - iperf
+  - oha
 
 homebrew_taps:
   - homebrew/core
@@ -68,40 +67,28 @@ homebrew_taps:
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
-  - docker
+  # terminal
+  - wezterm
+
+  # browser
+  - arc
   - google-chrome
-  - handbrake
+
+  # tools
   - licecap
-  - sequel-ace
-  - slack
-  - transmit
+  
+  # dev
+  - docker
 
 # See `geerlingguy.mas` role documentation for usage instructions.
-mas_installed_apps: []
+mas_installed_apps:
+  - { id: 1487937127, name: "Craft: Write docs, AI editing" }
+mas_uninstalled_apps:
+  - { id: 408981434, name: "iMovie" }
+  - { id: 409201541, name: "Pages" }
+  - { id: 409203825, name: "Numbers" }
+  - { id: 682658836, name: "GarageBand" }
+mas_upgrade_all_apps: true
 mas_email: ""
 mas_password: ""
 
-osx_script: "~/.osx --no-restart"
-
-# Install packages from other package managers.
-# Note: You are responsible for making sure the required package managers are
-# installed, eg. through homebrew.
-composer_packages: []
-# - name: drush
-#   state: present # present/absent, default: present
-#   version: "^8.1" # default: N/A
-gem_packages: []
-# - name: bundler
-#   state: present # present/absent/latest, default: present
-#   version: "~> 1.15.1" # default: N/A
-npm_packages: []
-# - name: webpack
-#   state: present # present/absent/latest, default: present
-#   version: "^2.6" # default: N/A
-pip_packages: []
-# - name: mkdocs
-#   state: present # present/absent/latest, default: present
-#   version: "0.16.3" # default: N/A
-
-# Glob pattern to ansible task files to run after all other tasks are finished.
-post_provision_tasks: []
