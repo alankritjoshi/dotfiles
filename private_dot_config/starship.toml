@@ -1,0 +1,8 @@
+command_timeout = 1000
+[battery]
+disabled = true
+
+# turn off aws stuff
+[aws]
+disabled = true
+
