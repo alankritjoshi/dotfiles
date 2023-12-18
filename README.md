@@ -1,47 +1,56 @@
-# dotfiles
+# dotfiles (macOS)
 
-## Download
+## Steps
 
-1. This will setup $HOME as a bare Git work-tree tracked inside $HOME/.dotfiles
-2. Sync files from repo and replace the existing ones
-3. Optionally delete old files that were replaced
-4. Turn off tracking for untracked file i.e., rest of the $HOME should not show up in status
+### Xcode
 
-```
-cd $HOME
-git clone --separate-git-dir=$HOME/.dotfiles https://github.com/alankritjoshi/.dotfiles.git tmpdotfiles
-rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/
-rm -r tmpdotfiles
-git config --local status.showUntrackedFiles no
+```sh
+xcode-select --install
 ```
 
-## Brew
+### [Brew](https://brew.sh/)
 
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-## IDE
+### [Chezmoi](https://chezmoi.io/)
 
-### Install
+#### Install
+
+```sh
+brew install chezmoi
+```
+
+#### Setup
+
+```sh
+chezmoi init git@github.com:alankritjoshi/dotfiles.git
+```
+
+> TODO: move rest of the steps to [Ansible](https://github.com/ansible/ansible) playbook which is invoked by #Chezmoi script.
+
+### IDE
+
+#### Install
 
 ```
 brew install --cask wezterm bash fish starship nvm zellij
 ```
 
-### Change Shell
+#### Change Shell
 
 ```
 chsh -s $(which fish)
 ```
 
-### Install font
+#### Install font
 
 ```
 open $HOME/.config/FiraCodeNerdFontMono-Retina.ttf
 ```
 
-### Open Wezterm and Configure Fish
+#### Open Wezterm and Configure Fish
 
 ```
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
@@ -50,7 +59,7 @@ fisher install edc/bass
 fisher install PatrickF1/fzf.fish
 ```
 
-## MacOS Tiling
+### MacOS Tiling
 
 ```
 brew install koekeishiya/formulae/yabai koekeishiya/formulae/skhd
@@ -65,13 +74,13 @@ yabai --restart-service
 skhd --restart-service
 ```
 
-## Tools
+### Tools
 
 ```
 brew install fzf zoxide trash fd gnu-sed sd ripgrep bat lazygit jq httpie gh oha gum glow
 ```
 
-## Languages
+### Languages
 
 ```
 brew install pyenv node go delve
