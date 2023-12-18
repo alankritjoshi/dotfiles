@@ -55,13 +55,6 @@ alias jej="zellij edit ~/.config/zellij/config.kdl"
 alias jes="zellij edit ~/.config/skhd/skhdrc"
 alias jey="zellij edit ~/.config/yabai/yabairc"
 
-# Dot
-alias dt="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
-alias dts="dt status -u $HOME/.config"
-alias dta="dt add"
-alias dtc="dt commit"
-alias dtp="dt push"
-
 # Useful git aliases
 alias gs="git status"
 alias ga="git add"
