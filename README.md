@@ -1,87 +1,28 @@
 # dotfiles (macOS)
 
-## Steps
-
-### Xcode
+## Pre-requisites
 
 ```sh
 xcode-select --install
 ```
 
-### [Brew](https://brew.sh/)
-
-```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-### [Chezmoi](https://chezmoi.io/)
-
-#### Install
+## Setup with [Chezmoi](https://chezmoi.io/)
 
 ```sh
-brew install chezmoi
+sh -c "$(curl -fsLS get.chezmoi.io)" && ./bin/chezmoi init git@github.com:alankritjoshi/dotfiles.git
 ```
 
-#### Setup
+> delete ./bin/chezmoi as the brew variant will be used after this point.
 
-```sh
-chezmoi init git@github.com:alankritjoshi/dotfiles.git
-```
 
-> TODO: move rest of the steps to [Ansible](https://github.com/ansible/ansible) playbook which is invoked by #Chezmoi script.
-
-### IDE
-
-#### Install
-
-```
-brew install --cask wezterm bash fish starship nvm zellij
-```
-
-#### Change Shell
-
-```
-chsh -s $(which fish)
-```
-
-#### Install font
-
-```
-open $HOME/.config/FiraCodeNerdFontMono-Retina.ttf
-```
-
-#### Open Wezterm and Configure Fish
-
-```
-curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
-fisher install catppuccin/fish
-fisher install edc/bass
-fisher install PatrickF1/fzf.fish
-```
+## Required Manual Steps
 
 ### MacOS Tiling
 
-```
-brew install koekeishiya/formulae/yabai koekeishiya/formulae/skhd
-yabai --start-service
-skhd --start-service
-```
+> run this after MacOS Accessibility permissions to yabai and skhd.
 
-> may require MacOS Accessibility permissions.
-
-```
+```sh
 yabai --restart-service
 skhd --restart-service
 ```
 
-### Tools
-
-```
-brew install fzf zoxide trash fd gnu-sed sd ripgrep bat lazygit jq httpie gh oha gum glow
-```
-
-### Languages
-
-```
-brew install pyenv node go delve
-```
