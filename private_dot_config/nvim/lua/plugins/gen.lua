@@ -27,6 +27,6 @@ return {
 
   ---@type Ollama.Config
   opts = {
-    model = "dolphin-mixtral:latest",
+    model = "codellama",
   },
 }
