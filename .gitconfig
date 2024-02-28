@@ -1,0 +1,5 @@
+[user]
+	email = alankritjoshi@gmail.com
+	name = Alankrit Joshi
+[core]
+	editor = nvim
