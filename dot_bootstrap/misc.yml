@@ -1,8 +1,7 @@
 ---
 - name: Misc
-  hosts: localhost
+  hosts: mac
   become: true
-  connection: local
   gather_facts: true
 
   tasks:

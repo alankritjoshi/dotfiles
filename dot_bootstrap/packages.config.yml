@@ -55,6 +55,10 @@ homebrew_packages:
   - iperf
   - oha
 
+  # apps
+  - craft
+  - MonitorControl
+
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   # terminal

@@ -92,18 +92,18 @@ end
 fzf_configure_bindings --directory=\e\cf # Alt + Ctrl + f
 
 # Source broot bash launcher
-bass source /Users/alankritjoshi/Library/Preferences/org.dystroy.broot/launcher/bash/br
+# bass source ~/Library/Preferences/org.dystroy.broot/launcher/bash/br
 
 # Set up Go environment
-set -x GOROOT (brew --prefix golang)/libexec
-set -x PATH $PATH $GOROOT/bin
-set -x GOPATH $HOME/go
-set -x PATH $PATH $GOPATH/bin
+# set -x GOROOT (brew --prefix golang)/libexec
+# set -x PATH $PATH $GOROOT/bin
+# set -x GOPATH $HOME/go
+# set -x PATH $PATH $GOPATH/bin
 
 # Set up pyenv
 set -x PATH $PATH $HOME/.pyenv/bin
-status --is-interactive; and source (pyenv init - | psub)
-status --is-interactive; and source (pyenv virtualenv-init - | psub)
+# status --is-interactive; and source (pyenv init - | psub)
+# status --is-interactive; and source (pyenv virtualenv-init - | psub)
 
 # Uncomment the following lines if you use NVM
 # set -x NVM_DIR $HOME/.nvm
@@ -129,11 +129,6 @@ status --is-interactive; and source (pyenv virtualenv-init - | psub)
 # Set up CPPFLAGS and LDFLAGS for Homebrew
 set -x CPPFLAGS "-I"(brew --prefix)/include
 set -x LDFLAGS "-L"(brew --prefix)/lib
-
-# ~/.tmux/plugins
-fish_add_path $HOME/.tmux/plugins/t-smart-tmux-session-manager/bin
-# ~/.config/tmux/plugins
-fish_add_path $HOME/.config/tmux/plugins/t-smart-tmux-session-manager/bin
 
 zoxide init fish | source
 starship init fish | source
