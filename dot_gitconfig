@@ -1,5 +1,5 @@
 [user]
-	email = alankrit.joshi@wmg.com
+	email = {{ .email | quote }}
 	name = Alankrit Joshi
 [core]
 	editor = nvim
