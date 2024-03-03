@@ -24,7 +24,7 @@ alias vy="nvim ~/.config/yabai/yabairc"
 
 # Tools
 alias g="git"
-alias rm="trash"
+# alias rm="trash"
 alias t="tree"
 alias tt="t -L 1"
 alias tta="t -L 1 -a"
