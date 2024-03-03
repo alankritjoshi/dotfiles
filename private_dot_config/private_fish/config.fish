@@ -69,7 +69,7 @@ alias gpl="git pull"
 alias gfa="git fetch --all"
 alias gcl="git clone"
 alias gb="git branch"
-alias lg="lazygit"
+alias gg="lazygit"
 
 function web
     if test -z $argv
