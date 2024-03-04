@@ -48,6 +48,9 @@ homebrew_packages:
   - gum
   - glow
 
+  # frameworks
+  - hugo
+
   # network
   - httpie
   - jq
