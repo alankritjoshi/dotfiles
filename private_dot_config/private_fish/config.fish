@@ -55,6 +55,9 @@ alias jej="zellij edit ~/.config/zellij/config.kdl"
 alias jes="zellij edit ~/.config/skhd/skhdrc"
 alias jey="zellij edit ~/.config/yabai/yabairc"
 
+# chezmoi
+alias cz="chezmoi"
+
 # Useful git aliases
 alias gs="git status"
 alias ga="git add"
