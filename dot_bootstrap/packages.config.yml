@@ -47,6 +47,8 @@ homebrew_packages:
   - bat
   - gum
   - glow
+  - slides
+  - marp-cli
 
   # frameworks
   - hugo
