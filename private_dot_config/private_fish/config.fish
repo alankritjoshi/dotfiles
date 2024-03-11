@@ -55,7 +55,8 @@ alias jej="zellij edit ~/.config/zellij/config.kdl"
 alias jes="zellij edit ~/.config/skhd/skhdrc"
 alias jey="zellij edit ~/.config/yabai/yabairc"
 
-# chezmoi
+# shortcuts
+alias dev="cd ~/dev"
 alias cz="chezmoi"
 
 # Useful git aliases
