@@ -29,11 +29,25 @@ return {
 		-- { key = "l", mods = "OPT", action = wezterm.action({ SendString = "\x1bf" }) },
 	},
 	mouse_bindings = {
+		-- Change the default click behavior so that it only selects
+		-- text and doesn't open hyperlinks
+		{
+			event = { Up = { streak = 1, button = "Left" } },
+			mods = "NONE",
+			action = wezterm.action.CompleteSelection("PrimarySelection"),
+		},
 		-- Cmd-click will open the link under the mouse cursor
+		-- NOTE: In zellij, it's Shift+Cmd-Click
 		{
 			event = { Up = { streak = 1, button = "Left" } },
 			mods = "CMD",
 			action = wezterm.action.OpenLinkAtMouseCursor,
+		},
+		-- Disable the 'Down' event of Cmd-Click to avoid weird program behaviors
+		{
+			event = { Down = { streak = 1, button = "Left" } },
+			mods = "CMD",
+			action = wezterm.action.Nop,
 		},
 	},
 }
