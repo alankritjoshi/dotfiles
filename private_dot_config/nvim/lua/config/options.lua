@@ -7,3 +7,5 @@ vim.filetype.add({
     templ = "templ",
   },
 })
+
+vim.o.sessionoptions = "buffers,curdir,folds,tabpages,winpos,winsize"
