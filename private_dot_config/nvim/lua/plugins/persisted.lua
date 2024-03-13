@@ -1,7 +1,6 @@
 return {
   "olimorris/persisted.nvim",
   lazy = false,
-  priority = 900,
   keys = {
     { "<leader>qf", "<cmd>Telescope persisted<cr>", desc = "Search the current sessions" },
     { "<leader>qt", "<cmd>SessionToggle<cr>", desc = "Determines whether to load, start or stop a session" },
