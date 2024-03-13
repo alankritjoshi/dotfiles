@@ -1,7 +1,8 @@
 return {
   {
     "stevearc/oil.nvim",
-    lazy = false,
+    event = { "VimEnter */*,.*", "BufNew */*,.*" },
+    -- lazy = false,
     keys = {
       { "-", "<cmd>Oil<cr>", desc = "Oil open parent directory" },
       { "<leader>o", "<cmd>lua require('oil').toggle_float()<cr>", desc = "Oil open float window" },
@@ -10,6 +11,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
       use_default_keymaps = false,
+      skip_confirm_for_simple_edits = true,
       keymaps = {
         ["g?"] = "actions.show_help",
         ["<CR>"] = "actions.select",
