@@ -23,7 +23,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
     -- Clear all of the open buffers
     vim.api.nvim_input("silent <ESC>:%bd!<CR>")
 
-    -- require("persisted").stop()
+    require("persisted").stop()
   end,
 })
 

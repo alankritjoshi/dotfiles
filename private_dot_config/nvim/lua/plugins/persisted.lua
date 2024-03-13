@@ -30,7 +30,7 @@ return {
       on_autoload_no_session = function()
         vim.notify("No existing session to load.")
       end,
-      use_git_branch = true,
+      use_git_branch = false,
       ignored_dirs = {
         { "~/", exact = true },
         { "/", exact = true },

@@ -2,11 +2,10 @@ return {
   {
     "stevearc/oil.nvim",
     event = { "VimEnter */*,.*", "BufNew */*,.*" },
-    -- lazy = false,
     keys = {
       { "-", "<cmd>Oil<cr>", desc = "Oil open parent directory" },
-      { "<leader>o", "<cmd>lua require('oil').toggle_float()<cr>", desc = "Oil open float window" },
-      { "<leader>O", "<cmd>lua require('oil').toggle_float('.')<cr>", desc = "Oil open float window in cwd" },
+      { "<leader>e", "<cmd>lua require('oil').toggle_float('.')<cr>", desc = "Oil open float window in cwd" },
+      { "<leader>~", "<cmd>lua require('oil').toggle_float('~')<cr>", desc = "Oil open float window in ~" },
     },
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
