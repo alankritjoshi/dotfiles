@@ -4,7 +4,8 @@ return {
     event = { "VimEnter */*,.*", "BufNew */*,.*" },
     keys = {
       { "-", "<cmd>Oil<cr>", desc = "Oil open parent directory" },
-      { "<leader>e", "<cmd>lua require('oil').toggle_float('.')<cr>", desc = "Oil open float window in cwd" },
+      { "<leader>e", "<cmd>lua require('oil').toggle_float()<cr>", desc = "Oil open float window for current file" },
+      { "<leader>E", "<cmd>lua require('oil').toggle_float('.')<cr>", desc = "Oil open float window in cwd" },
       { "<leader>~", "<cmd>lua require('oil').toggle_float('~')<cr>", desc = "Oil open float window in ~" },
     },
     dependencies = { "nvim-tree/nvim-web-devicons" },
