@@ -5,6 +5,8 @@ set -g fish_greeting
 
 set -gx EDITOR nvim
 
+set fish_key_bindings fish_user_key_bindings
+
 # Folders
 alias d="cd ~/dev"
 
@@ -93,7 +95,7 @@ end
 
 
 # check with fzf_configure_bindings -h
-fzf_configure_bindings --directory=\e\cf # Alt + Ctrl + f
+# fzf_configure_bindings --directory=\e\cf # Alt + Ctrl + f
 
 # Source broot bash launcher
 # bass source ~/Library/Preferences/org.dystroy.broot/launcher/bash/br
