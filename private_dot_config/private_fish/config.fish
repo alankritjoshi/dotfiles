@@ -5,7 +5,7 @@ set -g fish_greeting
 
 set -gx EDITOR nvim
 
-set fish_key_bindings fish_user_key_bindings
+# set fish_key_bindings fish_user_key_bindings
 
 # Folders
 alias d="cd ~/dev"
