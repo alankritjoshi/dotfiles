@@ -95,7 +95,7 @@ end
 
 
 # check with fzf_configure_bindings -h
-# fzf_configure_bindings --directory=\e\cf # Alt + Ctrl + f
+fzf_configure_bindings --directory=\e\cf # Alt + Ctrl + f
 
 # Source broot bash launcher
 # bass source ~/Library/Preferences/org.dystroy.broot/launcher/bash/br
