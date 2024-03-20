@@ -7,8 +7,8 @@ return {
     },
   },
   keys = {
-    { "<leader>sfd", "<cmd>Telescope dir live_grep<CR>", desc = "Telescope dir grep" },
-    { "<leader>sfg", "<cmd>Telescope dir find_files<CR>", desc = "Telescope dir search" },
+    { "<leader>sfg", "<cmd>Telescope dir live_grep<CR>", desc = "Telescope dir grep" },
+    { "<leader>sfd", "<cmd>Telescope dir find_files<CR>", desc = "Telescope dir search" },
   },
   config = function()
     require("dir-telescope").setup({

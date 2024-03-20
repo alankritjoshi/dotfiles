@@ -9,6 +9,12 @@ return {
         sidebars = "transparent",
         floats = "transparent",
       },
+      custom_highlights = function()
+        return {
+          DiffChange = { fg = "#BD93F9" },
+          DiffDelete = { fg = "#FF5555" },
+        }
+      end,
     },
   },
 }
