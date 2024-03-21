@@ -4,7 +4,7 @@ return {
     opts = {
       windows = {
         preview = true,
-        width_focus = 120,
+        width_focus = 50,
         width_preview = 120,
       },
       options = {
