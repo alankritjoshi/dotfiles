@@ -1,9 +1,7 @@
 -- if true then return {} end
 return {
   "mfussenegger/nvim-dap",
-
   dependencies = {
-
     -- fancy UI for the debugger
     {
       "rcarriga/nvim-dap-ui",
@@ -40,7 +38,6 @@ return {
     -- which key integration
     {
       "folke/which-key.nvim",
-      optional = true,
       opts = {
         defaults = {
           ["<leader>d"] = { name = "+debug" },
@@ -69,6 +66,38 @@ return {
           "delve",
         },
       },
+    },
+
+    -- go
+    {
+      "leoluz/nvim-dap-go",
+      config = true,
+    },
+
+    {
+      "mfussenegger/nvim-dap-python",
+      keys = {
+        {
+          "<leader>dPt",
+          function()
+            require("dap-python").test_method()
+          end,
+          desc = "Debug Method",
+          ft = "python",
+        },
+        {
+          "<leader>dPc",
+          function()
+            require("dap-python").test_class()
+          end,
+          desc = "Debug Class",
+          ft = "python",
+        },
+      },
+      config = function()
+        local path = require("mason-registry").get_package("debugpy"):get_install_path()
+        require("dap-python").setup(path .. "/venv/bin/python")
+      end,
     },
   },
 
