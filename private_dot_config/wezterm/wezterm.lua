@@ -1,17 +1,22 @@
 local wezterm = require("wezterm")
 
+local custom = wezterm.color.get_builtin_schemes()["Catppuccin Mocha"]
+custom.background = "#000000"
+
 return {
-	-- appearance
-	color_scheme = "Catppuccin Mocha",
+	color_schemes = {
+		["OLEDppuccin"] = custom,
+	},
+	color_scheme = "OLEDppuccin",
 	enable_tab_bar = false,
 	font = wezterm.font("FiraCode Nerd Font Mono"),
-	font_size = 16.0,
+	font_size = 18.0,
 	macos_window_background_blur = 30,
 
-	-- window_background_opacity = 0.55,
-	-- text_background_opacity = 0.55,
-	window_background_opacity = 0.7,
-	text_background_opacity = 0.7,
+	-- window_background_opacity = 0.7,
+	-- text_background_opacity = 0.7,
+	window_background_opacity = 0.4,
+	text_background_opacity = 0.5,
 	window_decorations = "RESIZE",
 
 	keys = {
