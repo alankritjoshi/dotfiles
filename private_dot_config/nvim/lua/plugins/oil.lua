@@ -32,6 +32,12 @@ return {
       view_options = {
         show_hidden = true,
       },
+      float = {
+        -- Padding around the floating window
+        padding = 10,
+        max_width = 300,
+        -- border = "rounded",
+      },
     },
   },
 }

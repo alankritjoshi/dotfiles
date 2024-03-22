@@ -42,6 +42,7 @@ return {
       telescope = {
         mappings = { -- table of mappings for the Telescope extension
           copy_session = "<C-s>",
+          delete_session = "<c-x>",
         },
       },
     })
