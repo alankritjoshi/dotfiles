@@ -15,8 +15,10 @@ return {
 
 	-- window_background_opacity = 0.7,
 	-- text_background_opacity = 0.7,
-	window_background_opacity = 0.4,
-	text_background_opacity = 0.5,
+	-- window_background_opacity = 0.4,
+	-- text_background_opacity = 0.5,
+	window_background_opacity = 0.8,
+	text_background_opacity = 0.8,
 	window_decorations = "RESIZE",
 
 	keys = {
