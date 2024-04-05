@@ -63,6 +63,7 @@ homebrew_packages:
   # apps
   - craft
   - MonitorControl
+  - shortcat
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
