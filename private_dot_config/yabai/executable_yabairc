@@ -32,7 +32,7 @@ yabai -m config normal_window_opacity        0.90
 # center mouse on window with focus
 yabai -m config mouse_follows_focus          off
 yabai -m config focus_follows_mouse          off
-# yabai -m config mouse_modifier               fn
+yabai -m config mouse_modifier               ctrl
 # yabai -m config mouse_action1                move
 # yabai -m config mouse_action2                resize
 
