@@ -26,7 +26,6 @@ alias vy="nvim ~/.config/yabai/yabairc"
 
 # Tools
 alias g="git"
-# alias rm="trash"
 alias t="tree"
 alias tt="t -L 1"
 alias tta="t -L 1 -a"
@@ -37,6 +36,8 @@ alias o="open"
 alias c="clear"
 alias e="exit"
 alias gwc="g wc --format=oneline | wc -l"
+
+# Zellij
 alias j="zellij"
 alias jl="zellij list-sessions"
 alias jr="zellij run --"
@@ -50,7 +51,7 @@ alias jk="zellij kill-session"
 alias jka="zellij kill-all-sessions"
 alias je="zellij edit"
 alias jev="zellij edit ~/.config/nvim/lua/config/lazy.lua"
-alias jeb="zellij edit ~/.bashrc"
+alias jeb="zellij edit ~/.bootstrap/"
 alias jeg="zellij edit ~/.gitconfig"
 alias jef="zellij edit ~/.config/fish/config.fish"
 alias jez="zellij edit ~/.config/wezterm/wezterm.lua"
@@ -143,4 +144,5 @@ starship init fish | source
 if status is-interactive
     # Commands to run in interactive sessions can go here
     # eval (zellij setup --generate-auto-start fish | string collect)
+    cd $HOME/dev
 end
