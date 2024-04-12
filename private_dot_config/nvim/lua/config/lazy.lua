@@ -12,7 +12,7 @@ require("lazy").setup({
     {
       "LazyVim/LazyVim",
       import = "lazyvim.plugins",
-      opts = { colorscheme = { "catppuccin-mocha" } },
+      opts = { colorscheme = { "carbonfox" } },
     },
     -- import any extras modules here
     -- { import = "lazyvim.plugins.extras.lang.typescript" },
