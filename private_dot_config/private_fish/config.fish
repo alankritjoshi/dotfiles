@@ -15,7 +15,7 @@ alias vim="nvim"
 alias v="nvim"
 alias n="nvim"
 alias vv="nvim ~/.config/nvim"
-alias vb="nvim ~/.bashrc"
+alias vb="nvim ~/bootstrap"
 alias vg="nvim ~/.gitconfig"
 alias vf="nvim ~/.config/fish/config.fish"
 alias vz="nvim ~/.config/wezterm/wezterm.lua"
@@ -79,6 +79,9 @@ alias gcl="git clone"
 alias gb="git branch"
 alias gg="lazygit"
 
+# other
+alias dbx="databricks"
+
 function web
     if test -z $argv
         echo "Usage: web <URL>"
@@ -107,11 +110,6 @@ fzf_configure_bindings --directory=\e\cf # Alt + Ctrl + f
 # set -x PATH $PATH $GOROOT/bin
 # set -x GOPATH $HOME/go
 # set -x PATH $PATH $GOPATH/bin
-
-# Set up pyenv
-set -x PATH $PATH $HOME/.pyenv/bin
-# status --is-interactive; and source (pyenv init - | psub)
-# status --is-interactive; and source (pyenv virtualenv-init - | psub)
 
 # Uncomment the following lines if you use NVM
 # set -x NVM_DIR $HOME/.nvm
@@ -145,3 +143,5 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
     # eval (zellij setup --generate-auto-start fish | string collect)
 end
+
+set PATH $PATH /Users/alankrit.joshi/.local/bin
