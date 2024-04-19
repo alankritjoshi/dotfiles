@@ -81,7 +81,7 @@ shift + ctrl + cmd + alt - l : yabai -m window --swap east
 # -- Starting/Stopping/Restarting Yabai --
 
 # stop/start/restart yabai
-shift + cmd + alt - q : brew services stop yabai
-shift + cmd + alt - s : brew services start yabai
-shift + cmd + alt - r : brew services restart yabai
+shift + ctrl + cmd + alt - q : yabai --stop-service
+shift + ctrl + cmd + alt - s : yabai --start-service
+shift + cmd + alt - r : yabai --restart-service
 
