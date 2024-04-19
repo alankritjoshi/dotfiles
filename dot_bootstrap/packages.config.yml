@@ -31,7 +31,7 @@ homebrew_packages:
   # lang
   - go
   - delve
-  - pyenv
+  - python
   - node
   - nvm
   - pipx
@@ -54,6 +54,7 @@ homebrew_packages:
 
   # frameworks
   - hugo
+  - databricks
 
   # network
   - httpie
