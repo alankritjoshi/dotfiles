@@ -79,6 +79,12 @@ alias gcl="git clone"
 alias gb="git branch"
 alias gg="lazygit"
 
+# Poetry/Python
+alias p="poetry"
+alias pr="poetry run"
+alias pv="poetry run nvim"
+alias pp="poetry poe"
+
 # other
 alias dbx="databricks"
 
@@ -105,27 +111,6 @@ fzf_configure_bindings --directory=\e\cf # Alt + Ctrl + f
 # Source broot bash launcher
 # bass source ~/Library/Preferences/org.dystroy.broot/launcher/bash/br
 
-# Set up Go environment
-# set -x GOROOT (brew --prefix golang)/libexec
-# set -x PATH $PATH $GOROOT/bin
-# set -x GOPATH $HOME/go
-# set -x PATH $PATH $GOPATH/bin
-
-# Uncomment the following lines if you use NVM
-# set -x NVM_DIR $HOME/.nvm
-# bass [ -s "$NVM_DIR/nvm.sh" ]; and source $NVM_DIR/nvm.sh
-# bass [ -s "$NVM_DIR/bash_completion" ]; and source $NVM_DIR/bash_completion
-
-# Source lazy-nvm
-# source ~/.config/lazy-nvm.sh
-
-# Uncomment and set up Flutter and Android SDK paths if needed
-# set -x PATH $PATH $HOME/flutter/bin
-# set -x PATH $PATH $HOME/Library/Android/sdk/platform-tools
-# set -x ANDROID_HOME $HOME/Library/Android/sdk
-# set -x PATH $PATH $ANDROID_HOME/tools $ANDROID_HOME/tools/bin $ANDROID_HOME/platform-tools
-# set -x PATH $PATH $HOME/.pub-cache/bin
-
 # Source FZF if available
 # [ -f ~/.fzf.fish ]; and source ~/.fzf.fish
 
@@ -144,4 +129,4 @@ if status is-interactive
     # eval (zellij setup --generate-auto-start fish | string collect)
 end
 
-set PATH $PATH /Users/alankrit.joshi/.local/bin
+set PATH $PATH $HOME/.local/bin

@@ -54,4 +54,5 @@ yabai -m rule --add app="^Karabiner-Elements$" manage=off
 yabai -m rule --add app="^QuickTime Player$" manage=off
 yabai -m rule --add app="^Microsoft Teams classic$" manage=off
 yabai -m rule --add app="^1Password$" manage=off
+yabai -m rule --add app="^Clock$" manage=off
 
