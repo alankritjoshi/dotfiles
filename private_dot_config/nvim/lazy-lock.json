@@ -14,6 +14,7 @@
   "codeium.nvim": { "branch": "main", "commit": "ace6ee3efea3cda09aa5d9bddc41b7438c826a70" },
   "conform.nvim": { "branch": "master", "commit": "12b3995537f52ba2810a9857e8ca256881febbda" },
   "copilot.lua": { "branch": "master", "commit": "f7612f5af4a7d7615babf43ab1e67a2d790c13a6" },
+  "cyberdream.nvim": { "branch": "main", "commit": "dab90f1cf0c49bab8fb7a967d47724e075bcc437" },
   "dashboard-nvim": { "branch": "master", "commit": "6d06924b562de6f0bb136edf1bf549afbf6b7d00" },
   "diffview.nvim": { "branch": "main", "commit": "3dc498c9777fe79156f3d32dddd483b8b3dbd95f" },
   "dir-telescope.nvim": { "branch": "main", "commit": "1f3a041f870d1edf9cc64635e79f4b829e755978" },
