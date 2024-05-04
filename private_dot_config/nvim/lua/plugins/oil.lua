@@ -6,6 +6,28 @@ return {
       { "-", "<cmd>Oil<cr>", desc = "Oil open parent directory" },
       { "<leader>e", "<cmd>lua require('oil').toggle_float()<cr>", desc = "Oil open float window for current file" },
       { "<leader>E", "<cmd>lua require('oil').toggle_float('.')<cr>", desc = "Oil open float window in cwd" },
+      {
+        "<leader>o",
+        function()
+          if vim.bo.filetype == "oil" then
+            require("oil").close()
+          else
+            require("oil").open()
+          end
+        end,
+        desc = "Oil open buffer for current file",
+      },
+      {
+        "<leader>O",
+        function()
+          if vim.bo.filetype == "oil" then
+            require("oil").close()
+          else
+            require("oil").open(".")
+          end
+        end,
+        desc = "Oil open buffer for current file",
+      },
       { "<leader>~", "<cmd>lua require('oil').toggle_float('~')<cr>", desc = "Oil open float window in ~" },
     },
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -15,8 +37,8 @@ return {
       keymaps = {
         ["g?"] = "actions.show_help",
         ["<CR>"] = "actions.select",
-        ["<C-\\>"] = "actions.select_split",
-        ["<C-enter>"] = "actions.select_vsplit", -- this is used to navigate left
+        ["<C-d>"] = "actions.select_split",
+        ["<C-v>"] = "actions.select_vsplit", -- this is used to navigate left
         ["<C-t>"] = "actions.select_tab",
         ["<C-p>"] = "actions.preview",
         ["<C-c>"] = "actions.close",

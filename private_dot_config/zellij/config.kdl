@@ -4,13 +4,7 @@ keybinds {
     unbind "Alt s"
 
     normal clear-defaults=true {
-        bind "Alt w" {
-            LaunchOrFocusPlugin "zellij:session-manager" {
-                floating true
-                move_to_focused_tab true
-            };
-            SwitchToMode "Normal"
-        }
+        bind "Alt w" { SwitchToMode "Session"; }
         bind "Alt q" { Quit; }
         bind "Alt d" { Detach; }
         bind "Alt p" { SwitchToMode "pane"; }
@@ -136,19 +130,31 @@ keybinds {
         bind "Alt k" "Alt Up" { MoveFocus "Up"; }
     }
 
+    session clear-defaults=true {
+        bind "Alt w" "Enter" "Esc" "Space" { SwitchToMode "normal"; }
+        bind "q" { Quit; }
+        bind "d" { Detach; }
+        bind "w" {
+            LaunchOrFocusPlugin "zellij:session-manager" {
+                floating true
+                move_to_focused_tab true
+            };
+            SwitchToMode "Normal"
+        }
+    }
+
     locked clear-defaults=true {}
     renamepane clear-defaults=true {}
     renametab clear-defaults=true {}
-    session clear-defaults=true {}
     tmux clear-defaults=true {}
 }
 
 plugins {
-    tab-bar { path "tab-bar"; }
-    status-bar { path "status-bar"; }
-    strider { path "strider"; }
-    compact-bar { path "compact-bar"; }
-    session-manager { path "session-manager"; }
+    tab-bar location="zellij:tab-bar"
+    status-bar location="zellij:status-bar"
+    strider location="zellij:strider"
+    compact-bar location="zellij:compact-bar"
+    session-manager location="zellij:session-manager"
     welcome-screen location="zellij:session-manager" {
         welcome_screen true
     }

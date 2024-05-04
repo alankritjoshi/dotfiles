@@ -13,7 +13,7 @@ return {
     -- -- Jump to next entry in the edit history
     -- vim.keymap.set("n", "<M-l>", before.jump_to_next_edit, {})
 
-    vim.keymap.set("n", "<leader>oe", function()
+    vim.keymap.set("n", "<leader>se", function()
       before.show_edits(require("telescope.themes").get_dropdown())
     end, {})
   end,
