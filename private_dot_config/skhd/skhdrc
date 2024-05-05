@@ -7,8 +7,8 @@ cmd + alt - h : yabai -m window --focus west
 cmd + alt - l : yabai -m window --focus east
 
 #change focus between external displays (left and right)
-alt - s: yabai -m display --focus west
-alt - g: yabai -m display --focus east
+cmd + alt - n: yabai -m space --focus next
+cmd + alt - p: yabai -m space --focus prev
 
 # -- Modifying the Layout --
 
@@ -45,10 +45,6 @@ shift + ctrl + cmd + alt - o : yabai -m window east --resize left:20:0 2> /dev/n
 # -- Moving Windows Around --
 
 # swap windows
-# shift + alt - j : yabai -m window --swap south
-# shift + alt - k : yabai -m window --swap north
-# shift + alt - h : yabai -m window --swap west
-# shift + alt - l : yabai -m window --swap east
 shift + ctrl + cmd + alt - h : yabai -m window --swap west
 shift + ctrl + cmd + alt - j : yabai -m window --swap south
 shift + ctrl + cmd + alt - k : yabai -m window --swap north
@@ -59,24 +55,19 @@ shift + ctrl + cmd + alt - l : yabai -m window --swap east
 # ctrl + alt - k : yabai -m window --warp north
 # ctrl + alt - h : yabai -m window --warp west
 # ctrl + alt - l : yabai -m window --warp east
-#
-# # move window to display left and right
-# shift + ctrl + cmd + alt - s : yabai -m window --display west; yabai -m display --focus west;
-# shift + ctrl + cmd + alt - g : yabai -m window --display east; yabai -m display --focus east;
-#
-#
+
 # # move window to prev and next space
-# shift + alt - p : yabai -m window --space prev;
-# shift + alt - n : yabai -m window --space next;
+shift + cmd + alt - p : yabai -m window --space prev;
+shift + cmd + alt - n : yabai -m window --space next;
 #
 # # move window to space #
-# shift + alt - 1 : yabai -m window --space 1;
-# shift + alt - 2 : yabai -m window --space 2;
-# shift + alt - 3 : yabai -m window --space 3;
-# shift + alt - 4 : yabai -m window --space 4;
-# shift + alt - 5 : yabai -m window --space 5;
-# shift + alt - 6 : yabai -m window --space 6;
-# shift + alt - 7 : yabai -m window --space 7;
+shift + cmd + alt - 1 : yabai -m window --space 1;
+shift + cmd + alt - 2 : yabai -m window --space 2;
+shift + cmd + alt - 3 : yabai -m window --space 3;
+shift + cmd + alt - 4 : yabai -m window --space 4;
+shift + cmd + alt - 5 : yabai -m window --space 5;
+shift + cmd + alt - 6 : yabai -m window --space 6;
+shift + cmd + alt - 7 : yabai -m window --space 7;
 
 # -- Starting/Stopping/Restarting Yabai --
 
