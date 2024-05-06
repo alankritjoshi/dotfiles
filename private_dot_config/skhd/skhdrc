@@ -50,8 +50,8 @@ shift + ctrl + cmd + alt - l : yabai -m window --swap east
 # shift + ctrl + opt - l : yabai -m window --warp east
 
 # change focus between spaces
-cmd + alt - n: yabai -m space --focus next
-cmd + alt - p: yabai -m space --focus prev
+cmd + alt - n : yabai -m space --focus next
+cmd + alt - p : yabai -m space --focus prev
 
 # change focus to space #
 cmd + alt - 1 : yabai -m space --focus 1;
