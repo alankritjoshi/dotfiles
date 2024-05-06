@@ -31,8 +31,8 @@ shift + ctrl + cmd + alt - e : yabai -m space --balance
 
 # resize window
 shift + ctrl + cmd + alt - y : yabai -m window west --resize right:-20:0 2> /dev/null || yabai -m window --resize right:-20:0
-shift + ctrl + cmd + alt - i : yabai -m window north --resize bottom:0:20 2> /dev/null || yabai -m window --resize bottom:0:20
 shift + ctrl + cmd + alt - u : yabai -m window south --resize top:0:-20 2> /dev/null || yabai -m window --resize top:0:-20
+shift + ctrl + cmd + alt - i : yabai -m window north --resize bottom:0:20 2> /dev/null || yabai -m window --resize bottom:0:20
 shift + ctrl + cmd + alt - o : yabai -m window east --resize left:20:0 2> /dev/null || yabai -m window --resize left:20:0
 
 # -- Moving Windows Around --
@@ -43,11 +43,11 @@ shift + ctrl + cmd + alt - j : yabai -m window --swap south
 shift + ctrl + cmd + alt - k : yabai -m window --swap north
 shift + ctrl + cmd + alt - l : yabai -m window --swap east
 
-# # move window and split
-# shift + ctrl + opt - j : yabai -m window --warp south
-# shift + ctrl + opt - k : yabai -m window --warp north
-# shift + ctrl + opt - h : yabai -m window --warp west
-# shift + ctrl + opt - l : yabai -m window --warp east
+# -- Spaces --
+
+# create or destroy spaces
+shift + ctrl + cmd + alt - n : yabai -m space --create && yabai -m space --focus last
+shift + ctrl + cmd + alt - d : yabai -m space --destroy && yabai -m space --focus last
 
 # change focus between spaces
 cmd + alt - n : yabai -m space --focus next
