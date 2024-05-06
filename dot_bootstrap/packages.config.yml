@@ -39,6 +39,7 @@ homebrew_packages:
   # tools
   - ssh-copy-id
   - openssl
+  - eza
   - fzf
   - zoxide
   - trash

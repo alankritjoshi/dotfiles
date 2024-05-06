@@ -5,6 +5,8 @@ set -g fish_greeting
 
 set -gx EDITOR nvim
 
+alias ls="eza"
+
 # set fish_key_bindings fish_user_key_bindings
 
 # Folders
@@ -26,7 +28,7 @@ alias vy="nvim ~/.config/yabai/yabairc"
 
 # Tools
 alias g="git"
-alias t="tree"
+alias t="ls -T"
 alias tt="t -L 1"
 alias tta="t -L 1 -a"
 alias ttl="t -L"
