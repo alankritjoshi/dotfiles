@@ -124,9 +124,8 @@ set -x LDFLAGS "-L"(brew --prefix)/lib
 zoxide init fish | source
 starship init fish | source
 
+set PATH $PATH $HOME/.local/bin
+
 if status is-interactive
     # Commands to run in interactive sessions can go here
-    # eval (zellij setup --generate-auto-start fish | string collect)
 end
-
-set PATH $PATH $HOME/.local/bin
