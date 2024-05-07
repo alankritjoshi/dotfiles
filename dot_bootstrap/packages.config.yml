@@ -47,7 +47,6 @@ homebrew_packages:
   - fd
   - sd
   - ripgrep
-  - tree
   - bat
   - gum
   - glow
