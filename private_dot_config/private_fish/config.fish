@@ -127,11 +127,12 @@ zoxide init fish | source
 starship init fish | source
 
 fish_add_path $HOME/.local/bin
-fish_add_path /opt/homebrew/opt/curl/bin
+fish_add_path $HOME/opt/curl/bin
 
 # for compilers to use brew curl
-set -gx LDFLAGS -L/opt/homebrew/opt/curl/lib
-set -gx CPPFLAGS -I/opt/homebrew/opt/curl/include
+set -gx LDFLAGS "-L"(brew --prefix)/opt/curl/lib
+set -gx CPPFLAGS "-I"(brew --prefix)/opt/curl/include
+set -gx PKG_CONFIG_PATH /opt/homebrew/opt/curl/lib/pkgconfig
 
 if status is-interactive
     # Commands to run in interactive sessions can go here
