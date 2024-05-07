@@ -126,7 +126,12 @@ set -x LDFLAGS "-L"(brew --prefix)/lib
 zoxide init fish | source
 starship init fish | source
 
-set PATH $PATH $HOME/.local/bin
+fish_add_path $HOME/.local/bin
+fish_add_path /opt/homebrew/opt/curl/bin
+
+# for compilers to use brew curl
+set -gx LDFLAGS -L/opt/homebrew/opt/curl/lib
+set -gx CPPFLAGS -I/opt/homebrew/opt/curl/include
 
 if status is-interactive
     # Commands to run in interactive sessions can go here
