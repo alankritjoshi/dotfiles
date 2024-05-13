@@ -17,7 +17,7 @@ alias vim="nvim"
 alias v="nvim"
 alias n="nvim"
 alias vv="nvim ~/.config/nvim"
-alias vb="nvim ~/bootstrap"
+alias vb="nvim ~/.bootstrap"
 alias vg="nvim ~/.gitconfig"
 alias vf="nvim ~/.config/fish/config.fish"
 alias vz="nvim ~/.config/wezterm/wezterm.lua"
@@ -89,6 +89,15 @@ alias pp="poetry poe"
 
 # other
 alias dbx="databricks"
+
+function yy
+    set tmp (mktemp -t "yazi-cwd.XXXXXX")
+    yazi $argv --cwd-file="$tmp"
+    if set cwd (cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+        cd -- "$cwd"
+    end
+    rm -f -- "$tmp"
+end
 
 function web
     if test -z $argv

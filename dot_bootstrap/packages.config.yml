@@ -44,6 +44,7 @@ homebrew_packages:
   - fzf
   - zoxide
   - trash
+  - yazi
   - fd
   - sd
   - ripgrep
@@ -59,7 +60,10 @@ homebrew_packages:
 
   # network
   - httpie
+  - xh
   - jq
+  - htmlq
+  - jless
   - wrk
   - iperf
   - oha
