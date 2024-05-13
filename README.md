@@ -14,7 +14,6 @@ sh -c "$(curl -fsLS get.chezmoi.io)" && ./bin/chezmoi init --apply alankritjoshi
 
 > delete ./bin/chezmoi as the brew variant will be used after this point.
 
-
 ## Required Manual Steps
 
 ### MacOS Tiling
@@ -26,3 +25,7 @@ yabai --restart-service
 skhd --restart-service
 ```
 
+#### Enable MacOS Space movements
+
+1. Follow guide for [Disabling System Integrity](https://github.com/koekeishiya/yabai/wiki/Disabling-System-Integrity-Protection)
+2. `sudo yabai --load-sa`
