@@ -1,3 +1,5 @@
+sudo yabai --load-sa
+
 # default layout (can be bsp, stack or float)
 yabai -m config layout                       bsp
 
@@ -31,15 +33,12 @@ yabai -m config normal_window_opacity        0.90
 # mouse settings
 # center mouse on window with focus
 yabai -m config mouse_follows_focus          off
-yabai -m config focus_follows_mouse          off
-yabai -m config mouse_modifier               ctrl
-# yabai -m config mouse_action1                move
-# yabai -m config mouse_action2                resize
+yabai -m config focus_follows_mouse          autoraise
 
 # modifier for clicking and dragging with mouse
 yabai -m config mouse_modifier alt
 # set modifier + left-click drag to move window
-yabai -m config mouse_action1 move
+# yabai -m config mouse_action1 move
 # set modifier + right-click drag to resize window
 yabai -m config mouse_action2 resize
 

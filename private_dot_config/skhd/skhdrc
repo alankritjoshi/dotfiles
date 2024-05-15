@@ -1,10 +1,24 @@
+# -- Open apps --
+
+alt - return : open -na 'WezTerm'
+
+alt - s : ~/.config/skhd/scripts/app_switch.sh "System Settings"
+alt - d : open ~/Downloads
+alt - r : open -a Finder
+alt - x : ~/.config/skhd/scripts/app_close.sh
+
+alt - 1 : ~/.config/skhd/scripts/app_switch.sh "WezTerm"
+alt - 2 : ~/.config/skhd/scripts/app_switch.sh "Arc"
+alt - 3 : ~/.config/skhd/scripts/app_switch.sh "Slack"
+alt - 4 : ~/.config/skhd/scripts/app_switch.sh "Craft"
+
 # -- Changing Window Focus --
 
 # change window focus within space
-cmd + alt - j : yabai -m window --focus south
-cmd + alt - k : yabai -m window --focus north
-cmd + alt - h : yabai -m window --focus west
-cmd + alt - l : yabai -m window --focus east
+shift + alt - j : yabai -m window --focus south
+shift + alt - k : yabai -m window --focus north
+shift + alt - h : yabai -m window --focus west
+shift + alt - l : yabai -m window --focus east
 
 # -- Modifying the Layout --
 
@@ -20,14 +34,13 @@ shift + ctrl + cmd + alt - x : yabai -m space --mirror x-axis
 # toggle window float
 shift + ctrl + cmd + alt - t : yabai -m window --toggle float --grid 20:20:1:1:18:18
 
-
-# -- Modifying Window Size --
-
 # maximize a window
-shift + ctrl + cmd + alt - m : yabai -m window --toggle zoom-fullscreen
+shift + ctrl + cmd + alt - f : yabai -m window --toggle zoom-fullscreen
 
 # balance out tree of windows (resize to occupy same area)
 shift + ctrl + cmd + alt - e : yabai -m space --balance
+
+# -- Modifying Window Size --
 
 # resize window
 shift + ctrl + cmd + alt - y : yabai -m window west --resize right:-20:0 2> /dev/null || yabai -m window --resize right:-20:0
