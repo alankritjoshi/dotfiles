@@ -2,7 +2,7 @@
 
 alt - return : open -na 'WezTerm'
 
-alt - i : ~/.config/skhd/scripts/app_switch.sh "System Settings"
+alt - s : ~/.config/skhd/scripts/app_switch.sh "System Settings"
 alt - d : open ~/Downloads
 alt - r : open -a Finder
 alt - x : ~/.config/skhd/scripts/app_close.sh
