@@ -13,6 +13,7 @@ return {
         "rst",
         "toml",
         "sql",
+        "kdl",
       },
     },
   },
