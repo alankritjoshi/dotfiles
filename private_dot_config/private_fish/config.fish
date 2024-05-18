@@ -89,6 +89,7 @@ alias pp="poetry poe"
 
 # other
 alias dbx="databricks"
+alias b="brew"
 
 function yy
     set tmp (mktemp -t "yazi-cwd.XXXXXX")
