@@ -22,6 +22,8 @@ return {
 	text_background_opacity = 0.8,
 	window_decorations = "RESIZE",
 
+	window_close_confirmation = "NeverPrompt",
+
 	keys = {
 		-- pane creation
 		{ key = "h", mods = "CMD", action = wezterm.action({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
