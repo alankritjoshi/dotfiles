@@ -1,11 +1,24 @@
 layout {
-    default_tab_template {
+    pane_template name="default_pane" {
         pane {
             command "yazi"
             size "20%"
         }
         pane size=1 borderless=true {
             plugin location="zellij:compact-bar"
+        }
+    }
+
+    new_tab_template name="default_tab" hide_floating_panes=true {
+        default_pane {}
+
+        floating_panes {
+            pane {
+                x -1
+                y 1
+                width "40%"
+                height "90%"
+            }
         }
     }
 }
