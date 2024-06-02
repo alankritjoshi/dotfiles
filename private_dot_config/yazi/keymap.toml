@@ -15,4 +15,10 @@ append_keymap = [
     "g",
     "f",
   ], run = "cd ~/.config/fish", desc = "Go to the fish config" },
+  { on = [
+    "<C-p>",
+  ], run = "seek -5", desc = "Scroll preview down" },
+  { on = [
+    "<C-n>",
+  ], run = "seek 5", desc = "Scroll preview up" },
 ]

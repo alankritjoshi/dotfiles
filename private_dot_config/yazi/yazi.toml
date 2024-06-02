@@ -9,7 +9,4 @@ show_hidden = true
 show_symlink = true
 
 [opener]
-edit = [{ run = 'zellij edit -i "$1"', desc = "Open File in a new pane" }]
-# edit = [
-#   { run = 'zellij run -c -i -- nvim $1', desc = "Open File in a new pane" },
-# ]
+edit = [{ run = 'zellij edit -i "$1"', desc = "Open File in the same pane" }]
