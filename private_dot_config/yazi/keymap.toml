@@ -1,0 +1,18 @@
+"$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
+
+[manager]
+
+append_keymap = [
+  { on = [
+    "g",
+    "c",
+  ], run = "cd ~/.config", desc = "Go to the Config dir" },
+  { on = [
+    "g",
+    "v",
+  ], run = "cd ~/.config/nvim", desc = "Go to the nvim config" },
+  { on = [
+    "g",
+    "f",
+  ], run = "cd ~/.config/fish", desc = "Go to the fish config" },
+]
