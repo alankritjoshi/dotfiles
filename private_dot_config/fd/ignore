@@ -1,0 +1,17 @@
+/Library/
+Applications/
+Music/
+Public/
+.cache/
+.codeium/
+.docker/
+.git/
+go/
+.npm/
+.gem/
+.local/
+.vscode/
+.Trash/
+
+**/.DS_STORE
+**/.venv/
