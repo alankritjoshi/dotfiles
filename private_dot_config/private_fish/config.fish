@@ -16,15 +16,6 @@ alias d="cd ~/dev"
 alias vim="nvim"
 alias v="nvim"
 alias n="nvim"
-alias vv="nvim ~/.config/nvim"
-alias vb="nvim ~/.bootstrap"
-alias vg="nvim ~/.gitconfig"
-alias vf="nvim ~/.config/fish/config.fish"
-alias vz="nvim ~/.config/wezterm/wezterm.lua"
-alias vj="nvim ~/.config/zellij/config.kdl"
-alias vs="nvim ~/.config/skhd/skhdrc"
-alias vy="nvim ~/.config/yabai/yabairc"
-alias vy="nvim ~/.config/yabai/yabairc"
 
 # Tools
 alias g="git"
@@ -38,28 +29,6 @@ alias o="open"
 alias c="clear"
 alias e="exit"
 alias gwc="g wc --format=oneline | wc -l"
-
-# Zellij
-alias j="zellij -l ~/.config/zellij/layouts/default.kdl"
-alias jl="zellij list-sessions"
-alias jr="zellij run --"
-alias jrf="zellij run -f --"
-alias jal="zellij action new-tab -l .zellij/layout.kdl"
-alias jad="zellij action new-tab -l ~/.config/zellij/layouts/layout.kdl"
-alias ja="zellij attach"
-alias jd="zellij delete-session"
-alias jda="zellij delete-all-sessions"
-alias jk="zellij kill-session"
-alias jka="zellij kill-all-sessions"
-alias je="zellij edit"
-alias jev="zellij edit ~/.config/nvim/lua/config/lazy.lua"
-alias jeb="zellij edit ~/.bootstrap/"
-alias jeg="zellij edit ~/.gitconfig"
-alias jef="zellij edit ~/.config/fish/config.fish"
-alias jez="zellij edit ~/.config/wezterm/wezterm.lua"
-alias jej="zellij edit ~/.config/zellij/config.kdl"
-alias jes="zellij edit ~/.config/skhd/skhdrc"
-alias jey="zellij edit ~/.config/yabai/yabairc"
 
 # shortcuts
 alias dev="cd ~/dev"
@@ -116,7 +85,53 @@ function web
     http GET $url | textutil -convert txt -stdin -stdout
 end
 
-function attach_zellij
+# Zellij
+function jn
+    set -l ZJ_DIR_PATH $argv[1]
+    set -l ZJ_MAYBE_LAYOUT_PATH "$ZJ_DIR_PATH/.zellij/layout.kdl"
+    set -l ZJ_DIR_PATH_SPLIT (string split -r "/" $ZJ_DIR_PATH)
+    set -l ZJ_DIR_NAME $ZJ_DIR_PATH_SPLIT[-1]
+
+    if test -f $ZJ_MAYBE_LAYOUT_PATH
+        gum confirm "Layout found. Create new tab with it?"
+        if test $status -eq 0
+            zellij action new-tab --cwd $ZJ_DIR_PATH -l $ZJ_MAYBE_LAYOUT_PATH -n $ZJ_DIR_NAME
+        else
+            zellij action new-pane -c -i --cwd $ZJ_DIR_PATH -- nvim
+        end
+    else
+        zellij action new-pane -c -i --cwd $ZJ_DIR_PATH -- nvim
+    end
+end
+
+function jnt
+    set -l ZJ_DIR_PATH $argv[1]
+    set -l ZJ_DIR_PATH_SPLIT (string split -r "/" $ZJ_DIR_PATH)
+    set -l ZJ_DIR_NAME $ZJ_DIR_PATH_SPLIT[-1]
+
+    zellij action new-tab --cwd $ZJ_DIR_PATH -l ~/.config/zellij/layouts/nvim.kdl -n $ZJ_DIR_NAME
+end
+
+alias jl="zellij list-sessions"
+alias jr="zellij run --"
+alias jrf="zellij run -f --"
+alias jal="zellij action new-tab -l .zellij/layout.kdl"
+alias ja="zellij attach"
+alias jd="zellij delete-session"
+alias jda="zellij delete-all-sessions"
+alias jk="zellij kill-session"
+alias jka="zellij kill-all-sessions"
+alias je="zellij edit -i"
+alias jv="jn ~/.config/nvim"
+alias jb="jn ~/.bootstrap"
+alias jf="jn ~/.config/fish"
+alias jz="jn ~/.config/wezterm"
+alias jj="jn ~/.config/zellij/config.kdl"
+alias js="jn ~/.config/skhd"
+alias jy="jn ~/.config/yabai"
+alias jg="je ~/.gitconfig"
+
+function _attach_zellij
     set ZJ_SESSIONS (zellij list-sessions -s)
     set NO_SESSIONS (echo $ZJ_SESSIONS | tr '\n' ' ' | wc -w | tr -d '[:space:]')
 
@@ -127,23 +142,32 @@ function attach_zellij
     end
 end
 
+function _find_and_edit_dir_with_zellij_pane
+    while true
+        set -l ZJ_DIR_PATH (zoxide query --list | fzf)
+        if test $status -ne 0
+            break
+        else
+            z $ZJ_DIR_PATH && jn $ZJ_DIR_PATH
+        end
+    end
+end
+
+function _find_and_edit_dir_with_zellij_tab
+    while true
+        set -l ZJ_DIR_PATH (zoxide query --list | fzf)
+        if test $status -ne 0
+            break
+        else
+            z $ZJ_DIR_PATH && jnt $ZJ_DIR_PATH
+        end
+    end
+end
+
+alias j _find_and_edit_dir_with_zellij_pane
+alias jt _find_and_edit_dir_with_zellij_tab
+
 set fzf_fd_opts --hidden --follow
-
-# check with fzf_configure_bindings -h
-fzf_configure_bindings --directory=\e\cf # Alt + Ctrl + f
-
-# Source broot bash launcher
-# bass source ~/Library/Preferences/org.dystroy.broot/launcher/bash/br
-
-# Source FZF if available
-# [ -f ~/.fzf.fish ]; and source ~/.fzf.fish
-
-# Uncomment and set up OpenSSL path if needed
-# set -x PATH /usr/local/opt/openssl@3/bin $PATH
-
-# Set up CPPFLAGS and LDFLAGS for Homebrew
-set -x CPPFLAGS "-I"(brew --prefix)/include
-set -x LDFLAGS "-L"(brew --prefix)/lib
 
 zoxide init fish | source
 starship init fish | source
@@ -151,7 +175,9 @@ starship init fish | source
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/opt/curl/bin
 
-# for compilers to use brew curl
+# Set up CPPFLAGS and LDFLAGS for Homebrew
+set -x CPPFLAGS "-I"(brew --prefix)/include
+set -x LDFLAGS "-L"(brew --prefix)/lib
 set -gx LDFLAGS "-L"(brew --prefix)/opt/curl/lib
 set -gx CPPFLAGS "-I"(brew --prefix)/opt/curl/include
 set -gx PKG_CONFIG_PATH /opt/homebrew/opt/curl/lib/pkgconfig
@@ -162,7 +188,7 @@ if status is-interactive
 
     if not set -q ZELLIJ
         if test "$ZELLIJ_AUTO_ATTACH" = true
-            attach_zellij
+            _attach_zellij
         else
             zellij -l ~/.config/zellij/layouts/default.kdl -s coding
         end
@@ -172,5 +198,5 @@ if status is-interactive
         end
     end
 
-    _fzf_search_directory
+    j
 end
