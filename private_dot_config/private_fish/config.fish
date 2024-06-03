@@ -118,15 +118,16 @@ end
 
 function attach_zellij
     set ZJ_SESSIONS (zellij list-sessions -s)
-    set NO_SESSIONS (echo $ZJ_SESSIONS | wc -l)
+    set NO_SESSIONS (echo $ZJ_SESSIONS | tr '\n' ' ' | wc -w | tr -d '[:space:]')
 
-    if test $NO_SESSIONS -ge 2
-        set SET_SESSION (echo $ZJ_SESSIONS | fzf)
-        zellij attach "$SET_SESSION"
+    if test $NO_SESSIONS -ge 1
+        zellij -l ~/.config/zellij/layouts/default.kdl -s "coding-$NO_SESSIONS"
     else
-        zellij -l ~/.config/zellij/layouts/default.kdl
+        zellij -l ~/.config/zellij/layouts/default.kdl -s coding
     end
 end
+
+set fzf_fd_opts --hidden --follow
 
 # check with fzf_configure_bindings -h
 fzf_configure_bindings --directory=\e\cf # Alt + Ctrl + f
@@ -163,11 +164,13 @@ if status is-interactive
         if test "$ZELLIJ_AUTO_ATTACH" = true
             attach_zellij
         else
-            zellij -l ~/.config/zellij/layouts/default.kdl
+            zellij -l ~/.config/zellij/layouts/default.kdl -s coding
         end
 
-        # if test "$ZELLIJ_AUTO_EXIT" = true
-        #     kill $fish_pid
-        # end
+        if test "$ZELLIJ_AUTO_EXIT" = true
+            kill $fish_pid
+        end
     end
+
+    _fzf_search_directory
 end
