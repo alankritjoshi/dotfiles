@@ -116,6 +116,17 @@ function web
     http GET $url | textutil -convert txt -stdin -stdout
 end
 
+function attach_zellij
+    set ZJ_SESSIONS (zellij list-sessions -s)
+    set NO_SESSIONS (echo $ZJ_SESSIONS | wc -l)
+
+    if test $NO_SESSIONS -ge 2
+        set SET_SESSION (echo $ZJ_SESSIONS | fzf)
+        zellij attach "$SET_SESSION"
+    else
+        zellij -l ~/.config/zellij/layouts/default.kdl
+    end
+end
 
 # check with fzf_configure_bindings -h
 fzf_configure_bindings --directory=\e\cf # Alt + Ctrl + f
@@ -145,5 +156,18 @@ set -gx CPPFLAGS "-I"(brew --prefix)/opt/curl/include
 set -gx PKG_CONFIG_PATH /opt/homebrew/opt/curl/lib/pkgconfig
 
 if status is-interactive
-    # Commands to run in interactive sessions can go here
+    set ZELLIJ_AUTO_ATTACH true
+    set ZELLIJ_AUTO_EXIT true
+
+    if not set -q ZELLIJ
+        if test "$ZELLIJ_AUTO_ATTACH" = true
+            attach_zellij
+        else
+            zellij -l ~/.config/zellij/layouts/default.kdl
+        end
+
+        # if test "$ZELLIJ_AUTO_EXIT" = true
+        #     kill $fish_pid
+        # end
+    end
 end

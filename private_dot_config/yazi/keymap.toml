@@ -14,7 +14,7 @@ append_keymap = [
   { on = [
     "g",
     "c",
-  ], run = "cd ~/.config", desc = "Go to the Config dir" },
+  ], run = "cd ~/.config/yazi", desc = "Go to the Config dir" },
   { on = [
     "g",
     "v",
