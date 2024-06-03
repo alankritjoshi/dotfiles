@@ -144,7 +144,7 @@ end
 
 function _find_and_edit_dir_with_zellij_pane
     while true
-        set -l ZJ_DIR_PATH (zoxide query --list | fzf)
+        set -l ZJ_DIR_PATH (zoxide query --interactive)
         if test $status -ne 0
             break
         else
@@ -155,7 +155,7 @@ end
 
 function _find_and_edit_dir_with_zellij_tab
     while true
-        set -l ZJ_DIR_PATH (zoxide query --list | fzf)
+        set -l ZJ_DIR_PATH (zoxide query --interactive)
         if test $status -ne 0
             break
         else
