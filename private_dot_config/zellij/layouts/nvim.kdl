@@ -1,0 +1,19 @@
+layout {
+  tab hide_floating_panes=true {
+    pane {
+      command "nvim"
+      focus true
+    }
+    floating_panes {
+      pane {
+        x -1
+        y 1
+        width "40%"
+        height "90%"
+      }
+    }
+    pane size=1 borderless=true {
+        plugin location="zellij:compact-bar"
+    }
+  }
+}
