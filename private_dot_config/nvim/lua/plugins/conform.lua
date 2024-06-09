@@ -10,6 +10,11 @@ return {
         go = { "goimports", "gofumpt" },
         python = { "isort", "ruff_format", "ruff_fix" },
       },
+      formatters = {
+        shfmt = {
+          prepend_args = { "-s", "-i", "2" },
+        },
+      },
     },
   },
 }

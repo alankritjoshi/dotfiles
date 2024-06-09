@@ -12,3 +12,4 @@ vim.o.sessionoptions = "buffers,curdir,folds,tabpages,winpos,winsize"
 
 local opt = vim.opt
 opt.wrap = true
+opt.listchars:append({ eol = "¬" })
