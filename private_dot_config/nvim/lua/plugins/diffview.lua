@@ -3,17 +3,17 @@ return {
     "sindrets/diffview.nvim",
     keys = {
       {
-        "<leader>gdf",
+        "<leader>gf",
         "<cmd>DiffviewOpen<cr>",
         desc = "Diff View - Current File",
       },
       {
-        "<leader>gdh",
+        "<leader>gh",
         "<cmd>DiffviewFileHistory %<cr>",
         desc = "Diff View - File History",
       },
       {
-        "<leader>gdb",
+        "<leader>ge",
         "<cmd>DiffviewFileHistory<cr>",
         desc = "Diff View - Branch History",
       },
