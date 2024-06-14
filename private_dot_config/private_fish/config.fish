@@ -16,6 +16,7 @@ alias d="cd ~/dev"
 alias vim="nvim"
 alias v="nvim"
 alias n="nvim"
+alias nv="neovide --fork"
 
 # Tools
 alias g="git"
@@ -31,7 +32,8 @@ alias e="exit"
 alias gwc="g wc --format=oneline | wc -l"
 
 # shortcuts
-alias dev="cd ~/dev"
+alias dev="z ~/dev"
+alias src="z ~/src"
 alias cz="chezmoi"
 
 # Useful git aliases
@@ -54,6 +56,7 @@ alias gg="lazygit"
 alias p="poetry"
 alias pr="poetry run"
 alias pv="poetry run nvim"
+alias pnv="poetry run neovide --fork"
 alias pp="poetry poe"
 
 # other
@@ -198,5 +201,5 @@ if status is-interactive
         end
     end
 
-    j
+    #j
 end

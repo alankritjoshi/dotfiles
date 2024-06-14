@@ -8,6 +8,10 @@ homebrew_brew_bin_path: "{{ homebrew_prefix }}/bin"
 homebrew_update_and_upgrade: false
 
 homebrew_packages:
+  # editor
+  - neovim
+  - neovide
+
   # gnu
   - autoconf
   - gettext
