@@ -101,9 +101,11 @@ function jn
             zellij action new-tab --cwd $ZJ_DIR_PATH -l $ZJ_MAYBE_LAYOUT_PATH -n $ZJ_DIR_NAME
         else
             zellij action new-pane -c -i --cwd $ZJ_DIR_PATH -- nvim
+            zellij action rename-tab $ZJ_DIR_NAME
         end
     else
         zellij action new-pane -c -i --cwd $ZJ_DIR_PATH -- nvim
+        zellij action rename-tab $ZJ_DIR_NAME
     end
 end
 
