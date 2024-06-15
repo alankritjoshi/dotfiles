@@ -20,6 +20,15 @@ return {
     },
     opts = {
       -- enhanced_diff_hl = true,
+      hooks = {
+        view_opened = function(view)
+          local actions = require("diffview.actions")
+          -- view.panel.bufname in: "DiffviewFileHistoryPanel" | "DiffviewFilePanel"
+          if view.panel.bufname == "DiffviewFilePanel" then
+            actions.toggle_files() -- auto hide files
+          end
+        end,
+      },
       key_bindings = {
         view = {
           ["<C-c>"] = vim.cmd.DiffviewClose,
