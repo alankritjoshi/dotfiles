@@ -19,7 +19,9 @@ keybinds {
         bind "Alt k" { MoveFocus "Up"; }
         bind "Alt +" { Resize "Increase"; }
         bind "Alt -" { Resize "Decrease"; }
+        bind "Alt g" { SwitchToMode "Locked"; }
     }
+
     pane clear-defaults=true {
         bind "Enter" "Esc" "Space" "Alt p" { SwitchToMode "normal"; }
         bind "h" "Left" { NewPane "Left"; SwitchToMode "normal"; }
@@ -34,6 +36,7 @@ keybinds {
         bind "n" { NewPane; SwitchToMode "normal"; }
         bind "d" { NewPane "Down"; SwitchToMode "Normal"; }
         bind "v" { NewPane "Right"; SwitchToMode "Normal"; }
+        bind "r" { SwitchToMode "RenamePane"; PaneNameInput 0;}
         bind "x" { CloseFocus; SwitchToMode "normal"; }
         bind "f" { ToggleFocusFullscreen; SwitchToMode "normal"; }
         bind "z" { TogglePaneFrames; SwitchToMode "normal"; }
@@ -46,6 +49,7 @@ keybinds {
         bind "h" "Left" { GoToPreviousTab; }
         bind "l" "Right" { GoToNextTab; }
         bind "n" { NewTab; SwitchToMode "normal"; }
+        bind "r" { SwitchToMode "RenameTab"; TabNameInput 0; }
         bind "x" { CloseTab; SwitchToMode "normal"; }
         bind "s" { ToggleActiveSyncTab; SwitchToMode "normal"; }
         bind "Alt h" { MoveFocus "Left"; }
@@ -143,9 +147,16 @@ keybinds {
         }
     }
 
-    locked clear-defaults=true {}
-    renamepane clear-defaults=true {}
-    renametab clear-defaults=true {}
+    locked clear-defaults=true {
+            bind "Alt g" { SwitchToMode "Normal"; }
+    }
+
+    renamepane clear-defaults=true {
+        bind "Enter" "Esc" { SwitchToMode "normal"; }
+    }
+    renametab clear-defaults=true {
+        bind "Enter" "Esc" { SwitchToMode "normal"; }
+    }
     tmux clear-defaults=true {}
 }
 
