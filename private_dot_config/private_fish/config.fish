@@ -95,26 +95,23 @@ function jn
     set -l ZJ_DIR_PATH_SPLIT (string split -r "/" $ZJ_DIR_PATH)
     set -l ZJ_DIR_NAME $ZJ_DIR_PATH_SPLIT[-1]
 
-    if test -f $ZJ_MAYBE_LAYOUT_PATH
-        gum confirm "Layout found. Create new tab with it?"
-        if test $status -eq 0
-            zellij action new-tab --cwd $ZJ_DIR_PATH -l $ZJ_MAYBE_LAYOUT_PATH -n $ZJ_DIR_NAME
-        else
-            zellij action new-pane -c -i --cwd $ZJ_DIR_PATH -- nvim
-            zellij action rename-tab $ZJ_DIR_NAME
-        end
-    else
-        zellij action new-pane -c -i --cwd $ZJ_DIR_PATH -- nvim
-        zellij action rename-tab $ZJ_DIR_NAME
-    end
+    zellij action new-pane -c -i --cwd $ZJ_DIR_PATH -- nvim
+    zellij action rename-tab $ZJ_DIR_NAME
 end
 
 function jnt
     set -l ZJ_DIR_PATH $argv[1]
+    set -l ZJ_MAYBE_LAYOUT_PATH "$ZJ_DIR_PATH/.zellij/layout.kdl"
     set -l ZJ_DIR_PATH_SPLIT (string split -r "/" $ZJ_DIR_PATH)
     set -l ZJ_DIR_NAME $ZJ_DIR_PATH_SPLIT[-1]
 
-    zellij action new-tab --cwd $ZJ_DIR_PATH -l ~/.config/zellij/layouts/nvim.kdl -n $ZJ_DIR_NAME
+    if test -f $ZJ_MAYBE_LAYOUT_PATH
+        zellij action new-tab --cwd $ZJ_DIR_PATH -l $ZJ_MAYBE_LAYOUT_PATH -n $ZJ_DIR_NAME
+    else
+        zellij action new-tab --cwd $ZJ_DIR_PATH -l ~/.config/zellij/layouts/nvim.kdl -n $ZJ_DIR_NAME
+    end
+
+    zellij action rename-tab $ZJ_DIR_NAME
 end
 
 alias jl="zellij list-sessions"
@@ -141,7 +138,8 @@ function _attach_zellij
     set NO_SESSIONS (echo $ZJ_SESSIONS | tr '\n' ' ' | wc -w | tr -d '[:space:]')
 
     if test $NO_SESSIONS -ge 1
-        zellij -l ~/.config/zellij/layouts/default.kdl -s "coding-$NO_SESSIONS"
+        #zellij -l ~/.config/zellij/layouts/default.kdl -s "coding-$NO_SESSIONS"
+        zellij attach coding
     else
         zellij -l ~/.config/zellij/layouts/default.kdl -s coding
     end
@@ -169,8 +167,8 @@ function _find_and_edit_dir_with_zellij_tab
     end
 end
 
-alias j _find_and_edit_dir_with_zellij_pane
-alias jt _find_and_edit_dir_with_zellij_tab
+alias s _find_and_edit_dir_with_zellij_pane
+alias ss "zellij action go-to-tab 0"
 
 set fzf_fd_opts --hidden --follow
 
@@ -203,5 +201,8 @@ if status is-interactive
         end
     end
 
-    #j
+    if test "$ZELLIJ_PANE_ID" = 0
+        zellij action rename-tab find
+        _find_and_edit_dir_with_zellij_tab
+    end
 end

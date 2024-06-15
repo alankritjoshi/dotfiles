@@ -20,6 +20,7 @@ keybinds {
         bind "Alt +" { Resize "Increase"; }
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt g" { SwitchToMode "Locked"; }
+        bind "Alt z" { GoToTab 0; }
     }
 
     pane clear-defaults=true {
@@ -154,9 +155,11 @@ keybinds {
     renamepane clear-defaults=true {
         bind "Enter" "Esc" { SwitchToMode "normal"; }
     }
+
     renametab clear-defaults=true {
         bind "Enter" "Esc" { SwitchToMode "normal"; }
     }
+
     tmux clear-defaults=true {}
 }
 
