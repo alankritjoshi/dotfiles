@@ -12,23 +12,11 @@ return {
           if vim.bo.filetype == "oil" then
             require("oil").close()
           else
-            require("oil").open()
-          end
-        end,
-        desc = "Oil open buffer for current file",
-      },
-      {
-        "<leader>O",
-        function()
-          if vim.bo.filetype == "oil" then
-            require("oil").close()
-          else
             require("oil").open(".")
           end
         end,
-        desc = "Oil open buffer for current file",
+        desc = "Oil open buffer for root",
       },
-      { "<leader>~", "<cmd>lua require('oil').toggle_float('~')<cr>", desc = "Oil open float window in ~" },
     },
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
