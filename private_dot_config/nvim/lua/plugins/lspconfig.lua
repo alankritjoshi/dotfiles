@@ -68,6 +68,7 @@ return {
             },
           },
         },
+        marksman = {},
       },
       setup = {
         gopls = function(_, opts)

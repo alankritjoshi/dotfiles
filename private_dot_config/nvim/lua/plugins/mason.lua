@@ -10,6 +10,8 @@ return {
         "gomodifytags",
         "impl",
         "delve",
+        "markdownlint",
+        "markdown-toc",
       })
 
       if vim.g.lazyvim_python_lsp == "basedpyright" then

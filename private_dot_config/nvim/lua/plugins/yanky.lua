@@ -7,6 +7,17 @@ return {
       ring = { storage = jit.os:find("Windows") and "shada" or "sqlite" },
     },
     keys = {
+      {
+        "<leader>p",
+        function()
+          if LazyVim.pick.picker.name == "telescope" then
+            require("telescope").extensions.yank_history.yank_history({})
+          else
+            vim.cmd([[YankyRingHistory]])
+          end
+        end,
+        desc = "Open Yank History",
+      },
       { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank text" },
       { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after cursor" },
       { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before cursor" },
