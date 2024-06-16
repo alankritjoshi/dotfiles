@@ -85,8 +85,8 @@ keybinds {
     }
 
     move clear-defaults=true {
-        bind "Alt i" { MoveTab "Left"; }
-        bind "Alt o" { MoveTab "Right"; }
+        bind "i" { MoveTab "Left"; }
+        bind "o" { MoveTab "Right"; }
         bind "Enter" "Esc" "Space" "Alt m" { SwitchToMode "normal"; }
         bind "h" "Left" { MovePane "Left"; }
         bind "j" "Down" { MovePane "Down"; }
