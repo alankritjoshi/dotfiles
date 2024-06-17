@@ -11,38 +11,41 @@ return {
       },
     },
     keys = function()
+      local harpoon = require("harpoon")
+
+      local function harpoonOpenAll()
+        local marks = harpoon:list().items
+
+        for i, _ in ipairs(marks) do
+          harpoon:list():select(i)
+        end
+
+        if #marks == 0 then
+          vim.notify("No Harpoon marks found!")
+        else
+          harpoon:list():select(#marks)
+        end
+      end
+
       local keys = {
         {
           "<leader>H",
           function()
-            require("harpoon"):list():add()
+            harpoon:list():add()
+            harpoonOpenAll()
           end,
           desc = "Harpoon File",
         },
         {
           "<leader>h",
           function()
-            local harpoon = require("harpoon")
             harpoon.ui:toggle_quick_menu(harpoon:list())
           end,
           desc = "Harpoon Quick Menu",
         },
         {
           "<leader>0",
-          function()
-            local harpoon = require("harpoon")
-            local marks = harpoon:list().items
-
-            for i, _ in ipairs(marks) do
-              require("harpoon"):list():select(i)
-            end
-
-            if #marks == 0 then
-              vim.notify("No Harpoon marks!")
-            else
-              require("harpoon"):list():select(1)
-            end
-          end,
+          harpoonOpenAll,
           desc = "Harpoon open all",
         },
       }
@@ -51,7 +54,7 @@ return {
         table.insert(keys, {
           "<leader>" .. i,
           function()
-            require("harpoon"):list():select(i)
+            harpoon:list():select(i)
           end,
           desc = "Harpoon to File " .. i,
         })
