@@ -48,6 +48,15 @@ return {
           local a = 1
           local b = 1
 
+          -- Sort last if empty buffer
+          if vim.fn.bufname(buffer_a.id) == "" then
+            a = 0
+          end
+
+          if vim.fn.bufname(buffer_b.id) == "" then
+            b = 0
+          end
+
           local harpoon = require("harpoon")
           local marks = harpoon:list().items
           for _, mark in ipairs(marks) do
