@@ -1,5 +1,9 @@
 return {
   {
+    "echasnovski/mini.nvim",
+    enabled = false,
+  },
+  {
     "echasnovski/mini.diff",
     event = "VeryLazy",
     keys = {
