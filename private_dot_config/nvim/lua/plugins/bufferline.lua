@@ -30,52 +30,54 @@ return {
         desc = "Delete Non-Harpoon Buffers",
       },
     },
-    opts = {
-      offsets = nil,
-      options = {
-        -- Show numbers only for Harpoon marks
-        numbers = function(opts)
-          local harpoon = require("harpoon")
-          local marks = harpoon:list().items
-          local bufname = vim.fn.bufname(opts.id)
+    opts = function()
+      local harpoon = require("harpoon")
+      local marks = harpoon:list().items
 
-          for i, mark in ipairs(marks) do
-            if bufname == mark.value then
-              return i
+      local opts = {
+        offsets = nil,
+        options = {
+          -- Show numbers only for Harpoon marks
+          numbers = function(opts)
+            local bufname = vim.fn.bufname(opts.id)
+
+            for i, mark in ipairs(marks) do
+              if bufname == mark.value then
+                return i
+              end
             end
-          end
 
-          return ""
-        end,
+            return ""
+          end,
 
-        -- Always put sorted Harpoon marks to the beginning of all buffers
-        sort_by = function(buffer_a, buffer_b)
-          local a = 1
-          local b = 1
+          -- Always put sorted Harpoon marks to the beginning of all buffers
+          sort_by = function(buffer_a, buffer_b)
+            -- Use large values for non-Harpoon buffers to show them last
+            local a = 1000
+            local b = 1000
 
-          -- Sort last if empty buffer
-          if vim.fn.bufname(buffer_a.id) == "" then
-            a = 0
-          end
+            local buffer_a_name = vim.fn.bufname(buffer_a.id)
+            local buffer_b_name = vim.fn.bufname(buffer_b.id)
 
-          if vim.fn.bufname(buffer_b.id) == "" then
-            b = 0
-          end
-
-          local harpoon = require("harpoon")
-          local marks = harpoon:list().items
-          for _, mark in ipairs(marks) do
-            if vim.fn.bufname(buffer_a.id) == mark.value then
-              a = 0
-              break
-            elseif vim.fn.bufname(buffer_b.id) == mark.value then
-              b = 0
-              break
+            -- Use index of marks for sorting Harpoon buffers
+            for index, mark in ipairs(marks) do
+              if buffer_a_name == mark.value then
+                a = index
+                break
+              end
             end
-          end
-          return a < b
-        end,
-      },
-    },
+            for index, mark in ipairs(marks) do
+              if buffer_b_name == mark.value then
+                b = index
+                break
+              end
+            end
+
+            return a < b
+          end,
+        },
+      }
+      return opts
+    end,
   },
 }
