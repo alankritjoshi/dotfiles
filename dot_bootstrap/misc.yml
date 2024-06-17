@@ -45,7 +45,7 @@
     - name: Download FiraCode NerdFont Mono
       when: firacode_nerdfont_mono_exists is failed
       ansible.builtin.unarchive:
-        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/FiraCode.zip
+        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip
         dest: "~{{ remote_regular_user }}/Library/Fonts/"
         remote_src: true
         mode: "0755"
