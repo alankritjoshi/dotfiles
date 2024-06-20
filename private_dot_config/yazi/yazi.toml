@@ -1,0 +1,12 @@
+"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+
+[manager]
+ratio = [1, 1, 2]
+sort_by = "natural"
+sort_reverse = false
+sort_dir_first = true
+show_hidden = true
+show_symlink = true
+
+[opener]
+edit = [{ run = 'zellij edit -i "$1"', desc = "Open File in the same pane" }]
