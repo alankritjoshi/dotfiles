@@ -4,16 +4,11 @@ return {
     event = { "InsertEnter", "CmdLineEnter" },
     dependencies = {
       "hrsh7th/cmp-cmdline",
-      {
-        "Exafunction/codeium.nvim",
-        cmd = "Codeium",
-        build = ":Codeium Auth",
-        opts = {},
-      },
+      "supermaven-inc/supermaven-nvim",
     },
     opts = function(_, opts)
       table.insert(opts.sources, 1, {
-        name = "codeium",
+        name = "supermaven",
         group_index = 1,
         priority = 100,
       })
