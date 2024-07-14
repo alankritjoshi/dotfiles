@@ -66,8 +66,11 @@ homebrew_packages:
   - httpie
   - xh
   - jq
+  - fx
   - htmlq
   - jless
+  - tabiew
+  - otree
   - wrk
   - iperf
   - oha
@@ -78,6 +81,7 @@ homebrew_packages:
   - shortcat
   - keymapp
   - jordanbaird-ice
+  - keepingyouawake
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:

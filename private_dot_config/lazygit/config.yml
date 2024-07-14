@@ -1,2 +1,4 @@
 disableStartupPopups: true
-
+os:
+  # this will edit the file in the current neovim sesh
+  edit: "nvr -cc vsplit --remote-wait +'set bufhidden=wipe' {{filename}}" 
