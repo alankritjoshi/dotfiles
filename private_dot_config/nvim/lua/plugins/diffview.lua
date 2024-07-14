@@ -4,17 +4,24 @@ return {
     lazy = false,
     keys = {
       {
-        "<leader>gf",
+        "<leader>gd",
         "<cmd>DiffviewOpen<cr>",
         desc = "Diff View - Current File",
       },
       {
-        "<leader>gpf",
+        "<leader>gf",
+        ":'<,'>DiffviewFileHistory<cr>",
+        mode = { "v" },
+        desc = "Diff View - Current Line(s)",
+      },
+      {
+        "<leader>gf",
         "<cmd>DiffviewFileHistory %<cr>",
+        mode = { "n" },
         desc = "Diff View - File History",
       },
       {
-        "<leader>gpe",
+        "<leader>gb",
         "<cmd>DiffviewFileHistory<cr>",
         desc = "Diff View - Branch History",
       },
