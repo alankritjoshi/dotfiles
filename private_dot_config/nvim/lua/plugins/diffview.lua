@@ -30,6 +30,11 @@ return {
       --     end
       --   end,
       -- },
+      view = {
+        merge_tool = {
+          layout = "diff4_mixed",
+        },
+      },
       key_bindings = {
         view = {
           ["<C-c>"] = vim.cmd.DiffviewClose,
