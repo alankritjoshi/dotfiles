@@ -8,7 +8,7 @@ return {
     event = "VeryLazy",
     keys = {
       {
-        "<leader>gi",
+        "<leader>go",
         function()
           require("mini.diff").toggle_overlay(0)
         end,
