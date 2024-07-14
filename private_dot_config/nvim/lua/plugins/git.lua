@@ -51,8 +51,8 @@ return {
     cmd = "GitLink",
     opts = {},
     keys = {
-      { "<leader>gy", "<cmd>GitLink<cr>", mode = { "n", "v" }, desc = "Yank git link" },
-      { "<leader>gw", "<cmd>GitLink!<cr>", mode = { "n", "v" }, desc = "Open git link" },
+      { "<leader>gm", "<cmd>GitLink! default_branch<cr>", mode = { "n", "v" }, desc = "Open git link - main branch" },
+      { "<leader>go", "<cmd>GitLink!<cr>", mode = { "n", "v" }, desc = "Open git link" },
     },
   },
 }
