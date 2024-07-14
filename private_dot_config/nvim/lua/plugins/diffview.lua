@@ -9,12 +9,12 @@ return {
         desc = "Diff View - Current File",
       },
       {
-        "<leader>gh",
+        "<leader>gpf",
         "<cmd>DiffviewFileHistory %<cr>",
         desc = "Diff View - File History",
       },
       {
-        "<leader>ge",
+        "<leader>gpe",
         "<cmd>DiffviewFileHistory<cr>",
         desc = "Diff View - Branch History",
       },
