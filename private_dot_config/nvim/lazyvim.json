@@ -2,7 +2,8 @@
   "extras": [
     "lazyvim.plugins.extras.editor.fzf",
     "lazyvim.plugins.extras.editor.refactoring",
-    "lazyvim.plugins.extras.lang.markdown"
+    "lazyvim.plugins.extras.lang.markdown",
+    "lazyvim.plugins.extras.lang.sql"
   ],
   "news": {
     "NEWS.md": "6520"
