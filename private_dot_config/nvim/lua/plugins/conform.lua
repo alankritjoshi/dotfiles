@@ -9,12 +9,25 @@ return {
         html = { "rustywind", "htmlbeautifier" },
         go = { "goimports", "gofumpt" },
         python = { "isort", "ruff_format", "ruff_fix" },
+        sql = { "sqlfluff" },
         markdown = { { "prettierd", "prettier" }, "markdownlint", "markdown-toc" },
         ["markdown.mdx"] = { { "prettierd", "prettier" }, "markdownlint", "markdown-toc" },
       },
       formatters = {
         shfmt = {
           prepend_args = { "-s", "-i", "2" },
+        },
+        sqlfluff = {
+          command = "sqlfluff",
+          args = {
+            "format",
+            "--nocolor",
+            "--dialect",
+            "ansi",
+            "--disable-progress-bar",
+            "-",
+          },
+          stdin = true,
         },
       },
     },
