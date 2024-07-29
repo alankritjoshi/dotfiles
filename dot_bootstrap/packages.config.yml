@@ -82,9 +82,8 @@ homebrew_packages:
   - keymapp
   - jordanbaird-ice
   - keepingyouawake
+  - licecap
 
-homebrew_cask_appdir: /Applications
-homebrew_cask_apps:
   # terminal
   - wezterm
 
@@ -92,9 +91,6 @@ homebrew_cask_apps:
   - arc
   - google-chrome
 
-  # tools
-  - licecap
-  
   # dev
   - docker
 
