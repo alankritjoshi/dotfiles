@@ -23,8 +23,12 @@ config.macos_window_background_blur = 30
 config.window_background_opacity = 0.8
 config.text_background_opacity = 0.8
 config.window_decorations = "RESIZE"
-
 config.window_close_confirmation = "NeverPrompt"
+config.scrollback_lines = 10000
+
+config.animation_fps = 60
+config.default_cursor_style = "BlinkingBlock"
+config.cursor_blink_rate = 500
 
 config.keys = {
 	{
