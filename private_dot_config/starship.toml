@@ -5,4 +5,3 @@ disabled = true
 # turn off aws stuff
 [aws]
 disabled = true
-

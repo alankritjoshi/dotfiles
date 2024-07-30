@@ -173,7 +173,12 @@ alias ss "zellij action go-to-tab 0"
 set fzf_fd_opts --hidden --follow
 
 zoxide init fish | source
+
+function starship_transient_prompt_func
+    starship module character
+end
 starship init fish | source
+enable_transience
 
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/opt/curl/bin
