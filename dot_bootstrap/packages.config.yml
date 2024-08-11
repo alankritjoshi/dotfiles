@@ -29,9 +29,7 @@ homebrew_packages:
   - zellij
 
   # tiling
-  - koekeishiya/formulae/yabai
-  - koekeishiya/formulae/skhd
-  - spaceman
+  - nikitabobko/tap/aerospace
 
   # lang
   - go
