@@ -138,7 +138,6 @@ function _attach_zellij
     set NO_SESSIONS (echo $ZJ_SESSIONS | tr '\n' ' ' | wc -w | tr -d '[:space:]')
 
     if test $NO_SESSIONS -ge 1
-        #zellij -l ~/.config/zellij/layouts/default.kdl -s "coding-$NO_SESSIONS"
         zellij attach coding
     else
         zellij -l ~/.config/zellij/layouts/default.kdl -s coding
@@ -169,6 +168,7 @@ end
 
 alias s _find_and_edit_dir_with_zellij_pane
 alias ss "zellij action go-to-tab 0"
+alias st _find_and_edit_dir_with_zellij_tab
 
 set fzf_fd_opts --hidden --follow
 
@@ -191,23 +191,18 @@ set -gx CPPFLAGS "-I"(brew --prefix)/opt/curl/include
 set -gx PKG_CONFIG_PATH /opt/homebrew/opt/curl/lib/pkgconfig
 
 if status is-interactive
-    set ZELLIJ_AUTO_ATTACH true
+    set ZELLIJ_AUTO_ATTACH false
     set ZELLIJ_AUTO_EXIT true
 
     if not set -q ZELLIJ
         if test "$ZELLIJ_AUTO_ATTACH" = true
             _attach_zellij
         else
-            zellij -l ~/.config/zellij/layouts/default.kdl -s coding
+            zellij -l ~/.config/zellij/layouts/default.kdl
         end
 
         if test "$ZELLIJ_AUTO_EXIT" = true
             kill $fish_pid
         end
-    end
-
-    if test "$ZELLIJ_PANE_ID" = 0
-        zellij action rename-tab find
-        _find_and_edit_dir_with_zellij_tab
     end
 end
