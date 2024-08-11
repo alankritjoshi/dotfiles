@@ -47,6 +47,26 @@ config.keys = {
 		mods = "CMD",
 		action = wezterm.action({ CloseCurrentPane = { domain = "CurrentPaneDomain", confirm = true } }),
 	},
+	{
+		key = "h",
+		mods = "SHIFT|CTRL",
+		action = wezterm.action.Nop,
+	},
+	{
+		key = "j",
+		mods = "SHIFT|CTRL",
+		action = wezterm.action.Nop,
+	},
+	{
+		key = "k",
+		mods = "SHIFT|CTRL",
+		action = wezterm.action.Nop,
+	},
+	{
+		key = "l",
+		mods = "SHIFT|CTRL",
+		action = wezterm.action.Nop,
+	},
 	-- -- Make Option-h equivalent to Alt-b which many line editors interpret as backward-word
 	-- { key = "h", mods = "OPT", action = wezterm.action({ SendString = "\x1bb" }) },
 	-- -- Make Option-l equivalent to Alt-f; forward-word
