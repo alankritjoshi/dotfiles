@@ -212,11 +212,11 @@ l = 'join-with right'
 
 [[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
-run = "move-node-to-workspace C"
+run = "move-node-to-workspace X"
 
 [[on-window-detected]]
 if.app-id = 'company.thebrowser.Browser'
-run = "move-node-to-workspace B"
+run = "move-node-to-workspace C"
 
 [[on-window-detected]]
 if.app-id = 'com.slack.Slack'
