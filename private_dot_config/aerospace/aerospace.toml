@@ -174,9 +174,9 @@ alt-tab = 'workspace-back-and-forth'
 alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
-alt-space = 'mode service'
+alt-shift-space = 'mode service'
 
-alt-enter = 'exec-and-forget open -n /Applications/WezTerm.app'
+alt-space = 'exec-and-forget open -n /Applications/WezTerm.app'
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -189,6 +189,7 @@ f = [
   'mode main',
 ] # Toggle between floating and tiling layout
 backspace = ['close-all-windows-but-current', 'mode main']
+x = ['close']
 
 # Same controls as in main mode for focus and move
 alt-h = 'focus left'
