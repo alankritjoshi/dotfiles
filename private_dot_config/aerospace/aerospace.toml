@@ -113,7 +113,7 @@ alt-9 = 'workspace 9'
 # alt-a = 'workspace A' # Used for Alfred aerospace focus
 # alt-b = 'workspace B'
 alt-c = 'workspace C' # Browser (Arc)
-# alt-d = 'workspace D'
+# alt-d = 'workspace D' # Used for close
 # alt-e = 'workspace E'
 # alt-f = 'workspace F'
 # alt-g = 'workspace G'
@@ -188,8 +188,8 @@ f = [
   'layout floating tiling',
   'mode main',
 ] # Toggle between floating and tiling layout
-backspace = ['close-all-windows-but-current', 'mode main']
-x = ['close']
+backspace = ['close-all-windows-but-current --quit-if-last-window', 'mode main']
+d = ['close --quit-if-last-window', 'mode main']
 
 # Same controls as in main mode for focus and move
 alt-h = 'focus left'
@@ -220,5 +220,5 @@ if.app-id = 'company.thebrowser.Browser'
 run = "move-node-to-workspace C"
 
 [[on-window-detected]]
-if.app-id = 'com.slack.Slack'
+if.app-id = 'com.tinyspeck.slackmacgap'
 run = "move-node-to-workspace S"
