@@ -167,7 +167,6 @@ function _find_and_edit_dir_with_zellij_tab
 end
 
 alias s _find_and_edit_dir_with_zellij_pane
-alias ss "zellij action go-to-tab 0"
 alias st _find_and_edit_dir_with_zellij_tab
 
 set fzf_fd_opts --hidden --follow
