@@ -56,7 +56,7 @@ return {
                 else
                   fzf_lua().live_grep({
                     search_paths = files,
-                    prompt = "*Rg(" .. table.concat(files, ", ") .. ") >",
+                    prompt = "*Rg(" .. table.concat(files, ", ") .. ")> ",
                   })
                 end
               end,
@@ -81,7 +81,7 @@ return {
                 else
                   fzf_lua().live_grep({
                     search_paths = files,
-                    prompt = "*Rg(" .. table.concat(files, ", ") .. ") >",
+                    prompt = "*Rg(" .. table.concat(files, ", ") .. ")> ",
                   })
                 end
               end,
