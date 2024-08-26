@@ -9,9 +9,6 @@ alias ls="eza"
 
 # set fish_key_bindings fish_user_key_bindings
 
-# Folders
-alias d="cd ~/dev"
-
 # Vim
 alias vim="nvim"
 alias v="nvim"
@@ -36,6 +33,14 @@ alias dev="z ~/dev"
 alias src="z ~/src"
 alias cz="chezmoi"
 alias a="aerospace"
+function d
+    if test (count $argv) -eq 0
+        fd -t d | fzf
+    else
+        set depth $argv[1]
+        fd -t d -d $depth | fzf
+    end
+end
 
 # Useful git aliases
 alias gs="git status"
