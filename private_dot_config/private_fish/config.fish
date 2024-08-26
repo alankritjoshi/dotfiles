@@ -186,6 +186,7 @@ enable_transience
 
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/opt/curl/bin
+fish_add_path $HOME/go/bin
 
 # Set up CPPFLAGS and LDFLAGS for Homebrew
 set -x CPPFLAGS "-I"(brew --prefix)/include
