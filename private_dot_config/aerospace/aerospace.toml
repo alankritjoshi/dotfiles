@@ -110,7 +110,7 @@ alt-6 = 'workspace 6'
 alt-7 = 'workspace 7'
 alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
-# alt-a = 'workspace A' # Used for Alfred aerospace focus
+alt-a = 'workspace A' # Apple Music
 # alt-b = 'workspace B'
 alt-c = 'workspace C' # Browser (Arc)
 # alt-d = 'workspace D' # Used for close
@@ -143,7 +143,7 @@ alt-shift-6 = ['move-node-to-workspace 6', 'workspace 6']
 alt-shift-7 = ['move-node-to-workspace 7', 'workspace 7']
 alt-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
 alt-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
-# alt-shift-a = ['move-node-to-workspace A', 'workspace A'] # Used for Alfred aerospace focus
+alt-shift-a = ['move-node-to-workspace A', 'workspace A'] # Apple Music
 # alt-shift-b = ['move-node-to-workspace B', 'workspace B']
 alt-shift-c = ['move-node-to-workspace C', 'workspace C'] # Browser (Arc)
 # alt-shift-d = ['move-node-to-workspace D', 'workspace D']
@@ -226,4 +226,4 @@ run = "move-node-to-workspace S"
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Music'
-run = "layout floating"
+run = "move-node-to-workspace A"
