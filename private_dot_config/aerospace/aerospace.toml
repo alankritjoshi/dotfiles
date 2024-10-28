@@ -179,6 +179,10 @@ alt-shift-space = 'mode service'
 
 alt-space = 'exec-and-forget open -n /Applications/WezTerm.app'
 
+[workspace-to-monitor-force-assignment]
+1 = 'main'
+2 = 'secondary'
+
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
@@ -231,3 +235,8 @@ run = "move-node-to-workspace A"
 [[on-window-detected]]
 if.app-id = 'com.openai.chat'
 run = "move-node-to-workspace G"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.dt.Xcode'
+run = "move-node-to-workspace X"
+
