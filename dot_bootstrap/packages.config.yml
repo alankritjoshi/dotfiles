@@ -81,9 +81,6 @@ homebrew_packages:
   - jordanbaird-ice
   - keepingyouawake
   - licecap
-  - soundsource
-  - daisydisk
-  - iina
 
   # terminal
   - wezterm
