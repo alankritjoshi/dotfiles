@@ -14,6 +14,7 @@ return {
         "toml",
         "sql",
         "kdl",
+        "swift",
       },
     },
   },
