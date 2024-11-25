@@ -13,7 +13,7 @@ config.color_scheme = "OLEDppuccin"
 
 config.enable_tab_bar = false
 config.font = wezterm.font("FiraCode Nerd Font Mono")
-config.font_size = 18.0
+config.font_size = 19.0
 config.macos_window_background_blur = 30
 
 -- window_background_opacity = 0.7,
@@ -26,7 +26,7 @@ config.window_decorations = "RESIZE"
 config.window_close_confirmation = "NeverPrompt"
 config.scrollback_lines = 10000
 
-config.animation_fps = 60
+config.animation_fps = 120
 config.default_cursor_style = "BlinkingBlock"
 config.cursor_blink_rate = 500
 
