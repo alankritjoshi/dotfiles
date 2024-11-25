@@ -69,6 +69,7 @@ return {
           },
         },
         marksman = {},
+        sourcekit = {},
       },
       setup = {
         gopls = function(_, opts)
@@ -98,6 +99,17 @@ return {
               client.server_capabilities.hoverProvider = false
             end
           end)
+        end,
+        sourcekit = function()
+          require("lspconfig").sourcekit.setup({
+            capabilities = {
+              workspace = {
+                didChangeWatchedFiles = {
+                  dynamicRegistration = true,
+                },
+              },
+            },
+          })
         end,
       },
     },
