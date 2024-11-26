@@ -1,9 +1,6 @@
 return {
   {
     "akinsho/bufferline.nvim",
-    dependencies = {
-      "ThePrimeagen/harpoon",
-    },
     keys = {
       {
         "<leader>bp",
