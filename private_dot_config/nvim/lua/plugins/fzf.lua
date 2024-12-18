@@ -1,7 +1,7 @@
 return {
   {
     "ibhagwan/fzf-lua",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = { "echasnovski/mini.icons" },
     keys = {
       {
         "<leader>fd",
@@ -28,6 +28,7 @@ return {
           },
         },
         grep = {
+          rg_glob = true,
           actions = {
             ["ctrl-r"] = { fzf_lua().actions.grep_lgrep },
             ["ctrl-g"] = { fzf_lua().actions.toggle_ignore },

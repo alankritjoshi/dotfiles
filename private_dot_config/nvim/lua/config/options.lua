@@ -1,3 +1,5 @@
+vim.g.snacks_animate = false
+
 vim.g.minipairs_disable = true
 
 vim.filetype.add({
