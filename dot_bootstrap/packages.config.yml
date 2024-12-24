@@ -76,7 +76,7 @@ homebrew_packages:
   # apps
   - craft
   - BetterDisplay
-  - shortcat
+  - mouseless
   - keymapp
   - jordanbaird-ice
   - keepingyouawake
@@ -91,6 +91,7 @@ homebrew_packages:
   # browser
   - arc
   - google-chrome
+  - zen-browser
 
   # dev
   - docker
