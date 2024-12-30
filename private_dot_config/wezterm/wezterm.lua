@@ -11,9 +11,10 @@ config.color_schemes = {
 }
 config.color_scheme = "OLEDppuccin"
 
-config.enable_tab_bar = false
-config.font = wezterm.font("FiraCode Nerd Font Mono")
-config.font_size = 22.0
+-- config.enable_tab_bar = false
+config.hide_tab_bar_if_only_one_tab = true
+config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Medium" })
+config.font_size = 24.0
 config.macos_window_background_blur = 30
 
 -- window_background_opacity = 0.7,
