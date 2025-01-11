@@ -217,6 +217,10 @@ k = 'join-with up'
 l = 'join-with right'
 
 [[on-window-detected]]
+if.app-id = 'com.monarch.macos'
+run = "layout floating"
+
+[[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
 run = "move-node-to-workspace X"
 
