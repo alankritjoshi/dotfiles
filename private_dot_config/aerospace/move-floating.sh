@@ -12,7 +12,6 @@ tell application \"System Events\"
     set {x0, y0, width, height} to _window's position & _window's size
     set {x1, y1} to {x0 + $1, y0 + $2}
     set position of _window to {my max(7, x1), my max(45, y1)}
-    activate
   end tell
 end tell
 
@@ -20,4 +19,4 @@ on max(x, y)
   if x >= y then return x
   return y
 end max
-" && aerospace flatten-workspace-tree
+"

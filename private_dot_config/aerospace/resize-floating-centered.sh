@@ -12,7 +12,6 @@ tell application \"System Events\"
     set {x, y, width, height} to _window's position & _window's size
     set position of _window to {x - ($1 / 2), y - ($2 / 2)}
     set size of _window to {width + $1, height + $2}
-    activate
   end tell
 end tell
-" && aerospace flatten-workspace-tree
+"
