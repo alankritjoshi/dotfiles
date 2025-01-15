@@ -101,6 +101,7 @@ alt-minus = 'resize smart -50'
 alt-equal = 'resize smart +50'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
+alt-0 = 'workspace 0'
 alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
 alt-3 = 'workspace 3'
@@ -110,13 +111,13 @@ alt-6 = 'workspace 6'
 alt-7 = 'workspace 7'
 alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
-# alt-a = 'workspace A' # Apple Music
+# alt-a = 'workspace A'
 # alt-b = 'workspace B'
-# alt-c = 'workspace C' # Browser (Arc)
-# alt-d = 'workspace D' # Used for close
+# alt-c = 'workspace C'
+# alt-d = 'workspace D'
 # alt-e = 'workspace E'
 # alt-f = 'workspace F'
-# alt-g = 'workspace G' # ChatGPT
+# alt-g = 'workspace G'
 # alt-i = 'workspace I'
 # alt-m = 'workspace M'
 # alt-n = 'workspace N'
@@ -124,16 +125,17 @@ alt-9 = 'workspace 9'
 # alt-p = 'workspace P'
 # alt-q = 'workspace Q'
 # alt-r = 'workspace R'
-# alt-s = 'workspace S' # Slack
+# alt-s = 'workspace S'
 # alt-t = 'workspace T'
 # alt-u = 'workspace U'
 # alt-v = 'workspace V'
 # alt-w = 'workspace W'
-# alt-x = 'workspace X' # WezTerm
+# alt-x = 'workspace X'
 # alt-y = 'workspace Y'
 # alt-z = 'workspace Z'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
+alt-shift-0 = ['move-node-to-workspace 1', 'workspace 0']
 alt-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
 alt-shift-2 = ['move-node-to-workspace 2', 'workspace 2']
 alt-shift-3 = ['move-node-to-workspace 3', 'workspace 3']
@@ -143,13 +145,13 @@ alt-shift-6 = ['move-node-to-workspace 6', 'workspace 6']
 alt-shift-7 = ['move-node-to-workspace 7', 'workspace 7']
 alt-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
 alt-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
-alt-shift-a = ['move-node-to-workspace A', 'workspace A'] # Apple Music
+# alt-shift-a = ['move-node-to-workspace A', 'workspace A']
 # alt-shift-b = ['move-node-to-workspace B', 'workspace B']
-# alt-shift-c = ['move-node-to-workspace C', 'workspace C'] # Browser (Arc)
+# alt-shift-c = ['move-node-to-workspace C', 'workspace C']
 # alt-shift-d = ['move-node-to-workspace D', 'workspace D']
 # alt-shift-e = ['move-node-to-workspace E', 'workspace E']
 # alt-shift-f = ['move-node-to-workspace F', 'workspace F']
-# alt-shift-g = ['move-node-to-workspace G', 'workspace G'] # ChatGPT
+# alt-shift-g = ['move-node-to-workspace G', 'workspace G']
 # alt-shift-i = ['move-node-to-workspace I', 'workspace I']
 # alt-shift-m = ['move-node-to-workspace M', 'workspace M']
 # alt-shift-n = ['move-node-to-workspace N', 'workspace N']
@@ -157,16 +159,14 @@ alt-shift-a = ['move-node-to-workspace A', 'workspace A'] # Apple Music
 # alt-shift-p = ['move-node-to-workspace P', 'workspace P']
 # alt-shift-q = ['move-node-to-workspace Q', 'workspace Q']
 # alt-shift-r = ['move-node-to-workspace R', 'workspace R']
-# alt-shift-s = ['move-node-to-workspace S', 'workspace S'] # Slack
+# alt-shift-s = ['move-node-to-workspace S', 'workspace S']
 # alt-shift-t = ['move-node-to-workspace T', 'workspace T']
 # alt-shift-u = ['move-node-to-workspace U', 'workspace U']
 # alt-shift-v = ['move-node-to-workspace V', 'workspace V']
 # alt-shift-w = ['move-node-to-workspace W', 'workspace W']
-# alt-shift-x = ['move-node-to-workspace X', 'workspace X'] # Wezterm
+# alt-shift-x = ['move-node-to-workspace X', 'workspace X']
 # alt-shift-y = ['move-node-to-workspace Y', 'workspace Y']
 # alt-shift-z = ['move-node-to-workspace Z', 'workspace Z']
-
-alt-f = 'fullscreen'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
@@ -176,17 +176,40 @@ alt-backtick = 'focus-back-and-forth'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-space = 'mode service'
+alt-shift-f = 'mode floating'
+alt-shift-enter = 'exec-and-forget open -n -a /opt/homebrew/bin/wezterm'
 
-alt-space = 'exec-and-forget open -n /Applications/WezTerm.app'
+alt-f = '''exec-and-forget aerospace layout floating && osascript -e 'tell application "System Events" to key code 3 using {option down, command down}' || aerospace layout tiling'''
+# alt-space = 'layout floating tiling'
+# alt-f = [
+#   'exec-and-forget bash ${HOME}/.config/aerospace/toggle-floating-centered.sh',
+#   'mode main',
+# ]
+# alt-shift-f = 'fullscreen'
 
 [workspace-to-monitor-force-assignment]
 1 = 'main'
-2 = 'secondary'
+0 = 'secondary'
+
+[mode.floating.binding]
+esc = 'mode main'
+alt-shift-f = 'mode main'
+
+h = 'exec-and-forget bash ${HOME}/.config/aerospace/move-floating.sh -64 0'
+j = 'exec-and-forget bash ${HOME}/.config/aerospace/move-floating.sh 0 64'
+k = 'exec-and-forget bash ${HOME}/.config/aerospace/move-floating.sh 0 -64'
+l = 'exec-and-forget bash ${HOME}/.config/aerospace/move-floating.sh 64 0'
+
+shift-h = 'exec-and-forget bash ${HOME}/.config/aerospace/resize-floating-centered.sh -128 0'
+shift-j = 'exec-and-forget bash ${HOME}/.config/aerospace/resize-floating-centered.sh 0 -128'
+shift-k = 'exec-and-forget bash ${HOME}/.config/aerospace/resize-floating-centered.sh 0 128'
+shift-l = 'exec-and-forget bash ${HOME}/.config/aerospace/resize-floating-centered.sh 128 0'
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
 esc = ['reload-config', 'mode main']
+alt-shift-space = 'mode main'
 r = ['flatten-workspace-tree', 'mode main'] # reset layout
 #s = ['layout sticky tiling', 'mode main'] # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 f = [
@@ -217,29 +240,21 @@ k = 'join-with up'
 l = 'join-with right'
 
 [[on-window-detected]]
-if.app-id = 'com.monarch.macos'
-run = "layout floating"
-
-[[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
-run = "move-node-to-workspace X"
+run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
 if.app-id = 'company.thebrowser.Browser'
-run = "move-node-to-workspace C"
-
-[[on-window-detected]]
-if.app-id = 'com.tinyspeck.slackmacgap'
-run = "move-node-to-workspace S"
+run = "move-node-to-workspace 2"
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Music'
-run = "move-node-to-workspace A"
+run = "move-node-to-workspace 3"
 
 [[on-window-detected]]
-if.app-id = 'com.openai.chat'
-run = "move-node-to-workspace G"
+if.app-id = 'com.apple.iCal'
+run = "move-node-to-workspace 4"
 
 [[on-window-detected]]
-if.app-id = 'com.apple.dt.Xcode'
-run = "move-node-to-workspace X"
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = "move-node-to-workspace 5"
