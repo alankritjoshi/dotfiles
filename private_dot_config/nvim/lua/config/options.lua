@@ -11,3 +11,5 @@ vim.filetype.add({
 local opt = vim.opt
 opt.wrap = true
 opt.listchars:append({ eol = "¬" })
+
+opt.relativenumber = false
