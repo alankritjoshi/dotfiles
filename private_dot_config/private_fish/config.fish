@@ -188,6 +188,11 @@ fish_add_path $HOME/.local/bin
 fish_add_path $HOME/opt/curl/bin
 fish_add_path $HOME/go/bin
 
+# https://github.com/moovweb/gvm/issues/137
+function gvm
+    bass source ~/.gvm/scripts/gvm ';' gvm $argv
+end
+
 # Set up CPPFLAGS and LDFLAGS for Homebrew
 set -x CPPFLAGS "-I"(brew --prefix)/include
 set -x LDFLAGS "-L"(brew --prefix)/lib
@@ -195,19 +200,19 @@ set -gx LDFLAGS "-L"(brew --prefix)/opt/curl/lib
 set -gx CPPFLAGS "-I"(brew --prefix)/opt/curl/include
 set -gx PKG_CONFIG_PATH /opt/homebrew/opt/curl/lib/pkgconfig
 
-if status is-interactive
-    set ZELLIJ_AUTO_ATTACH false
-    set ZELLIJ_AUTO_EXIT true
-
-    if not set -q ZELLIJ
-        if test "$ZELLIJ_AUTO_ATTACH" = true
-            _attach_zellij
-        else
-            zellij -l ~/.config/zellij/layouts/default.kdl
-        end
-
-        if test "$ZELLIJ_AUTO_EXIT" = true
-            kill $fish_pid
-        end
-    end
-end
+# if status is-interactive
+#     set ZELLIJ_AUTO_ATTACH false
+#     set ZELLIJ_AUTO_EXIT true
+#
+#     if not set -q ZELLIJ
+#         if test "$ZELLIJ_AUTO_ATTACH" = true
+#             _attach_zellij
+#         else
+#             zellij -l ~/.config/zellij/layouts/default.kdl
+#         end
+#
+#         if test "$ZELLIJ_AUTO_EXIT" = true
+#             kill $fish_pid
+#         end
+#     end
+# end

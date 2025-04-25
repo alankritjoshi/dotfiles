@@ -33,6 +33,7 @@ homebrew_packages:
 
   # lang
   - go
+  - gvm
   - delve
   - python
   - node
@@ -76,9 +77,10 @@ homebrew_packages:
   - oha
 
   # apps
-  - craft
+  - stats
   - BetterDisplay
   - mouseless
+  - leader-key
   - homerow
   - keymapp
   - jordanbaird-ice
@@ -87,6 +89,7 @@ homebrew_packages:
   - soundsource
   - daisydisk
   - iina
+  - craft
 
   # terminal
   - wezterm

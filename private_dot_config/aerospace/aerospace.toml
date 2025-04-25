@@ -240,21 +240,34 @@ k = 'join-with up'
 l = 'join-with right'
 
 [[on-window-detected]]
-if.app-id = 'com.github.wez.wezterm'
+if.app-id = 'company.thebrowser.Browser'
 run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
-if.app-id = 'company.thebrowser.Browser'
+if.app-id = 'com.tinyspeck.slackmacgap'
 run = "move-node-to-workspace 2"
 
 [[on-window-detected]]
-if.app-id = 'com.apple.Music'
+if.app-id = 'com.github.wez.wezterm'
 run = "move-node-to-workspace 3"
 
 [[on-window-detected]]
-if.app-id = 'com.apple.iCal'
+if.app-id = 'com.microsoft.VSCode'
 run = "move-node-to-workspace 4"
 
 [[on-window-detected]]
-if.app-id = 'com.tinyspeck.slackmacgap'
+if.app-id = 'com.apple.iphonesimulator'
+run = "move-node-to-workspace 4"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.dt.Xcode'
 run = "move-node-to-workspace 5"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Music'
+run = "move-node-to-workspace 8"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.iCal'
+run = "move-node-to-workspace 9"
+
