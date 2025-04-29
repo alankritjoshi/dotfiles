@@ -1,4 +1,3 @@
-# set -x PATH $PATH /opt/homebrew/bin
 fish_add_path /opt/homebrew/bin
 
 set -g fish_greeting
@@ -187,11 +186,6 @@ enable_transience
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/opt/curl/bin
 fish_add_path $HOME/go/bin
-
-# https://github.com/moovweb/gvm/issues/137
-function gvm
-    bass source ~/.gvm/scripts/gvm ';' gvm $argv
-end
 
 # Set up CPPFLAGS and LDFLAGS for Homebrew
 set -x CPPFLAGS "-I"(brew --prefix)/include
