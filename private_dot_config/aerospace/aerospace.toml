@@ -18,15 +18,15 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
 # You can set 0 to disable the padding feature
-accordion-padding = 30
+accordion-padding = 0
 
 # Possible values: tiles|accordion
-default-root-container-layout = 'tiles'
+default-root-container-layout = 'accordion'
 
 # Possible values: horizontal|vertical|auto
 # 'auto' means: wide monitor (anything wider than high) gets horizontal orientation,
 #               tall monitor (anything higher than wide) gets vertical orientation
-default-root-container-orientation = 'auto'
+default-root-container-orientation = 'horizontal'
 
 # Possible values: (qwerty|dvorak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
@@ -245,37 +245,37 @@ run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
+run = "move-node-to-workspace 1"
+
+[[on-window-detected]]
+if.app-id = 'com.github.wez.wezterm'
+run = "move-node-to-workspace 1"
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.VSCode'
+run = "move-node-to-workspace 1"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.dt.Xcode'
+run = "move-node-to-workspace 1"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Music'
+run = "move-node-to-workspace 2"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.iCal'
 run = "move-node-to-workspace 2"
 
 [[on-window-detected]]
 if.app-id = 'com.lukilabs.lukiapp'
-run = "move-node-to-workspace 2"
-
-[[on-window-detected]]
-if.app-id = 'com.github.wez.wezterm'
 run = "move-node-to-workspace 3"
 
 [[on-window-detected]]
-if.app-id = 'com.microsoft.VSCode'
-run = "move-node-to-workspace 4"
-
-[[on-window-detected]]
 if.app-id = 'com.todesktop.230313mzl4w4u92'
-run = "move-node-to-workspace 4"
+run = "move-node-to-workspace 3"
 
 [[on-window-detected]]
 if.app-id = 'com.apple.iphonesimulator'
-run = "move-node-to-workspace 4"
-
-[[on-window-detected]]
-if.app-id = 'com.apple.dt.Xcode'
-run = "move-node-to-workspace 5"
-
-[[on-window-detected]]
-if.app-id = 'com.apple.Music'
-run = "move-node-to-workspace 8"
-
-[[on-window-detected]]
-if.app-id = 'com.apple.iCal'
-run = "move-node-to-workspace 9"
+run = "move-node-to-workspace 3"
 
