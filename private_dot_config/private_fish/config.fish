@@ -133,7 +133,7 @@ alias jv="je ~/.config/nvim"
 alias jb="je ~/.bootstrap"
 alias jf="je ~/.config/fish/config.fish"
 alias jz="je ~/.config/wezterm/wezterm.lua"
-alias jj="je ~/.config/zellij/config.kdl"
+alias jc="je ~/.config/zellij/config.kdl"
 alias jt="je ~/.config/aerospace/aerospace.toml"
 alias jg="je ~/.gitconfig"
 
@@ -210,3 +210,6 @@ set -gx PKG_CONFIG_PATH /opt/homebrew/opt/curl/lib/pkgconfig
 #         end
 #     end
 # end
+
+# Added by Windsurf
+fish_add_path /Users/alankritjoshi/.codeium/windsurf/bin

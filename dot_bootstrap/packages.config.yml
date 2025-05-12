@@ -79,9 +79,9 @@ homebrew_packages:
   # apps
   - stats
   - BetterDisplay
-  - mouseless
-  - leader-key
-  - homerow
+  # - mouseless
+  # - leader-key
+  # - homerow
   - keymapp
   - jordanbaird-ice
   - keepingyouawake
