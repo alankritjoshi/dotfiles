@@ -1,7 +1,6 @@
 local wezterm = require("wezterm")
 local mux = wezterm.mux
 local config = wezterm.config_builder()
-local act = wezterm.action
 
 local custom = wezterm.color.get_builtin_schemes()["Catppuccin Mocha"]
 custom.background = "#000000"
@@ -13,6 +12,8 @@ config.color_scheme = "OLEDppuccin"
 
 -- config.enable_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = true
+config.show_new_tab_button_in_tab_bar = false
+
 -- config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Medium" })
 config.font = wezterm.font("Hack Nerd Font Mono", { weight = "Regular", stretch = "Normal", style = "Normal" })
 config.font_size = 23.0
@@ -32,47 +33,60 @@ config.animation_fps = 120
 config.default_cursor_style = "BlinkingBlock"
 config.cursor_blink_rate = 500
 
+config.leader = { key = "a", mods = "CTRL" }
+
 config.keys = {
-	{
-		key = ",",
-		mods = "SUPER",
-		action = act.SpawnCommandInNewWindow({
-			cwd = os.getenv("WEZTERM_CONFIG_DIR"),
-			args = { os.getenv("SHELL"), "-c", "$EDITOR $WEZTERM_CONFIG_FILE" },
-		}),
-	},
+	-- {
+	-- 	key = ",",
+	-- 	mods = "SUPER",
+	-- 	action = act.SpawnCommandInNewWindow({
+	-- 		cwd = os.getenv("WEZTERM_CONFIG_DIR"),
+	-- 		args = { os.getenv("SHELL"), "-c", "$EDITOR $WEZTERM_CONFIG_FILE" },
+	-- 	}),
+	-- },
 	-- pane creation
-	{ key = "h", mods = "CMD", action = wezterm.action({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
-	{ key = "d", mods = "CMD", action = wezterm.action({ SplitHorizontal = { domain = "CurrentPaneDomain" } }) },
+	{
+		key = "h",
+		mods = "LEADER",
+		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
+	},
+	{
+		key = "v",
+		mods = "LEADER",
+		action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+	},
 	{
 		key = "x",
-		mods = "CMD",
-		action = wezterm.action({ CloseCurrentPane = { domain = "CurrentPaneDomain", confirm = true } }),
+		mods = "LEADER",
+		action = wezterm.action({
+			CloseCurrentPane = { domain = "CurrentPaneDomain", confirm = true },
+		}),
+	},
+	{
+		key = "s",
+		mods = "LEADER",
+		action = wezterm.action.ShowLauncherArgs({ flags = "FUZZY|TABS" }),
 	},
 	{
 		key = "h",
-		mods = "SHIFT|CTRL",
-		action = wezterm.action.Nop,
+		mods = "LEADER",
+		action = wezterm.action.ActivatePaneDirection("Left"),
 	},
 	{
 		key = "j",
-		mods = "SHIFT|CTRL",
-		action = wezterm.action.Nop,
+		mods = "LEADER",
+		action = wezterm.action.ActivatePaneDirection("Down"),
 	},
 	{
 		key = "k",
-		mods = "SHIFT|CTRL",
-		action = wezterm.action.Nop,
+		mods = "LEADER",
+		action = wezterm.action.ActivatePaneDirection("Up"),
 	},
 	{
 		key = "l",
-		mods = "SHIFT|CTRL",
-		action = wezterm.action.Nop,
+		mods = "LEADER",
+		action = wezterm.action.ActivatePaneDirection("Right"),
 	},
-	-- -- Make Option-h equivalent to Alt-b which many line editors interpret as backward-word
-	-- { key = "h", mods = "OPT", action = wezterm.action({ SendString = "\x1bb" }) },
-	-- -- Make Option-l equivalent to Alt-f; forward-word
-	-- { key = "l", mods = "OPT", action = wezterm.action({ SendString = "\x1bf" }) },
 }
 config.mouse_bindings = {
 	-- Change the default click behavior so that it only selects
@@ -96,5 +110,61 @@ config.mouse_bindings = {
 		action = wezterm.action.Nop,
 	},
 }
+
+-- wezterm.on("gui-startup", function(cmd)
+-- 	local tab, pane, window = mux.spawn_window(cmd or {})
+-- 	window:gui_window():maximize()
+-- end)
+
+config.window_frame = {
+	-- The font used in the tab bar.
+	-- Roboto Bold is the default; this font is bundled
+	-- with wezterm.
+	-- Whatever font is selected here, it will have the
+	-- main font setting appended to it to pick up any
+	-- fallback fonts you may have used there.
+	font = wezterm.font({ family = "Roboto", weight = "Bold" }),
+
+	-- The size of the font in the tab bar.
+	-- Default to 10.0 on Windows but 12.0 on other systems
+	font_size = 12.0,
+
+	-- The overall background color of the tab bar when
+	-- the window is focused
+	active_titlebar_bg = "#000000",
+
+	-- The overall background color of the tab bar when
+	-- the window is not focused
+	inactive_titlebar_bg = "#000000",
+}
+
+wezterm.on("format-tab-title", function(tab, tabs, panes, _config, hover, max_width)
+	local function tab_title(tab_info)
+		local title = tab_info.tab_title
+		-- if the tab title is explicitly set, take that
+		if title and #title > 0 then
+			return title
+		end
+		-- Otherwise, use the title from the active pane
+		-- in that tab
+		return tab_info.active_pane.title
+	end
+
+	local background = "#000000"
+	local foreground = "#ffffff"
+
+	if tab.is_active then
+		background = "#94E59A"
+		foreground = "#ffffff"
+	end
+
+	local title = tab_title(tab)
+
+	return {
+		{ Background = { Color = background } },
+		{ Foreground = { Color = foreground } },
+		{ Text = title },
+	}
+end)
 
 return config

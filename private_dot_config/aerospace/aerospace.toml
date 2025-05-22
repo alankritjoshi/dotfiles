@@ -239,8 +239,14 @@ j = 'join-with down'
 k = 'join-with up'
 l = 'join-with right'
 
+# Pip should come first
 [[on-window-detected]]
-if.app-id = 'company.thebrowser.Browser'
+if.app-id = 'app.zen-browser.zen'
+if.window-title-regex-substring = 'Picture-in-Picture'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
 run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
