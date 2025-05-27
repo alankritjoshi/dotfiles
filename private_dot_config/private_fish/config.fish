@@ -136,17 +136,7 @@ alias jz="je ~/.config/wezterm/wezterm.lua"
 alias jc="je ~/.config/zellij/config.kdl"
 alias jt="je ~/.config/aerospace/aerospace.toml"
 alias jg="je ~/.gitconfig"
-
-function _attach_zellij
-    set ZJ_SESSIONS (zellij list-sessions -s)
-    set NO_SESSIONS (echo $ZJ_SESSIONS | tr '\n' ' ' | wc -w | tr -d '[:space:]')
-
-    if test $NO_SESSIONS -ge 1
-        zellij attach coding
-    else
-        zellij -l ~/.config/zellij/layouts/default.kdl -s coding
-    end
-end
+alias j="ja || zellij -l ~/.config/zellij/layouts/default.kdl"
 
 function _find_and_edit_dir_with_zellij_pane
     while true
@@ -187,6 +177,9 @@ fish_add_path $HOME/.local/bin
 fish_add_path $HOME/opt/curl/bin
 fish_add_path $HOME/go/bin
 
+# Added by Windsurf
+fish_add_path /Users/alankritjoshi/.codeium/windsurf/bin
+
 # Set up CPPFLAGS and LDFLAGS for Homebrew
 set -x CPPFLAGS "-I"(brew --prefix)/include
 set -x LDFLAGS "-L"(brew --prefix)/lib
@@ -194,22 +187,17 @@ set -gx LDFLAGS "-L"(brew --prefix)/opt/curl/lib
 set -gx CPPFLAGS "-I"(brew --prefix)/opt/curl/include
 set -gx PKG_CONFIG_PATH /opt/homebrew/opt/curl/lib/pkgconfig
 
-# if status is-interactive
-#     set ZELLIJ_AUTO_ATTACH false
-#     set ZELLIJ_AUTO_EXIT true
-#
-#     if not set -q ZELLIJ
-#         if test "$ZELLIJ_AUTO_ATTACH" = true
-#             _attach_zellij
-#         else
-#             zellij -l ~/.config/zellij/layouts/default.kdl
-#         end
-#
-#         if test "$ZELLIJ_AUTO_EXIT" = true
-#             kill $fish_pid
-#         end
-#     end
-# end
+if status is-interactive
+    set ZELLIJ_AUTO_ATTACH true
+    set ZELLIJ_AUTO_EXIT true
 
-# Added by Windsurf
-fish_add_path /Users/alankritjoshi/.codeium/windsurf/bin
+    if not set -q ZELLIJ
+        if test "$ZELLIJ_AUTO_ATTACH" = true
+            j
+        end
+
+        if test "$ZELLIJ_AUTO_EXIT" = true
+            kill $fish_pid
+        end
+    end
+end
