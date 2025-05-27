@@ -57,6 +57,17 @@ config.keys = {
 		}),
 	},
 	{
+		key = "q",
+		mods = "CMD",
+		action = wezterm.action.Multiple({
+			wezterm.action.SendKey({ key = "d", mods = "OPT" }),
+			wezterm.action_callback(function(window, pane)
+				wezterm.wait_for_ms(100)
+			end),
+			wezterm.action.CloseCurrentTab({ confirm = false }),
+		}),
+	},
+	{
 		key = "h",
 		mods = "LEADER",
 		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
@@ -70,7 +81,7 @@ config.keys = {
 		key = "x",
 		mods = "LEADER",
 		action = wezterm.action({
-			CloseCurrentPane = { domain = "CurrentPaneDomain", confirm = true },
+			CloseCurrentPane = { domain = "CurrentPaneDomain", confirm = false },
 		}),
 	},
 	{
