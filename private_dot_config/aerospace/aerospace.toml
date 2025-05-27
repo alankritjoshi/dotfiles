@@ -246,10 +246,6 @@ if.window-title-regex-substring = 'Picture-in-Picture'
 run = ['layout floating']
 
 [[on-window-detected]]
-if.app-id = 'app.zen-browser.zen'
-run = "move-node-to-workspace 1"
-
-[[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
 run = "move-node-to-workspace 1"
 
@@ -266,11 +262,7 @@ if.app-id = 'com.apple.dt.Xcode'
 run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
-if.app-id = 'com.apple.Music'
-run = "move-node-to-workspace 2"
-
-[[on-window-detected]]
-if.app-id = 'com.apple.iCal'
+if.app-id = 'app.zen-browser.zen'
 run = "move-node-to-workspace 2"
 
 [[on-window-detected]]
@@ -284,4 +276,12 @@ run = "move-node-to-workspace 3"
 [[on-window-detected]]
 if.app-id = 'com.apple.iphonesimulator'
 run = "move-node-to-workspace 3"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Music'
+run = "move-node-to-workspace 4"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.iCal'
+run = "move-node-to-workspace 4"
 
