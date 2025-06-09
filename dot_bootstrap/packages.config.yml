@@ -10,7 +10,7 @@ homebrew_update_and_upgrade: false
 homebrew_packages:
   # editor
   - neovim
-  - neovide
+  # - neovide
 
   # gnu
   - autoconf
@@ -20,7 +20,7 @@ homebrew_packages:
   # vc
   - git
   - gh
-  - lazygit
+  # - lazygit
 
   # sh
   - bash
@@ -55,13 +55,13 @@ homebrew_packages:
   - bat
   - gum
   - glow
-  - slides
-  - marp-cli
+  # - slides
+  # - marp-cli
   - 1password-cli
 
   # frameworks
-  - hugo
-  - databricks
+  # - hugo
+  # - databricks
 
   # network
   - httpie
@@ -82,22 +82,21 @@ homebrew_packages:
   # - mouseless
   # - leader-key
   # - homerow
-  - keymapp
+  # - keymapp
   - jordanbaird-ice
   - keepingyouawake
-  - licecap
+  # - licecap
   - soundsource
   - daisydisk
-  - iina
-  - craft
+  # - iina
+  # - craft
 
   # terminal
   - wezterm
 
   # browser
-  - arc
   - google-chrome
-  - zen-browser
+  # - zen-browser
 
   # dev
   - docker
