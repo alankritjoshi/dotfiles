@@ -73,10 +73,10 @@ alias b="brew"
 # Determine flake target based on hostname
 function __nix_flake_target
     set -l hostname (hostname -s)
-    if test "$hostname" = "Alankrits-MacBook-Pro"
-        echo "Alankrits-MacBook-Pro"
+    if test "$hostname" = "Alankrits-MacBook-Pro.local"
+        echo Alankrits-MacBook-Pro
     else
-        echo "personal"
+        echo personal
     end
 end
 
