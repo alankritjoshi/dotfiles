@@ -12,7 +12,7 @@
     userEmail = "alankrit.joshi@shopify.com";
     
     signing = {
-      key = "D543F1E319C8D289";
+      key = "~/.ssh/id_ed25519.pub";
       signByDefault = true;
     };
     
@@ -29,6 +29,8 @@
       init.defaultBranch = "main";
       merge.conflictstyle = "zdiff3";
       include.path = "/Users/${username}/.config/dev/gitconfig";
+      gpg.format = "ssh";
+      gpg.ssh.allowedSignersFile = "~/.ssh/allowed_signers";
     };
   };
 }

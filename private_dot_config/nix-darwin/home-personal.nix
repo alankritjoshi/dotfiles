@@ -11,6 +11,11 @@
     userName = "Alankrit Joshi";
     userEmail = "alankritjoshi@gmail.com";
     
+    signing = {
+      key = "~/.ssh/id_ed25519.pub";
+      signByDefault = true;
+    };
+    
     delta = {
       enable = true;
       options = {
@@ -23,6 +28,8 @@
       core.editor = "nvim";
       init.defaultBranch = "main";
       merge.conflictstyle = "zdiff3";
+      gpg.format = "ssh";
+      gpg.ssh.allowedSignersFile = "~/.ssh/allowed_signers";
     };
   };
 }
