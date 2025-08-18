@@ -23,6 +23,7 @@
     neovim
     # neovide # Commented out as in original
     lazygit # Was commented in original, but useful for git workflow
+    gh # GitHub CLI (config managed by chezmoi)
     
     # Languages and runtimes
     go
@@ -108,10 +109,6 @@
     package = pkgs.git;
   };
 
-  # GitHub CLI (detailed config in chezmoi)
-  programs.gh = {
-    enable = true;
-  };
 
   # Direnv for automatic environment loading
   programs.direnv = {
