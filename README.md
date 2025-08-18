@@ -128,6 +128,28 @@ chezmoi apply
 darwin-rebuild build --flake ~/.config/nix-darwin#$(hostname -s) --show-trace
 ```
 
+### Nix store corruption (missing .drv files)
+If you get errors like `error: opening file '/nix/store/...-user-dbus-services.drv': No such file or directory`:
+
+```bash
+# 1. Find what references the missing derivations
+sudo nix-store --query --referrers /nix/store/missing-file.drv
+
+# 2. Delete the chain of problematic derivations
+sudo nix-store --delete --ignore-liveness \
+  /nix/store/problematic-derivation-1.drv \
+  /nix/store/problematic-derivation-2.drv
+
+# 3. Clean up the nix database
+sudo sqlite3 /nix/var/nix/db/db.sqlite \
+  "DELETE FROM ValidPaths WHERE path LIKE '%missing-derivation%';"
+
+# 4. Clear caches and rebuild
+rm -rf ~/.cache/nix/*
+sudo rm -rf /tmp/nix-*
+chezmoi apply
+```
+
 ### Rollback
 ```bash
 sudo darwin-rebuild rollback
