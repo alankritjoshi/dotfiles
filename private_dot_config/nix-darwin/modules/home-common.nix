@@ -161,4 +161,46 @@
     enable = true;
     enableFishIntegration = true;
   };
+  
+  # Common Git configuration
+  programs.git = {
+    enable = true;
+    userName = "Alankrit Joshi";
+    
+    # SSH signing configuration
+    signing = {
+      key = "~/.ssh/id_ed25519.pub";
+      signByDefault = true;
+    };
+    
+    # Delta for better diffs
+    delta = {
+      enable = true;
+      options = {
+        navigate = true;
+        dark = true;
+      };
+    };
+    
+    # Common git config
+    extraConfig = {
+      core.editor = "nvim";
+      init.defaultBranch = "main";
+      merge.conflictstyle = "zdiff3";
+      gpg.format = "ssh";
+      gpg.ssh.allowedSignersFile = "~/.ssh/allowed_signers";
+      
+      # Performance
+      core.fsmonitor = true;
+      core.untrackedcache = true;
+      
+      # Better defaults
+      push.default = "current";
+      push.autoSetupRemote = true;
+      pull.rebase = true;
+      fetch.prune = true;
+      diff.colorMoved = "default";
+      rerere.enabled = true;
+    };
+  };
 }
