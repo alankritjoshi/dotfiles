@@ -20,24 +20,30 @@
     username = "alankritjoshi";
     system = "aarch64-darwin";
     
-    mkDarwinConfiguration = { hostname, isWork ? false }:
+    mkDarwinConfiguration = { hostname, machineType }:
       nix-darwin.lib.darwinSystem {
         inherit system;
         specialArgs = { inherit inputs username hostname; };
         
         modules = [
+          ./modules/options.nix
           ./modules/common.nix
           
+          # Set the machine type
+          { alankrit.machineType = machineType; }
+          
           home-manager.darwinModules.home-manager
-          {
+          ({ config, ... }: {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.${username} = import (if isWork then ./home-work.nix else ./home-personal.nix);
+              users.${username} = import (
+                if config.alankrit.isWork then ./home-work.nix else ./home-personal.nix
+              );
               extraSpecialArgs = { inherit inputs username; };
               backupFileExtension = "backup";
             };
-          }
+          })
         ];
       };
     
@@ -48,14 +54,14 @@
       # Work laptop (Shopify)
       "Alankrits-MacBook-Pro" = mkDarwinConfiguration {
         hostname = "Alankrits-MacBook-Pro";
-        isWork = true;
+        machineType = "work-laptop";
       };
       
       # Personal machines (can be used by both Mac Mini and Mac Pro)
       # Use hostname from the machine when building
       "personal" = mkDarwinConfiguration {
         hostname = "personal"; # Will be overridden by actual hostname
-        isWork = false;
+        machineType = "personal-desktop";
       };
     };
     
