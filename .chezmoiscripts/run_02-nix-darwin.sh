@@ -3,6 +3,7 @@
 set -e
 
 echo "Setting up nix-darwin configuration..."
+# Last updated: $(date)
 
 # Get the hostname for the configuration
 HOSTNAME=$(hostname -s)
@@ -75,7 +76,7 @@ if ! command -v darwin-rebuild &>/dev/null; then
     
     # Build and activate the configuration (will prompt for sudo password when needed)
     nix --extra-experimental-features 'nix-command flakes' build ".#darwinConfigurations.${HOSTNAME}.system"
-    run_darwin_rebuild ./result/sw/bin/darwin-rebuild switch --flake ".#${HOSTNAME}"
+    run_darwin_rebuild sudo ./result/sw/bin/darwin-rebuild switch --flake ".#${HOSTNAME}"
     
     echo "nix-darwin installed successfully!"
 else
@@ -83,13 +84,13 @@ else
     
     # Update flake inputs and rebuild
     nix flake update
-    run_darwin_rebuild darwin-rebuild switch --flake ".#${HOSTNAME}"
+    run_darwin_rebuild sudo darwin-rebuild switch --flake ".#${HOSTNAME}"
 fi
 
 echo "Configuration applied successfully!"
 echo ""
 echo "To manually rebuild in the future, run:"
-echo "  darwin-rebuild switch --flake ~/.config/nix-darwin"
+echo "  sudo darwin-rebuild switch --flake ~/.config/nix-darwin"
 echo ""
 echo "To update packages, run:"
-echo "  nix flake update ~/.config/nix-darwin && darwin-rebuild switch --flake ~/.config/nix-darwin"
+echo "  nix flake update ~/.config/nix-darwin && sudo darwin-rebuild switch --flake ~/.config/nix-darwin"

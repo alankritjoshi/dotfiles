@@ -70,8 +70,9 @@ alias dbx="databricks"
 alias b="brew"
 
 # Nix
-alias nrs="darwin-rebuild switch --flake ~/.config/nix-darwin#Alankrits-MacBook-Pro"
+alias nrs="sudo darwin-rebuild switch --flake ~/.config/nix-darwin#Alankrits-MacBook-Pro"
 alias nrb="darwin-rebuild build --flake ~/.config/nix-darwin#Alankrits-MacBook-Pro"
+alias nra="darwin-rebuild build --flake ~/.config/nix-darwin#Alankrits-MacBook-Pro && sudo ./result/activate"
 
 function yy
     set tmp (mktemp -t "yazi-cwd.XXXXXX")
