@@ -1,9 +1,28 @@
 [user]
-	email = {{ .email }}
 	name = Alankrit Joshi
+	email = {{ .email }}
+
+[includeIf "gitdir:~/src/github.com/Shopify/"]
+	path = ~/.gitconfig-shopify
+
 [core]
 	editor = nvim
-  excludesfile = ~/.gitignore
+	excludesfile = ~/.gitignore
+	pager = delta
+
 [init]
 	defaultBranch = main
+
+[include]
+	path = /Users/alankritjoshi/.config/dev/gitconfig
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+	dark = true
+
+[merge]
+	conflictstyle = zdiff3
 
