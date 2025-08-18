@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
 {
-  # Common Homebrew configuration for all machines
   homebrew = {
     enable = true;
     
@@ -12,20 +11,30 @@
       cleanup = "zap";  # Remove anything not in the Brewfile
     };
     
-    # Common taps
+    # Taps
     taps = [
       "nikitabobko/tap"  # For AeroSpace
+    ] ++ lib.optionals config.alankrit.isWork [
+      # Work-specific taps can go here
+    ] ++ lib.optionals config.alankrit.isPersonal [
+      # Personal-specific taps can go here
     ];
     
-    # Common brews (formulae)
+    # Brews (formulae)
     # Only include packages not available in nixpkgs or that work better from Homebrew
     brews = [
       "nvm"     # Node version manager
       "tabiew"  # Table viewer
+    ] ++ lib.optionals config.alankrit.isWork [
+      # Work-specific brews can go here
+    ] ++ lib.optionals config.alankrit.isPersonal [
+      # Personal-specific brews can go here
     ];
     
-    # Common GUI applications (casks) for all machines
+    # GUI applications (casks)
     casks = [
+      # === Common apps for all machines ===
+      
       # Development
       "wezterm"
       "cursor"
@@ -53,6 +62,31 @@
       # Security
       "1password"
       "1password-cli"
+      
+    ] ++ lib.optionals config.alankrit.isWork [
+      # === Work-specific apps (Shopify) ===
+      
+      # Communication & Productivity
+      "slack"
+      "fellow"
+      "tuple"
+      
+      # Security & Monitoring
+      "cloudflare-warp"
+      "santa"
+      "trailer"
+      
+    ] ++ lib.optionals config.alankrit.isPersonal [
+      # === Personal-specific apps ===
+      
+      # Productivity
+      "craft"
+      
+      # Media
+      "iina"
+      
+      # 3D Printing
+      "bambu-studio"
     ];
     
     # Mac App Store apps
