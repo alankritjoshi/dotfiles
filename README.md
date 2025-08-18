@@ -2,14 +2,6 @@
 
 A declarative macOS configuration using **nix-darwin**, **home-manager**, and **chezmoi**.
 
-## Features
-
-- 🚀 **Declarative system configuration** with nix-darwin
-- 🏠 **User environment management** with home-manager  
-- 📝 **Dotfile templating** with chezmoi
-- 🔄 **Atomic updates and rollbacks** via Nix
-- 🎯 **Minimal Homebrew usage** (only for GUI apps not in nixpkgs)
-
 ## Prerequisites
 
 ```bash
@@ -32,43 +24,28 @@ This will:
 4. Setup nix-darwin with home-manager
 5. Install all packages and configure the system
 
-## Manual Setup
-
-If you prefer to run steps individually:
-
-```bash
-# 1. Install chezmoi and clone dotfiles
-sh -c "$(curl -fsLS get.chezmoi.io)"
-./bin/chezmoi init alankritjoshi
-
-# 2. Apply dotfiles and run bootstrap
-./bin/chezmoi apply
-
-# 3. The bootstrap scripts will automatically:
-#    - Install Nix
-#    - Setup nix-darwin and home-manager
-#    - Install all packages
-#    - Configure system settings
-```
-
 ## Post-Installation
 
 After installation, you can:
 
-### Update packages and configuration
+### Apply configuration changes (recommended)
 ```bash
-darwin-rebuild switch --flake ~/.config/nix-darwin
+chezmoi apply
+```
+This runs scripts that handle nix-darwin rebuilds with automatic conflict resolution.
+
+### Update dotfiles from remote
+```bash
+chezmoi update  # Pulls changes and applies them
 ```
 
-### Update Nix flake inputs (package versions)
+### Manual nix-darwin operations (if needed)
 ```bash
+# Update package versions
 nix flake update ~/.config/nix-darwin
-darwin-rebuild switch --flake ~/.config/nix-darwin
-```
 
-### Update dotfiles
-```bash
-chezmoi update
+# Rebuild manually (chezmoi apply handles this automatically)
+sudo darwin-rebuild switch --flake ~/.config/nix-darwin
 ```
 
 ## Configuration Structure
@@ -111,9 +88,9 @@ home.packages = with pkgs; [
 ];
 ```
 
-Then rebuild:
+Then apply changes:
 ```bash
-darwin-rebuild switch --flake ~/.config/nix-darwin
+chezmoi apply  # Handles rebuild automatically
 ```
 
 ### Adding Homebrew casks
@@ -126,39 +103,61 @@ casks = [
 ];
 ```
 
+Then apply:
+```bash
+chezmoi apply
+```
+
 ### Modifying dotfiles
 
 ```bash
-# Edit the actual file
-chezmoi edit ~/.config/fish/config.fish
+# Edit files directly (or use chezmoi edit)
+vim ~/.config/fish/config.fish
 
-# Apply changes
-chezmoi apply
+# Update chezmoi's source with your changes
+chezmoi re-add  # Auto-detects and updates changed files
 
-# Commit changes
-chezmoi cd
-git add .
-git commit -m "Update fish config"
-git push
+# Push to remote
+chezmoi git add .
+chezmoi git commit -m "Update fish config"
+chezmoi git push
 ```
 
 ## Troubleshooting
 
-### Nix command not found
+Note: `chezmoi apply` handles most conflicts automatically. These are manual fixes if needed.
+
+### darwin-rebuild requires sudo
+Recent nix-darwin versions require root privileges:
 ```bash
-# Source Nix profile
-. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+sudo darwin-rebuild switch --flake ~/.config/nix-darwin
 ```
 
-### Permission issues with nix-darwin
+### /etc file conflicts
+If you see "Unexpected files in /etc":
 ```bash
-# Ensure your user is in the nixbld group
-sudo dscl . -append /Groups/nixbld GroupMembership $USER
+# Move conflicting files (example for nix.conf)
+sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.before-nix-darwin
+```
+
+### Home-manager file conflicts
+If home-manager can't overwrite files:
+```bash
+# Remove conflicting symlinks
+rm ~/.config/fish/config.fish ~/.config/gh/config.yml
+# Or add backup extension in flake.nix:
+# home-manager.backupFileExtension = "backup";
+```
+
+### Nix store corruption
+If builds fail with "No such file or directory":
+```bash
+sudo nix-store --verify --check-contents --repair
 ```
 
 ### Rollback to previous configuration
 ```bash
-darwin-rebuild rollback
+sudo darwin-rebuild rollback
 ```
 
 ## License

@@ -67,7 +67,7 @@
     gd = "git diff";
     
     # Nix aliases
-    rebuild = "darwin-rebuild switch --flake ~/.config/nix-darwin";
+    rebuild = "sudo darwin-rebuild switch --flake ~/.config/nix-darwin";
     update = "nix flake update ~/.config/nix-darwin";
   };
 }

@@ -24,10 +24,23 @@
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
+    
+    # Build performance
+    max-jobs = "auto";
+    cores = 0; # Use all cores
+    sandbox = true;
+    warn-dirty = false;
   };
   
   # Optimize nix store automatically
   nix.optimise.automatic = true;
+  
+  # Garbage collection
+  nix.gc = {
+    automatic = true;
+    interval = { Day = 7; };
+    options = "--delete-older-than 30d";
+  };
 
   # Create /etc/zshrc that loads the nix-darwin environment
   programs.zsh.enable = true;
@@ -55,4 +68,9 @@
     description = "Alankrit Joshi";
     shell = pkgs.fish;
   };
+  
+  # Security - allow passwordless sudo for darwin-rebuild
+  security.sudo.extraConfig = ''
+    ${username} ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/darwin-rebuild
+  '';
 }

@@ -13,6 +13,23 @@
   # Let Home Manager install and manage itself
   programs.home-manager.enable = true;
   
+  # Session variables
+  home.sessionVariables = {
+    LANG = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+    PAGER = "less";
+  };
+  
+  # Session path
+  home.sessionPath = [
+    "$HOME/.local/bin"
+    "$HOME/go/bin"
+    "$HOME/.cargo/bin"
+    "$HOME/.codeium/windsurf/bin"
+  ];
+  
   # Disable man page generation to avoid hangs
   programs.man.enable = false;
   manual.manpages.enable = false;
@@ -142,5 +159,11 @@
     enableFishIntegration = true;
     git = true;
     icons = "auto";
+  };
+  
+  # Nix-index for command-not-found
+  programs.nix-index = {
+    enable = true;
+    enableFishIntegration = true;
   };
 }

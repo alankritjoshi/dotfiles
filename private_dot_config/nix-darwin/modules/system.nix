@@ -56,6 +56,9 @@
       loginwindow = {
         GuestEnabled = false;
       };
+      
+      # Launch Services
+      LaunchServices.LSQuarantine = false;
     };
     
     # Keyboard remapping
