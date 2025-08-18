@@ -1,7 +1,0 @@
----
-- name: Get Packages
-  import_playbook: packages.yml
-
-- name: Misc Settings
-  import_playbook: misc.yml
-

@@ -1,2 +1,36 @@
+# README and documentation
 README.md
+LICENSE
 
+# Version control
+.git
+.gitignore
+
+# Old Ansible bootstrap (to be removed)
+.bootstrap/
+
+# Nix will manage these
+.config/nix/
+.config/nixpkgs/
+
+# macOS system files
+.DS_Store
+.Spotlight-V100
+.Trashes
+
+# Editor directories
+.vscode/
+.idea/
+
+# Temporary files
+*.swp
+*.swo
+*~
+.#*
+
+# Secrets that shouldn't be in version control
+.npmrc
+.config/gh/hosts.yml
+.config/gh/config.yml
+.config/dev/
+.config/graphite/
