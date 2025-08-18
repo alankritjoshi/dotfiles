@@ -15,26 +15,29 @@
     # Taps
     taps = [
       "nikitabobko/tap"
-      "homebrew/cask-fonts"
-      "homebrew/services"
+      # "databricks/databricks" # Uncomment if needed
     ];
     
     # Homebrew packages (formulae)
     # Only include packages not available in nixpkgs or that work better from Homebrew
     brews = [
-      "aerospace" # Tiling window manager (not in nixpkgs)
-      "1password-cli" # 1Password CLI (proprietary)
+      "nvm" # Node version manager
+      "tabiew" # Table viewer
+      # "databricks" # Uncomment if needed
     ];
     
     # GUI applications (casks)
     casks = [
       # Development
       "wezterm"
-      "docker"
+      
+      # Window management
+      "aerospace"
       
       # Browsers
       "google-chrome"
       "arc"
+      # "zen-browser" # Commented out as in original
       
       # Productivity
       "raycast"
@@ -48,6 +51,11 @@
       "keepingyouawake"
       "soundsource"
       "daisydisk"
+      # "keymapp" # Commented out as in original
+      # "licecap" # Commented out as in original
+      # "mouseless" # Commented out as in original
+      # "leader-key" # Commented out as in original
+      # "homerow" # Commented out as in original
       
       # Window management
       "shortcat"
@@ -57,6 +65,7 @@
       
       # Security
       "1password"
+      "1password-cli"
     ];
     
     # Mac App Store apps

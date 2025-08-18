@@ -7,16 +7,13 @@
     ./modules/packages.nix
   ];
 
-  # Auto upgrade nix package and the daemon service
-  services.nix-daemon.enable = true;
+  # Fix nixbld group GID mismatch
+  ids.gids.nixbld = 350;
   
   # Necessary for using flakes on this system
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     trusted-users = [ "root" username ];
-    
-    # Optimize storage automatically
-    auto-optimise-store = true;
     
     # Enable build cache
     substituters = [
@@ -28,6 +25,9 @@
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };
+  
+  # Optimize nix store automatically
+  nix.optimise.automatic = true;
 
   # Create /etc/zshrc that loads the nix-darwin environment
   programs.zsh.enable = true;
@@ -40,6 +40,9 @@
 
   # Used for backwards compatibility
   system.stateVersion = 4;
+  
+  # Set primary user for system defaults
+  system.primaryUser = username;
 
   # Platform configuration
   nixpkgs.hostPlatform = "aarch64-darwin";

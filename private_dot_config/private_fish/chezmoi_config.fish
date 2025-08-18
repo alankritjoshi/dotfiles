@@ -1,3 +1,4 @@
+# Add homebrew for GUI apps
 fish_add_path /opt/homebrew/bin
 
 set -g fish_greeting

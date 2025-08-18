@@ -12,19 +12,22 @@
 
   # Let Home Manager install and manage itself
   programs.home-manager.enable = true;
+  
+  # Disable man page generation to avoid hangs
+  programs.man.enable = false;
+  manual.manpages.enable = false;
 
   # User-specific packages
   home.packages = with pkgs; [
     # Development tools
     neovim
-    lazygit
+    # neovide # Commented out as in original
+    lazygit # Was commented in original, but useful for git workflow
     
     # Languages and runtimes
     go
     delve
-    python3
-    python3Packages.pip
-    python3Packages.pipx
+    uv # Python version and package manager
     
     # Dotfiles management
     chezmoi
@@ -50,6 +53,7 @@
     
     # Data tools
     miller # mlr command for CSV/JSON
+    # tabiew is in homebrew
     
     # Terminal multiplexers and tools
     zellij
@@ -59,18 +63,21 @@
     gum
     glow
     tldr
+    # slides # Commented out as in original
+    # marp-cli # Commented out as in original
     
     # Productivity
-    slides
-    hugo
+    hugo # Was commented in original but useful
     
     # System tools
-    openssh
+    openssh # includes ssh-copy-id
     openssl
     coreutils
     gnused
     gettext
     autoconf
+    bash
+    fish
     
     # Performance testing
     wrk
@@ -83,8 +90,8 @@
     enable = true;
     interactiveShellInit = ''
       # Source additional fish config managed by chezmoi
-      if test -f ~/.config/fish/config.fish
-        source ~/.config/fish/config.fish
+      if test -f ~/.config/fish/chezmoi_config.fish
+        source ~/.config/fish/chezmoi_config.fish
       end
     '';
   };
@@ -117,7 +124,6 @@
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
-    enableFishIntegration = true;
   };
 
   # FZF
