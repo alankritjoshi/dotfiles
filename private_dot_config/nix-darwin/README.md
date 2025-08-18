@@ -137,6 +137,39 @@ options.alankrit = {
 
 ## 🐛 Troubleshooting
 
+### SSH Key Encryption/Decryption
+
+**Test decryption of encrypted SSH key**
+```bash
+# Decrypt to stdout (shows on screen)
+chezmoi age decrypt --passphrase ~/.local/share/chezmoi/.chezmoiencrypted/encrypted_private_id_ed25519.age | head -n 1
+# Should show: -----BEGIN OPENSSH PRIVATE KEY-----
+
+# Decrypt to file for testing
+chezmoi age decrypt --passphrase ~/.local/share/chezmoi/.chezmoiencrypted/encrypted_private_id_ed25519.age --output /tmp/test_key
+head -n 1 /tmp/test_key  # Should show SSH key header
+rm /tmp/test_key
+```
+
+**Re-encrypt SSH key from 1Password**
+```bash
+# Get SSH key from 1Password
+op item get "pp4al2x5g4tkfg6etruniky3we" --account my.1password.com --fields "private key" --reveal > /tmp/ssh_key
+
+# Encrypt with age (you'll set a passphrase)
+cat /tmp/ssh_key | chezmoi age encrypt --passphrase --output ~/.local/share/chezmoi/.chezmoiencrypted/encrypted_private_id_ed25519.age
+
+# Clean up
+rm /tmp/ssh_key
+```
+
+**Manually decrypt and install SSH key**
+```bash
+# If automatic decryption fails
+chezmoi age decrypt --passphrase ~/.local/share/chezmoi/.chezmoiencrypted/encrypted_private_id_ed25519.age --output ~/.ssh/id_ed25519
+chmod 600 ~/.ssh/id_ed25519
+```
+
 ### Common Issues
 
 **Conflicting files in /etc**
