@@ -187,17 +187,40 @@ set -gx LDFLAGS "-L"(brew --prefix)/opt/curl/lib
 set -gx CPPFLAGS "-I"(brew --prefix)/opt/curl/include
 set -gx PKG_CONFIG_PATH /opt/homebrew/opt/curl/lib/pkgconfig
 
-if status is-interactive
-    set ZELLIJ_AUTO_ATTACH true
-    set ZELLIJ_AUTO_EXIT true
+# if status is-interactive
+#     set ZELLIJ_AUTO_ATTACH true
+#     set ZELLIJ_AUTO_EXIT true
+#
+#     if not set -q ZELLIJ
+#         if test "$ZELLIJ_AUTO_ATTACH" = true
+#             j
+#         end
+#
+#         if test "$ZELLIJ_AUTO_EXIT" = true
+#             kill $fish_pid
+#         end
+#     end
+# end
 
-    if not set -q ZELLIJ
-        if test "$ZELLIJ_AUTO_ATTACH" = true
-            j
-        end
+if test -f /opt/dev/dev.fish
+    source /opt/dev/dev.fish
+end
 
-        if test "$ZELLIJ_AUTO_EXIT" = true
-            kill $fish_pid
+alias cld claude
+
+# Source environment variables from ~/.env file
+if test -f ~/.env
+    # Parse and export variables from .env file
+    for line in (grep -v '^#' ~/.env | grep -v '^$')
+        set -l key_value (string split -m 1 '=' $line)
+        if test (count $key_value) -eq 2
+            set -l key $key_value[1]
+            set -l value $key_value[2]
+            # Remove quotes if present
+            set value (string trim -c '"' $value)
+            set value (string trim -c "'" $value)
+            set -gx $key $value
         end
     end
 end
+set -x GPG_TTY (tty)
