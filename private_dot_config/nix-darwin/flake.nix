@@ -40,6 +40,9 @@
           }
         ];
       };
+    
+    # Import devshell configuration
+    devshellConfig = import ./devshell.nix { inherit nixpkgs system; };
   in {
     darwinConfigurations = {
       # Work laptop (Shopify)
@@ -55,6 +58,9 @@
         isWork = false;
       };
     };
+    
+    # Development shells
+    devShells = devshellConfig.devShells;
     
     # Expose the package set for convenience
     darwinPackages = self.darwinConfigurations."Alankrits-MacBook-Pro".pkgs;
