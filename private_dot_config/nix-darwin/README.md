@@ -9,10 +9,14 @@ A modular nix-darwin configuration with home-manager for macOS, designed for bot
 # Clone and apply dotfiles
 chezmoi init --apply alankritjoshi
 
+# You'll be prompted for:
+# 1. SSH key passphrase (to decrypt your SSH key)
+
 # The setup script will automatically:
 # 1. Install nix if not present
 # 2. Setup nix-darwin
 # 3. Apply the configuration
+# 4. Decrypt and install your SSH key
 ```
 
 ### Daily Commands

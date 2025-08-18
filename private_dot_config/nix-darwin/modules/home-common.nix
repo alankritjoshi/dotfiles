@@ -50,6 +50,7 @@
     
     # Dotfiles management
     chezmoi
+    age # Encryption tool for secrets
     
     # Command line tools
     eza
