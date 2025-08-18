@@ -108,16 +108,9 @@
     package = pkgs.git;
   };
 
-  # GitHub CLI
+  # GitHub CLI (detailed config in chezmoi)
   programs.gh = {
     enable = true;
-    settings = {
-      git_protocol = "https";
-      prompt = "enabled";
-      aliases = {
-        co = "pr checkout";
-      };
-    };
   };
 
   # Direnv for automatic environment loading
