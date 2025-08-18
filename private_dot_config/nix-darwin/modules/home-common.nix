@@ -13,6 +13,7 @@
   # Let Home Manager install and manage itself
   programs.home-manager.enable = true;
   
+  
   # Session variables
   home.sessionVariables = {
     LANG = "en_US.UTF-8";
@@ -119,13 +120,6 @@
     enable = true;
     enableFishIntegration = true;
   };
-
-  # Git configuration (basic, as detailed config is in chezmoi)
-  programs.git = {
-    enable = true;
-    package = pkgs.git;
-  };
-
 
   # Direnv for automatic environment loading
   programs.direnv = {

@@ -45,7 +45,11 @@ chezmoi update  # Pulls changes and applies them
 nix flake update ~/.config/nix-darwin
 
 # Rebuild manually (chezmoi apply handles this automatically)
-sudo darwin-rebuild switch --flake ~/.config/nix-darwin
+# For work laptop:
+sudo darwin-rebuild switch --flake ~/.config/nix-darwin#Alankrits-MacBook-Pro
+
+# For personal machines:
+sudo darwin-rebuild switch --flake ~/.config/nix-darwin#personal
 ```
 
 ## Configuration Structure
@@ -53,10 +57,12 @@ sudo darwin-rebuild switch --flake ~/.config/nix-darwin
 ```
 ~/.config/
 ├── nix-darwin/          # System configuration
-│   ├── flake.nix        # Main flake configuration
-│   ├── configuration.nix # System-level settings
-│   ├── home.nix         # User-level packages and settings
+│   ├── flake.nix        # Main flake with work/personal configs
+│   ├── home-work.nix    # Work-specific home config (git, etc.)
+│   ├── home-personal.nix # Personal home config
 │   └── modules/         # Modular configuration
+│       ├── common.nix   # Shared system configuration
+│       ├── home-common.nix # Shared home-manager config
 │       ├── system.nix   # macOS system settings
 │       ├── homebrew.nix # Homebrew casks and taps
 │       └── packages.nix # System packages
@@ -66,8 +72,7 @@ sudo darwin-rebuild switch --flake ~/.config/nix-darwin
 
 ~/.local/share/chezmoi/  # Chezmoi source directory
 ├── .chezmoiscripts/     # Bootstrap scripts
-├── dot_gitconfig.tmpl   # Git config template
-└── ...                  # Other dotfile templates
+└── ...                  # Other dotfiles
 ```
 
 ## Package Management Strategy

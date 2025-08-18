@@ -70,9 +70,28 @@ alias dbx="databricks"
 alias b="brew"
 
 # Nix
-alias nrs="sudo darwin-rebuild switch --flake ~/.config/nix-darwin#Alankrits-MacBook-Pro"
-alias nrb="darwin-rebuild build --flake ~/.config/nix-darwin#Alankrits-MacBook-Pro"
-alias nra="darwin-rebuild build --flake ~/.config/nix-darwin#Alankrits-MacBook-Pro && sudo ./result/activate"
+# Determine flake target based on hostname
+function __nix_flake_target
+    set -l hostname (hostname -s)
+    if test "$hostname" = "Alankrits-MacBook-Pro"
+        echo "Alankrits-MacBook-Pro"
+    else
+        echo "personal"
+    end
+end
+
+# Nix aliases that use the correct flake target
+function nrs
+    sudo darwin-rebuild switch --flake ~/.config/nix-darwin#(__nix_flake_target)
+end
+
+function nrb
+    darwin-rebuild build --flake ~/.config/nix-darwin#(__nix_flake_target)
+end
+
+function nra
+    darwin-rebuild build --flake ~/.config/nix-darwin#(__nix_flake_target) && sudo ./result/activate
+end
 
 function yy
     set tmp (mktemp -t "yazi-cwd.XXXXXX")

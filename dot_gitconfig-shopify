@@ -1,6 +1,0 @@
-[user]
-	email = alankrit.joshi@shopify.com
-	signingkey = D543F1E319C8D289
-
-[commit]
-	gpgsign = true

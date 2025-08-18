@@ -2,9 +2,9 @@
 
 {
   imports = [
-    ./modules/system.nix
-    ./modules/homebrew.nix
-    ./modules/packages.nix
+    ./system.nix
+    ./homebrew.nix
+    ./packages.nix
   ];
 
   # Fix nixbld group GID mismatch

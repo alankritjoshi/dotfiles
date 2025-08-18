@@ -9,6 +9,15 @@ echo "Setting up nix-darwin configuration..."
 HOSTNAME=$(hostname -s)
 CONFIG_PATH="$HOME/.config/nix-darwin"
 
+# Determine which flake configuration to use
+if [ "$HOSTNAME" = "Alankrits-MacBook-Pro" ]; then
+    echo "Detected work laptop - using work configuration"
+    FLAKE_TARGET="Alankrits-MacBook-Pro"
+else
+    echo "Detected personal machine - using personal configuration"
+    FLAKE_TARGET="personal"
+fi
+
 # Ensure we're in the right directory
 cd "$CONFIG_PATH"
 
@@ -44,8 +53,8 @@ if ! command -v darwin-rebuild &>/dev/null; then
     echo ""
     
     # Build and activate the configuration (will prompt for sudo password when needed)
-    nix --extra-experimental-features 'nix-command flakes' build ".#darwinConfigurations.${HOSTNAME}.system"
-    run_darwin_rebuild sudo ./result/sw/bin/darwin-rebuild switch --flake ".#${HOSTNAME}"
+    nix --extra-experimental-features 'nix-command flakes' build ".#darwinConfigurations.${FLAKE_TARGET}.system"
+    run_darwin_rebuild sudo ./result/sw/bin/darwin-rebuild switch --flake ".#${FLAKE_TARGET}"
     
     echo "nix-darwin installed successfully!"
 else
@@ -53,7 +62,7 @@ else
     
     # Update flake inputs and rebuild
     nix flake update
-    run_darwin_rebuild sudo darwin-rebuild switch --flake ".#${HOSTNAME}"
+    run_darwin_rebuild sudo darwin-rebuild switch --flake ".#${FLAKE_TARGET}"
 fi
 
 echo "Configuration applied successfully!"
