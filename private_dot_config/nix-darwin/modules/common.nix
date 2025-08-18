@@ -3,7 +3,9 @@
 {
   imports = [
     ./system.nix
-    ./homebrew.nix
+    ./homebrew-common.nix
+    ./homebrew-work.nix
+    ./homebrew-personal.nix
     ./packages.nix
   ];
 

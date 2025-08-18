@@ -1,169 +1,144 @@
-# Alankrit's Dotfiles (macOS)
+# Alankrit's Dotfiles
 
-A declarative macOS configuration using **nix-darwin**, **home-manager**, and **chezmoi**.
-
-## Prerequisites
-
-```bash
-# Install Xcode Command Line Tools
-xcode-select --install
-```
+Declarative macOS configuration using **nix-darwin**, **home-manager**, and **chezmoi**.
 
 ## Quick Setup
 
-One-liner installation:
-
 ```bash
+# One-liner installation
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply alankritjoshi
 ```
 
 This will:
-1. Install chezmoi
-2. Clone and apply dotfiles
-3. Install Nix
-4. Setup nix-darwin with home-manager
-5. Install all packages and configure the system
+1. Install chezmoi and clone dotfiles
+2. Install Nix and setup nix-darwin
+3. Configure the system and install packages
+4. Decrypt SSH keys (prompts for passphrase)
 
-## Post-Installation
+## Daily Usage
 
-After installation, you can:
-
-### Apply configuration changes (recommended)
 ```bash
+# Apply configuration changes (ALWAYS use this)
+chezmoi apply
+
+# Update dotfiles from remote
+chezmoi update
+
+# Update packages
+cd ~/.config/nix-darwin && nix flake update
 chezmoi apply
 ```
-This runs scripts that handle nix-darwin rebuilds with automatic conflict resolution.
 
-### Update dotfiles from remote
+## Development Shells
+
+Isolated environments without global installation:
+
 ```bash
-chezmoi update  # Pulls changes and applies them
+nix develop                    # Default shell
+nix develop .#go              # Go development
+nix develop .#python          # Python development  
+nix develop .#rust            # Rust development
+nix develop .#node            # Node.js development
+nix develop .#full            # All languages + tools
 ```
 
-### Manual nix-darwin operations (if needed)
-```bash
-# Update package versions
-nix flake update ~/.config/nix-darwin
-
-# Rebuild manually (chezmoi apply handles this automatically)
-# For work laptop:
-sudo darwin-rebuild switch --flake ~/.config/nix-darwin#Alankrits-MacBook-Pro
-
-# For personal machines:
-sudo darwin-rebuild switch --flake ~/.config/nix-darwin#personal
-```
-
-## Configuration Structure
+## Architecture
 
 ```
-~/.config/
-├── nix-darwin/          # System configuration
-│   ├── flake.nix        # Main flake with work/personal configs
-│   ├── home-work.nix    # Work-specific home config (git, etc.)
-│   ├── home-personal.nix # Personal home config
-│   └── modules/         # Modular configuration
-│       ├── common.nix   # Shared system configuration
-│       ├── home-common.nix # Shared home-manager config
-│       ├── system.nix   # macOS system settings
-│       ├── homebrew.nix # Homebrew casks and taps
-│       └── packages.nix # System packages
-├── fish/                # Fish shell config (managed by chezmoi)
-├── nvim/                # Neovim config (managed by chezmoi)
-└── ...                  # Other app configs
-
-~/.local/share/chezmoi/  # Chezmoi source directory
-├── .chezmoiscripts/     # Bootstrap scripts
-└── ...                  # Other dotfiles
+~/.local/share/chezmoi/           # Dotfiles repo
+├── private_dot_config/
+│   ├── nix-darwin/              # System configuration
+│   │   ├── flake.nix           # Main flake
+│   │   ├── devshell.nix        # Dev shells
+│   │   ├── modules/            # Modular configs
+│   │   ├── home-work.nix       # Work config
+│   │   └── home-personal.nix   # Personal config
+│   ├── private_fish/            # Fish shell
+│   ├── private_aerospace/       # Window manager
+│   └── private_ghostty/         # Terminal
+├── .chezmoiscripts/             # Bootstrap scripts
+├── .chezmoiencrypted/           # Encrypted SSH keys
+├── CLAUDE.md                    # AI assistant guide
+└── ROADMAP.md                   # Future plans
 ```
 
-## Package Management Strategy
+## Configuration
 
-- **Nix packages** (via nixpkgs): Development tools, CLI utilities, languages
-- **Homebrew casks**: GUI applications not available in nixpkgs
-- **Homebrew formulae**: Only for packages that don't work well with Nix on macOS
+### Machines
+- **Work laptop** (`Alankrits-MacBook-Pro`): Shopify config with SSH signing
+- **Personal** (Mac Mini/Pro): Personal email and tools
 
-## Customization
+### Package Strategy
+- **Nix packages**: CLI tools, development utilities
+- **Homebrew casks**: GUI applications (via nix-darwin)
+- **Chezmoi**: Dotfiles and encrypted secrets
 
-### Adding packages
+### Adding Packages
 
-Edit `~/.config/nix-darwin/home.nix` for user packages or `~/.config/nix-darwin/modules/packages.nix` for system packages:
-
-```nix
-home.packages = with pkgs; [
-  your-package-here
-];
-```
-
-Then apply changes:
-```bash
-chezmoi apply  # Handles rebuild automatically
-```
-
-### Adding Homebrew casks
-
-Edit `~/.config/nix-darwin/modules/homebrew.nix`:
-
-```nix
-casks = [
-  "your-app-here"
-];
-```
+Edit the appropriate file:
+- Universal → `~/.config/nix-darwin/modules/home-common.nix`
+- Work only → `~/.config/nix-darwin/home-work.nix`
+- Personal only → `~/.config/nix-darwin/home-personal.nix`
 
 Then apply:
 ```bash
 chezmoi apply
 ```
 
-### Modifying dotfiles
+### Managing Dotfiles
 
 ```bash
-# Edit files directly (or use chezmoi edit)
+# Edit files directly
 vim ~/.config/fish/config.fish
 
-# Update chezmoi's source with your changes
-chezmoi re-add  # Auto-detects and updates changed files
+# Update chezmoi source
+chezmoi re-add
 
-# Push to remote
+# Push changes
 chezmoi git add .
-chezmoi git commit -m "Update fish config"
+chezmoi git commit -m "Update config"
 chezmoi git push
+```
+
+## SSH Key Management
+
+Keys are encrypted with age using passphrase protection:
+
+```bash
+# Test decryption
+chezmoi age decrypt --passphrase ~/.local/share/chezmoi/.chezmoiencrypted/encrypted_private_id_ed25519.age | head -n 1
+
+# Re-encrypt from 1Password
+op item get "pp4al2x5g4tkfg6etruniky3we" --account my.1password.com --fields "private key" --reveal | \
+  chezmoi age encrypt --passphrase --output ~/.local/share/chezmoi/.chezmoiencrypted/encrypted_private_id_ed25519.age
 ```
 
 ## Troubleshooting
 
-Note: `chezmoi apply` handles most conflicts automatically. These are manual fixes if needed.
-
-### darwin-rebuild requires sudo
-Recent nix-darwin versions require root privileges:
+### Nix conflicts
 ```bash
-sudo darwin-rebuild switch --flake ~/.config/nix-darwin
-```
-
-### /etc file conflicts
-If you see "Unexpected files in /etc":
-```bash
-# Move conflicting files (example for nix.conf)
+# Move conflicting files
 sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.before-nix-darwin
+chezmoi apply
 ```
 
-### Home-manager file conflicts
-If home-manager can't overwrite files:
+### Build failures
 ```bash
-# Remove conflicting symlinks
-rm ~/.config/fish/config.fish ~/.config/gh/config.yml
-# Or add backup extension in flake.nix:
-# home-manager.backupFileExtension = "backup";
+# Detailed error trace
+darwin-rebuild build --flake ~/.config/nix-darwin#$(hostname -s) --show-trace
 ```
 
-### Nix store corruption
-If builds fail with "No such file or directory":
-```bash
-sudo nix-store --verify --check-contents --repair
-```
-
-### Rollback to previous configuration
+### Rollback
 ```bash
 sudo darwin-rebuild rollback
 ```
+
+## Important Notes
+
+- **Always use `chezmoi apply`** - never run `darwin-rebuild` directly
+- Git config is in nix-darwin, not chezmoi
+- Fish config is in chezmoi, not nix
+- The chezmoi script handles `/etc/nix/nix.conf` conflicts automatically
 
 ## License
 
