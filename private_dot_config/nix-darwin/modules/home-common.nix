@@ -39,6 +39,7 @@
   home.packages = with pkgs; [
     # Development tools
     neovim
+    sqlite
     # neovide # Commented out as in original
     lazygit # Was commented in original, but useful for git workflow
     gh # GitHub CLI (config managed by chezmoi)
