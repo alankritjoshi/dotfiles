@@ -25,7 +25,16 @@ chezmoi apply
 chezmoi update
 
 # Update packages
-cd ~/.config/nix-darwin && nix flake update
+cd ~/.config/nix && nix flake update
+chezmoi apply
+```
+
+### When changing nix configuration
+```bash
+# First apply config files without running scripts
+chezmoi apply --exclude scripts
+
+# Then run full apply to rebuild with new config
 chezmoi apply
 ```
 
@@ -47,15 +56,14 @@ nix develop .#full            # All languages + tools
 ```
 ~/.local/share/chezmoi/           # Dotfiles repo
 ├── private_dot_config/
-│   ├── nix-darwin/              # System configuration
+│   ├── nix/                     # System configuration
 │   │   ├── flake.nix           # Main flake
 │   │   ├── devshell.nix        # Dev shells
-│   │   ├── modules/            # Modular configs
-│   │   ├── home-work.nix       # Work config
-│   │   └── home-personal.nix   # Personal config
-│   ├── private_fish/            # Fish shell
-│   ├── private_aerospace/       # Window manager
-│   └── private_ghostty/         # Terminal
+│   │   ├── machines/           # Machine configs
+│   │   └── modules/            # Modular configs
+│   ├── fish/                    # Fish shell
+│   ├── aerospace/               # Window manager
+│   └── nvim/                    # Neovim config
 ├── .chezmoiscripts/             # Bootstrap scripts
 ├── .chezmoiencrypted/           # Encrypted SSH keys
 ├── CLAUDE.md                    # AI assistant guide
@@ -76,9 +84,9 @@ nix develop .#full            # All languages + tools
 ### Adding Packages
 
 Edit the appropriate file:
-- Universal → `~/.config/nix-darwin/modules/home-common.nix`
-- Work only → `~/.config/nix-darwin/home-work.nix`
-- Personal only → `~/.config/nix-darwin/home-personal.nix`
+- Universal → `~/.config/nix/modules/common/packages.nix`
+- macOS specific → `~/.config/nix/modules/darwin/packages.nix`
+- Linux specific → `~/.config/nix/modules/linux/packages.nix`
 
 Then apply:
 ```bash
@@ -125,7 +133,7 @@ chezmoi apply
 ### Build failures
 ```bash
 # Detailed error trace
-darwin-rebuild build --flake ~/.config/nix-darwin#$(hostname -s) --show-trace
+darwin-rebuild build --flake ~/.config/nix#$(hostname -s) --show-trace
 ```
 
 ### Nix store corruption (missing .drv files)
@@ -161,6 +169,7 @@ sudo darwin-rebuild rollback
 - Git config is in nix-darwin, not chezmoi
 - Fish config is in chezmoi, not nix
 - The chezmoi script handles `/etc/nix/nix.conf` conflicts automatically
+- **When changing nix config**: Run `chezmoi apply --exclude scripts` first, then `chezmoi apply`
 
 ## License
 
