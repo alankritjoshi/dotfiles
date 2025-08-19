@@ -19,5 +19,6 @@
   networking.computerName = "vanik";
   
   # Work-specific system settings
-  # (Work-specific settings can be added here as needed)
+  # Enable nix management for work laptop (no Determinate installer)
+  nix.enable = true;
 }

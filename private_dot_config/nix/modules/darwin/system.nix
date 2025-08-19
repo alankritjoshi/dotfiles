@@ -1,8 +1,12 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  
+  # Disable nix-darwin's nix management for Determinate Systems compatibility
+  # Only enabled on work machines without Determinate
+  nix.enable = lib.mkDefault false;
   
   # System settings
   system = {
