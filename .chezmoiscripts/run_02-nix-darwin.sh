@@ -10,9 +10,9 @@ HOSTNAME=$(hostname -s)
 CONFIG_PATH="$HOME/.config/nix-darwin"
 
 # Determine which flake configuration to use
-if [ "$HOSTNAME" = "Alankrits-MacBook-Pro" ]; then
+if [ "$HOSTNAME" = "vanik" ]; then
     echo "Detected work laptop - using work configuration"
-    FLAKE_TARGET="Alankrits-MacBook-Pro"
+    FLAKE_TARGET="vanik"
 else
     echo "Detected personal machine - using personal configuration"
     FLAKE_TARGET="personal"

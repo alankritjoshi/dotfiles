@@ -52,8 +52,8 @@
   in {
     darwinConfigurations = {
       # Work laptop (Shopify)
-      "Alankrits-MacBook-Pro" = mkDarwinConfiguration {
-        hostname = "Alankrits-MacBook-Pro";
+      "vanik" = mkDarwinConfiguration {
+        hostname = "vanik";
         machineType = "work-laptop";
       };
       
@@ -69,6 +69,6 @@
     devShells = devshellConfig.devShells;
     
     # Expose the package set for convenience
-    darwinPackages = self.darwinConfigurations."Alankrits-MacBook-Pro".pkgs;
+    darwinPackages = self.darwinConfigurations."vanik".pkgs;
   };
 }
