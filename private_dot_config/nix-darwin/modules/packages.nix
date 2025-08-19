@@ -45,28 +45,9 @@
     
     # === GUI Applications from nixpkgs ===
     
-    # Development
+    # Development (work fine from nixpkgs)
     wezterm
     code-cursor
-    
-    # Window management
-    aerospace
-    shortcat
-    
-    # Browsers
-    google-chrome
-    
-    # Productivity
-    raycast
-    
-    # System utilities
-    daisydisk
-    soundsource
-    betterdisplay
-    
-    # Security
-    _1password-gui
-    _1password-cli
     
   ] ++ lib.optionals config.alankrit.isWork [
     # Work-specific apps
