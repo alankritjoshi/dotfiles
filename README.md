@@ -58,13 +58,14 @@ nix develop .#full            # All languages + tools
 ~/.local/share/chezmoi/           # Dotfiles repo
 ├── private_dot_config/
 │   ├── nix/                     # System configuration
-│   │   ├── flake.nix           # Main flake
-│   │   ├── devshell.nix        # Dev shells
-│   │   ├── machines/           # Machine configs
-│   │   └── modules/            # Modular configs
+│   │   ├── flake.nix            # Main flake
+│   │   ├── devshell.nix         # Dev shells
+│   │   ├── machines/            # Machine configs
+│   │   └── modules/             # Modular configs
 │   ├── fish/                    # Fish shell
 │   ├── aerospace/               # Window manager
 │   └── nvim/                    # Neovim config
+├── private_dot_ssh/             # Encrypted SSH for signing commits
 ├── .chezmoiscripts/             # Bootstrap scripts
 ├── .chezmoiencrypted/           # Encrypted SSH keys
 ├── CLAUDE.md                    # AI assistant guide
