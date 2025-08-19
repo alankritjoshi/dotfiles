@@ -58,9 +58,6 @@
     
     # Media
     iina
-    
-    # 3D Printing
-    bambu-studio
   ];
   
   # Environment variables

@@ -20,7 +20,6 @@
     keycastr
     keymapp
     iina
-    bambu-studio
     
   ] ++ lib.optionals pkgs.stdenv.isLinux [
     # Linux personal-specific
