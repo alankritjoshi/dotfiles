@@ -43,6 +43,7 @@ chezmoi apply
 Isolated environments without global installation:
 
 ```bash
+cd ~/.config/nix
 nix develop                    # Default shell
 nix develop .#go              # Go development
 nix develop .#python          # Python development  
@@ -73,8 +74,10 @@ nix develop .#full            # All languages + tools
 ## Configuration
 
 ### Machines
-- **Work laptop** (`vanik`): Shopify config with SSH signing
-- **Personal** (Mac Mini/Pro): Personal email and tools
+- **Work laptop** (`vanik`): Shopify MacBook with SSH signing
+- **Personal MacBook** (`tejas`): Personal development machine
+- **Mac Mini** (`griha`): Personal desktop/server
+- **Linux Desktop** (`agrani`): Arch Linux with Hyprland (future)
 
 ### Package Strategy
 - **Nix packages**: CLI tools, development utilities
@@ -85,12 +88,16 @@ nix develop .#full            # All languages + tools
 
 Edit the appropriate file:
 - Universal → `~/.config/nix/modules/common/packages.nix`
-- macOS specific → `~/.config/nix/modules/darwin/packages.nix`
-- Linux specific → `~/.config/nix/modules/linux/packages.nix`
+- macOS GUI apps → `~/.config/nix/modules/darwin/homebrew.nix`
+- macOS CLI tools → `~/.config/nix/modules/darwin/packages.nix`
+- Linux packages → `~/.config/nix/modules/linux/packages.nix`
+- Work-specific → `~/.config/nix/modules/home/work.nix`
+- Personal-specific → `~/.config/nix/modules/home/personal.nix`
 
 Then apply:
 ```bash
-chezmoi apply
+chezmoi apply --exclude scripts  # Update configs first
+chezmoi apply                     # Then rebuild
 ```
 
 ### Managing Dotfiles
@@ -166,10 +173,11 @@ sudo darwin-rebuild rollback
 ## Important Notes
 
 - **Always use `chezmoi apply`** - never run `darwin-rebuild` directly
-- Git config is in nix-darwin, not chezmoi
-- Fish config is in chezmoi, not nix
-- The chezmoi script handles `/etc/nix/nix.conf` conflicts automatically
+- Git config is managed by nix-darwin, not chezmoi
+- Fish config is in chezmoi for flexibility
+- The script handles `/etc/nix/nix.conf` conflicts automatically
 - **When changing nix config**: Run `chezmoi apply --exclude scripts` first, then `chezmoi apply`
+- **Unknown hostname**: Script will prompt to select configuration
 
 ## License
 
