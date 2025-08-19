@@ -120,11 +120,14 @@ chezmoi git push
 Keys are encrypted with age using passphrase protection:
 
 ```bash
+# Set 1Password item ID for SSH key
+OP_SSH_KEY_ID="pp4al2x5g4tkfg6etruniky3we"
+
 # Test decryption
 chezmoi age decrypt --passphrase ~/.local/share/chezmoi/.chezmoiencrypted/encrypted_private_id_ed25519.age | head -n 1
 
 # Re-encrypt from 1Password
-op item get "pp4al2x5g4tkfg6etruniky3we" --account my.1password.com --fields "private key" --reveal | \
+op item get "$OP_SSH_KEY_ID" --account my.1password.com --fields "private key" --reveal | \
   chezmoi age encrypt --passphrase --output ~/.local/share/chezmoi/.chezmoiencrypted/encrypted_private_id_ed25519.age
 ```
 
@@ -173,9 +176,6 @@ sudo darwin-rebuild rollback
 ## Important Notes
 
 - **Always use `chezmoi apply`** - never run `darwin-rebuild` directly
-- Git config is managed by nix-darwin, not chezmoi
-- Fish config is in chezmoi for flexibility
-- The script handles `/etc/nix/nix.conf` conflicts automatically
 - **When changing nix config**: Run `chezmoi apply --exclude scripts` first, then `chezmoi apply`
 - **Unknown hostname**: Script will prompt to select configuration
 
