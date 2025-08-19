@@ -83,6 +83,12 @@
       "craft"
       "updf"
       
+      # Media
+      "plex"
+      
+      # VPN
+      "protonvpn"
+      
       # Security & Privacy (not in nixpkgs)
       "radio-silence"
     ];

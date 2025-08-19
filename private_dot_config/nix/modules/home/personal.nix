@@ -9,11 +9,7 @@
     discord
     
     # Media
-    plex
     qbittorrent
-    
-    # VPN
-    protonvpn-gui
     
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     # macOS personal-specific
