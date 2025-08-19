@@ -32,66 +32,51 @@
     ];
     
     # GUI applications (casks)
+    # Note: Apps available in nixpkgs have been moved to packages.nix
     casks = [
       # === Common apps for all machines ===
       
-      # Development
-      "wezterm"
-      "cursor"
-      
-      # Window management
-      "aerospace"
-      "shortcat"
-      
-      # Browsers
-      "google-chrome"
-      
-      # Productivity
-      "raycast"
+      # Productivity (not in nixpkgs)
       "google-drive"
       
-      # System utilities
+      # System utilities (not in nixpkgs)
       "stats"
-      "betterdisplay"
       "jordanbaird-ice"
       "keepingyouawake"
-      "soundsource"
-      "daisydisk"
       "logi-options+"
-      
-      # Security
-      "1password"
-      "1password-cli"
+      "pearcleaner"
       
     ] ++ lib.optionals config.alankrit.isWork [
       # === Work-specific apps (Shopify) ===
       
-      # Communication & Productivity
+      # Communication & Productivity (not in nixpkgs)
       "slack"
       "fellow"
       "tuple"
       
-      # Security & Monitoring
-      "cloudflare-warp"
+      # Security & Monitoring (not in nixpkgs)
       "santa"
       "trailer"
       
     ] ++ lib.optionals config.alankrit.isPersonal [
       # === Personal-specific apps ===
       
-      # Productivity
+      # Productivity (not in nixpkgs)
       "craft"
+      "updf"
       
-      # Media
-      "iina"
-      
-      # 3D Printing
-      "bambu-studio"
+      # Security & Privacy (not in nixpkgs)
+      "radio-silence"
     ];
     
     # Mac App Store apps
     masApps = {
-      # Add common Mac App Store apps here if needed
+      # Common apps
+      "Klack" = 6446206067;
+    } // lib.optionalAttrs config.alankrit.isPersonal {
+      # Personal-specific Mac App Store apps
+      "Dato" = 1470584107;
+      "Encrypto" = 935235287;
     };
   };
 }

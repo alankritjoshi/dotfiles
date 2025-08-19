@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # System-level packages
@@ -41,6 +41,44 @@
     fish
     bash
     zsh
+    
+    # === GUI Applications from nixpkgs ===
+    
+    # Development
+    wezterm
+    code-cursor
+    
+    # Window management
+    aerospace
+    shortcat
+    
+    # Browsers
+    google-chrome
+    
+    # Productivity
+    raycast
+    
+    # System utilities
+    daisydisk
+    soundsource
+    betterdisplay
+    
+    # Security
+    _1password-gui
+    _1password-cli
+    
+  ] ++ lib.optionals config.alankrit.isWork [
+    # Work-specific apps
+    cloudflare-warp
+    
+  ] ++ lib.optionals config.alankrit.isPersonal [
+    # Personal-specific apps
+    
+    # Media
+    iina
+    
+    # 3D Printing
+    bambu-studio
   ];
   
   # Environment variables
