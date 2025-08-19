@@ -85,19 +85,15 @@
   security.pam.services.sudo_local.touchIdAuth = true;
   
   # Shell configuration
-  # This populates /etc/shells and allows using these shells
-  environment.shells = with pkgs; [
-    bash
-    zsh
-    fish
-  ];
-  
-  # Enable Fish shell system-wide
+  environment.shells = with pkgs; [ bash zsh fish ];
   programs.fish.enable = true;
   
-  # Set Fish as default shell for the primary user
+  # User configuration - this will set the default shell
+  # Required for shell changes to take effect on macOS
+  # See: https://github.com/nix-darwin/nix-darwin/issues/1237
+  users.knownUsers = [ config.system.primaryUser ];
   users.users.${config.system.primaryUser} = {
-    home = "/Users/${config.system.primaryUser}";
+    uid = 501;  # Standard macOS user ID
     shell = pkgs.fish;
   };
   
