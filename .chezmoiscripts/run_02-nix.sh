@@ -55,6 +55,29 @@ fi
 # Ensure we're in the right directory
 cd "$CONFIG_PATH"
 
+# Source Nix if not already available (handles fresh installations)
+if ! command -v nix &>/dev/null; then
+    echo "Nix command not found, adding to PATH..."
+    
+    # Check for Determinate Systems installation
+    if [ -x "/nix/var/nix/profiles/default/bin/nix" ]; then
+        export PATH="/nix/var/nix/profiles/default/bin:$PATH"
+        echo "Added Determinate Nix to PATH"
+    # Check for standard Nix installation
+    elif [ -x "/run/current-system/sw/bin/nix" ]; then
+        export PATH="/run/current-system/sw/bin:$PATH"
+        echo "Added system Nix to PATH"
+    # Check for single-user installation
+    elif [ -x "$HOME/.nix-profile/bin/nix" ]; then
+        export PATH="$HOME/.nix-profile/bin:$PATH"
+        echo "Added user Nix to PATH"
+    else
+        echo "Error: Could not find Nix installation"
+        echo "Please restart your shell and run 'chezmoi apply' again"
+        exit 1
+    fi
+fi
+
 # Function to run darwin-rebuild with automatic conflict resolution
 run_darwin_rebuild() {
     # First attempt
