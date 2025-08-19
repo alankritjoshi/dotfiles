@@ -23,8 +23,33 @@ elif [ "$HOSTNAME" = "agrani" ]; then
     echo "Detected Arch Linux desktop - using experimental configuration"
     FLAKE_TARGET="agrani"
 else
-    echo "Unknown hostname: $HOSTNAME - defaulting to work configuration"
-    FLAKE_TARGET="vanik"
+    echo "Unknown hostname: $HOSTNAME"
+    echo ""
+    echo "Please select the machine configuration to use:"
+    echo "1) vanik  - Work MacBook (Shopify)"
+    echo "2) tejas  - Personal MacBook"
+    echo "3) griha  - Mac Mini"
+    echo "4) agrani - Linux Desktop (Arch + Hyprland)"
+    echo ""
+    read -p "Enter selection (1-4): " selection
+    
+    case $selection in
+        1) FLAKE_TARGET="vanik"
+           echo "Using work configuration (vanik)"
+           ;;
+        2) FLAKE_TARGET="tejas"
+           echo "Using personal MacBook configuration (tejas)"
+           ;;
+        3) FLAKE_TARGET="griha"
+           echo "Using Mac Mini configuration (griha)"
+           ;;
+        4) FLAKE_TARGET="agrani"
+           echo "Using Linux desktop configuration (agrani)"
+           ;;
+        *) echo "Invalid selection, defaulting to work configuration"
+           FLAKE_TARGET="vanik"
+           ;;
+    esac
 fi
 
 # Ensure we're in the right directory
