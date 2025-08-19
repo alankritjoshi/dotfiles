@@ -10,7 +10,6 @@ LICENSE
 .bootstrap/
 
 # Nix will manage these
-.config/nix/
 .config/nixpkgs/
 
 # macOS system files
