@@ -91,29 +91,29 @@
     # Darwin configurations
     darwinConfigurations = {
       # Work laptop (Shopify)
-      "Alankrits-MacBook-Pro" = mkDarwinConfiguration {
-        hostname = "Alankrits-MacBook-Pro";
+      "vanik" = mkDarwinConfiguration {
+        hostname = "vanik";
         machineType = "work-laptop";
       };
       
-      # Personal Mac Mini
-      "mac-mini" = mkDarwinConfiguration {
-        hostname = "mac-mini";
-        machineType = "personal-desktop";
+      # Personal MacBook
+      "tejas" = mkDarwinConfiguration {
+        hostname = "tejas";
+        machineType = "personal-laptop";
       };
       
-      # Personal Mac Pro
-      "mac-pro" = mkDarwinConfiguration {
-        hostname = "mac-pro";
+      # Personal Mac Mini
+      "griha" = mkDarwinConfiguration {
+        hostname = "griha";
         machineType = "personal-desktop";
       };
     };
     
-    # NixOS configurations (future)
+    # NixOS configurations
     nixosConfigurations = {
-      # Arch Linux desktop with Hyprland
-      "arch-desktop" = mkNixosConfiguration {
-        hostname = "arch-desktop";
+      # Arch Linux desktop with Hyprland (experimental/cutting-edge)
+      "agrani" = mkNixosConfiguration {
+        hostname = "agrani";
         machineType = "personal-desktop";
       };
     };

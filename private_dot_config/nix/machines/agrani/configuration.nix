@@ -18,7 +18,7 @@
   ];
   
   # System configuration
-  networking.hostName = "arch-desktop";
+  networking.hostName = "agrani";
   
   # Boot configuration
   boot = {

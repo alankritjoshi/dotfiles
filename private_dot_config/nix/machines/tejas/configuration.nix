@@ -1,9 +1,9 @@
 { config, pkgs, lib, ... }:
 
 {
-  # Machine-specific configuration for Mac Mini
+  # Machine-specific configuration for personal MacBook
   alankrit = {
-    machineType = "personal-desktop";
+    machineType = "personal-laptop";
     isDarwin = true;
   };
   
@@ -15,6 +15,6 @@
   ];
   
   # System configuration
-  networking.hostName = "mac-mini";
-  networking.computerName = "Alankrit's Mac Mini";
+  networking.hostName = "tejas";
+  networking.computerName = "tejas";
 }

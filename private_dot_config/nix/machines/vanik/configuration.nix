@@ -15,8 +15,8 @@
   ];
   
   # System configuration
-  networking.hostName = "Alankrits-MacBook-Pro";
-  networking.computerName = "Alankrit's MacBook Pro";
+  networking.hostName = "vanik";
+  networking.computerName = "vanik";
   
   # Work-specific system settings
   system.defaults = {
