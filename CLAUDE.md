@@ -1,10 +1,17 @@
 # Claude Assistant Guide
 
 ## Critical Rules
+- **ALWAYS edit files in `~/.local/share/chezmoi/`** - NEVER edit applied files in `~/.config/`
 - **ALWAYS use `chezmoi apply`** - NEVER run `darwin-rebuild` directly
 - Git config is managed by nix-darwin, NOT chezmoi
 - Don't create files unless absolutely necessary
 - Don't add documentation unless explicitly requested
+
+## File Editing Rules
+- When modifying configs, ALWAYS edit in `~/.local/share/chezmoi/`
+- For nix configs: edit `~/.local/share/chezmoi/private_dot_config/nix/`
+- For other dotfiles: edit corresponding files in `~/.local/share/chezmoi/`
+- After editing, run `chezmoi apply` to apply changes
 
 ## User Preferences
 - Be concise and direct (no fluff)
@@ -16,8 +23,9 @@
 
 ## Machine Hostnames
 - `vanik` - work MacBook (Shopify)
-- `tejas` - personal MacBook (future)
-- `griha` - Mac Mini (future)
+- `tejas` - personal MacBook
+- `griha` - Mac Mini
+- `agrani` - Linux desktop (Arch + Hyprland)
 
 ## What NOT to Do
 - ❌ Run darwin-rebuild directly

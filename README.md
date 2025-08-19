@@ -1,6 +1,17 @@
 # Alankrit's Dotfiles
 
-Declarative macOS configuration using **nix-darwin**, **home-manager**, and **chezmoi**.
+Declarative configuration for Darwin (macOS) and Linux systems using **nix-darwin**, **home-manager**, and **chezmoi**.
+
+## Prerequisites
+
+### macOS
+- **Xcode Command Line Tools** (required for building packages):
+  ```bash
+  xcode-select --install
+  ```
+
+### Linux
+- Base system installation (Arch, NixOS, etc.)
 
 ## Quick Setup
 
@@ -78,19 +89,19 @@ nix develop .#full            # All languages + tools
 - **Work laptop** (`vanik`): Shopify MacBook
 - **Personal MacBook** (`tejas`): Personal development machine  
 - **Mac Mini** (`griha`): Personal desktop/server
-- **Linux Desktop** (`agrani`): Arch Linux with Hyprland (future)
+- **Linux Desktop** (`agrani`): Arch Linux with Hyprland
 
 ### Package Strategy
-- **Nix packages**: CLI tools, development utilities
-- **Homebrew casks**: GUI applications (via nix-darwin)
+- **Nix packages**: CLI tools, development utilities (all platforms)
+- **Homebrew casks**: GUI applications on Darwin (via nix-darwin)
 - **Chezmoi**: Dotfiles and encrypted secrets
 
 ### Adding Packages
 
 Edit the appropriate file:
 - Universal → `~/.config/nix/modules/common/packages.nix`
-- macOS GUI apps → `~/.config/nix/modules/darwin/homebrew.nix`
-- macOS CLI tools → `~/.config/nix/modules/darwin/packages.nix`
+- Darwin GUI apps → `~/.config/nix/modules/darwin/homebrew.nix`
+- Darwin CLI tools → `~/.config/nix/modules/darwin/packages.nix`
 - Linux packages → `~/.config/nix/modules/linux/packages.nix`
 - Work-specific → `~/.config/nix/modules/home/work.nix`
 - Personal-specific → `~/.config/nix/modules/home/personal.nix`
