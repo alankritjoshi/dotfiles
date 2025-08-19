@@ -19,10 +19,5 @@
   networking.computerName = "vanik";
   
   # Work-specific system settings
-  system.defaults = {
-    NSGlobalDomain = {
-      # Stricter security for work
-      "com.apple.quarantine.check-download" = true;
-    };
-  };
+  # (Work-specific settings can be added here as needed)
 }
