@@ -1,0 +1,77 @@
+#!/usr/bin/env fish
+
+# Check for outdated nix packages and flake inputs
+
+set -l CONFIG_DIR ~/.config/nix-darwin
+set -l CHEZMOI_DIR ~/.local/share/chezmoi/private_dot_config/nix-darwin
+
+echo "🔍 Checking for outdated packages..."
+echo ""
+
+# Check if we're in the actual config or chezmoi directory
+if test -d $CONFIG_DIR
+    cd $CONFIG_DIR
+else if test -d $CHEZMOI_DIR
+    cd $CHEZMOI_DIR
+else
+    echo "❌ Could not find nix-darwin configuration directory"
+    exit 1
+end
+
+echo "📦 Current flake inputs:"
+nix flake metadata --json | jq -r '.locks.nodes | to_entries[] | select(.key != "root") | "\(.key): \(.value.locked.lastModified // "unknown")"' | while read -l line
+    set -l parts (string split ": " $line)
+    set -l input $parts[1]
+    set -l timestamp $parts[2]
+    
+    if test "$timestamp" != "unknown"
+        # Convert timestamp to date
+        set -l date (date -r $timestamp "+%Y-%m-%d" 2>/dev/null || date -d @$timestamp "+%Y-%m-%d" 2>/dev/null || echo "unknown")
+        echo "  • $input: $date"
+    else
+        echo "  • $input: unknown"
+    end
+end
+
+echo ""
+echo "🔄 Checking for updates..."
+echo ""
+
+# Create a temporary directory for the update check
+set -l temp_dir (mktemp -d)
+cp flake.nix flake.lock $temp_dir/
+
+cd $temp_dir
+
+# Update the flake and check what would change
+nix flake update 2>&1 | grep -E "Updated|Updating" | while read -l line
+    echo "  📌 $line"
+end
+
+# Compare lock files
+if diff -q flake.lock $CONFIG_DIR/flake.lock >/dev/null 2>&1 || diff -q flake.lock $CHEZMOI_DIR/flake.lock >/dev/null 2>&1
+    echo ""
+    echo "✅ All inputs are up to date!"
+else
+    echo ""
+    echo "💡 Updates available! Run these commands to update:"
+    echo ""
+    echo "  cd ~/.config/nix-darwin"
+    echo "  nix flake update"
+    echo "  chezmoi apply"
+    echo ""
+    echo "Or update specific inputs:"
+    echo "  nix flake lock --update-input nixpkgs"
+    echo "  nix flake lock --update-input home-manager"
+    echo "  nix flake lock --update-input nix-darwin"
+end
+
+# Clean up
+cd - >/dev/null
+rm -rf $temp_dir
+
+echo ""
+echo "📊 System info:"
+echo "  • Nix version: "(nix --version | string split " " | tail -1)
+echo "  • Darwin rebuild: "(which darwin-rebuild)
+echo "  • Last switch: "(stat -f "%Sm" /nix/var/nix/profiles/system 2>/dev/null || echo "unknown")

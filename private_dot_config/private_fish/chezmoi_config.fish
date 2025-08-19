@@ -73,25 +73,73 @@ alias b="brew"
 # Determine flake target based on hostname
 function __nix_flake_target
     set -l hostname (hostname -s)
-    if test "$hostname" = "Alankrits-MacBook-Pro.local"
-        echo Alankrits-MacBook-Pro
-    else
-        echo personal
+    switch "$hostname"
+        case "Alankrits-MacBook-Pro" "Alankrits-MacBook-Pro.local"
+            echo Alankrits-MacBook-Pro
+        case "mac-mini" "mac-mini.local"
+            echo mac-mini
+        case "mac-pro" "mac-pro.local"
+            echo mac-pro
+        case "*"
+            # Default to personal for unknown hosts
+            echo personal
     end
 end
 
-# Nix aliases that use the correct flake target
-function nrs
-    sudo darwin-rebuild switch --flake ~/.config/nix-darwin#(__nix_flake_target)
+# Determine the nix config directory (supports both old and new structure)
+function __nix_config_dir
+    if test -d ~/.config/nix
+        echo ~/.config/nix
+    else
+        echo ~/.config/nix-darwin
+    end
 end
 
+# IMPORTANT: Always use chezmoi apply instead of darwin-rebuild directly
+alias nrs="chezmoi apply"
+alias rebuild="chezmoi apply"
+
+# Build without switching (for testing)
 function nrb
-    darwin-rebuild build --flake ~/.config/nix-darwin#(__nix_flake_target)
+    darwin-rebuild build --flake (__nix_config_dir)#(__nix_flake_target)
 end
 
-function nra
-    darwin-rebuild build --flake ~/.config/nix-darwin#(__nix_flake_target) && sudo ./result/activate
-end
+# Development shells
+alias nd="nix develop"
+alias nds="nix develop --command fish"
+
+# Flake management
+alias nfu="nix flake update"
+alias nfl="nix flake lock"
+alias nfc="nix flake check"
+alias nfs="nix flake show"
+alias ncu="nix-check-updates"
+
+# Package management
+alias ns="nix search nixpkgs"
+alias nsh="nix shell"
+alias nr="nix run"
+
+# Formatting
+alias nfmt="alejandra"
+alias nfmtc="alejandra --check"
+
+# Garbage collection
+alias ngc="sudo nix-collect-garbage -d"
+alias ngco="nix-collect-garbage --delete-older-than 7d"
+
+# Info and debugging
+alias nse="nix show-derivation"
+alias npath="nix path-info"
+alias nwhy="nix why-depends"
+
+# Store operations
+alias nso="nix store optimise"
+alias nsr="nix store repair --verify"
+
+# Evaluation
+alias ne="nix eval"
+alias nei="nix repl"
 
 function yy
     set tmp (mktemp -t "yazi-cwd.XXXXXX")

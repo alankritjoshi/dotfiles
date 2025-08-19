@@ -1,0 +1,70 @@
+#!/usr/bin/env fish
+
+# Migration script from nix-darwin to multi-platform nix structure
+
+echo "🔄 Migrating to multi-platform nix configuration..."
+echo ""
+
+set -l OLD_DIR ~/.config/nix-darwin
+set -l NEW_DIR ~/.config/nix
+set -l CHEZMOI_OLD ~/.local/share/chezmoi/private_dot_config/nix-darwin
+set -l CHEZMOI_NEW ~/.local/share/chezmoi/private_dot_config/nix
+
+# Check if already migrated
+if test -L $OLD_DIR
+    echo "✅ Already migrated! $OLD_DIR is a symlink."
+    exit 0
+end
+
+if test -d $NEW_DIR
+    echo "⚠️  New directory already exists at $NEW_DIR"
+    echo "   Please check and remove if needed before migrating."
+    exit 1
+end
+
+# Step 1: Apply chezmoi to get the new structure
+echo "📦 Step 1: Applying chezmoi configuration..."
+chezmoi apply
+
+# Step 2: Create symlink for backward compatibility
+if test -d $NEW_DIR
+    echo "📦 Step 2: Creating compatibility symlink..."
+    if test -d $OLD_DIR
+        echo "   Backing up old directory to $OLD_DIR.backup"
+        mv $OLD_DIR $OLD_DIR.backup
+    end
+    ln -sf $NEW_DIR $OLD_DIR
+    echo "   Created symlink: $OLD_DIR -> $NEW_DIR"
+end
+
+# Step 3: Test the configuration
+echo "📦 Step 3: Testing configuration..."
+set -l hostname (hostname -s)
+set -l target
+switch "$hostname"
+    case "Alankrits-MacBook-Pro" "Alankrits-MacBook-Pro.local"
+        set target Alankrits-MacBook-Pro
+    case "mac-mini" "mac-mini.local"
+        set target mac-mini
+    case "mac-pro" "mac-pro.local"
+        set target mac-pro
+    case "*"
+        set target personal
+end
+
+echo "   Building configuration for: $target"
+if darwin-rebuild build --flake $NEW_DIR#$target
+    echo "✅ Build successful!"
+    echo ""
+    echo "🎉 Migration complete! Next steps:"
+    echo "   1. Run 'chezmoi apply' to switch to the new configuration"
+    echo "   2. The old configuration is backed up at $OLD_DIR.backup"
+    echo "   3. Once verified working, you can remove the backup"
+    echo ""
+    echo "📝 Note: Your nix commands will now work with both:"
+    echo "   - ~/.config/nix (new structure)"
+    echo "   - ~/.config/nix-darwin (symlink for compatibility)"
+else
+    echo "❌ Build failed. Please check the configuration."
+    exit 1
+end
