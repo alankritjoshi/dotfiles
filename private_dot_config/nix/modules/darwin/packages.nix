@@ -70,7 +70,7 @@
     
   ] ++ lib.optionals config.alankrit.isWork [
     # Work-specific apps
-    cloudflare-warp
+    # Note: Cloudflare Warp is installed via Homebrew cask on macOS
     
   ] ++ lib.optionals config.alankrit.isPersonal [
     # Personal-specific apps

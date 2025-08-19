@@ -6,9 +6,10 @@
   # Work-specific packages
   home.packages = with pkgs; lib.optionals pkgs.stdenv.isDarwin [
     # macOS work-specific packages
-    cloudflare-warp
+    # Note: Cloudflare Warp is installed via Homebrew cask on macOS
   ] ++ lib.optionals pkgs.stdenv.isLinux [
     # Linux work-specific packages
+    cloudflare-warp  # Available on Linux via nixpkgs
     slack
     zoom-us
     teams
