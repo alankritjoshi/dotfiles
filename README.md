@@ -74,8 +74,8 @@ nix develop .#full            # All languages + tools
 ## Configuration
 
 ### Machines
-- **Work laptop** (`vanik`): Shopify MacBook with SSH signing
-- **Personal MacBook** (`tejas`): Personal development machine
+- **Work laptop** (`vanik`): Shopify MacBook
+- **Personal MacBook** (`tejas`): Personal development machine  
 - **Mac Mini** (`griha`): Personal desktop/server
 - **Linux Desktop** (`agrani`): Arch Linux with Hyprland (future)
 
