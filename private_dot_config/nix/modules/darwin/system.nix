@@ -1,8 +1,17 @@
 { config, pkgs, ... }:
 
 {
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+  
   # System settings
   system = {
+    # State version for nix-darwin
+    stateVersion = 6;
+    
+    # Primary user for system-wide settings
+    primaryUser = "alankritjoshi";
+    
     defaults = {
       # Finder
       finder = {

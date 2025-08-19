@@ -9,7 +9,7 @@
   
   # Machine-specific home configuration
   home.username = username;
-  home.homeDirectory = "/home/${username}";
+  home.homeDirectory = lib.mkForce "/home/${username}";
   home.stateVersion = "24.05";
   
   # Personal git configuration
