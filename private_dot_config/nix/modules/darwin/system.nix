@@ -84,6 +84,23 @@
   # Security settings
   security.pam.services.sudo_local.touchIdAuth = true;
   
+  # Shell configuration
+  # This populates /etc/shells and allows using these shells
+  environment.shells = with pkgs; [
+    bash
+    zsh
+    fish
+  ];
+  
+  # Enable Fish shell system-wide
+  programs.fish.enable = true;
+  
+  # Set Fish as default shell for the primary user
+  users.users.${config.system.primaryUser} = {
+    home = "/Users/${config.system.primaryUser}";
+    shell = pkgs.fish;
+  };
+  
   # Fonts
   fonts = {
     packages = with pkgs; [
