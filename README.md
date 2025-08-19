@@ -65,7 +65,7 @@ nix develop .#full            # All languages + tools
 ## Configuration
 
 ### Machines
-- **Work laptop** (`Alankrits-MacBook-Pro`): Shopify config with SSH signing
+- **Work laptop** (`vanik`): Shopify config with SSH signing
 - **Personal** (Mac Mini/Pro): Personal email and tools
 
 ### Package Strategy
