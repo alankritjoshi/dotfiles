@@ -73,6 +73,9 @@
       "santa"
       "trailer"
       
+      # VPN (required for Shopify access)
+      "cloudflare-warp"
+      
     ] ++ lib.optionals config.alankrit.isPersonal [
       # === Personal-specific apps ===
       
