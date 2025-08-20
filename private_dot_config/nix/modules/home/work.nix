@@ -26,9 +26,4 @@
     dev = "source /opt/dev/dev.fish";
     spin = "dev spin";
   };
-  
-  # Work-specific git configuration for dev command
-  programs.git.includes = [
-    { path = "~/.config/dev-shopify/gitconfig"; }
-  ];
 }

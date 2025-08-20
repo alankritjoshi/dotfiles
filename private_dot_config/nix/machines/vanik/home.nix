@@ -11,10 +11,8 @@
   home.homeDirectory = lib.mkForce "/Users/${username}";
   home.stateVersion = "24.05";
   
-  # Work-specific git configuration
-  programs.git = {
-    userEmail = "alankrit.joshi@shopify.com";
-  };
+  # Let dev manage git config on work machine
+  programs.git.enable = lib.mkForce false;
   
   # Work-specific packages
   home.packages = with pkgs; [
