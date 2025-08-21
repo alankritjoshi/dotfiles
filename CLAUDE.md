@@ -23,9 +23,10 @@
 
 ## Code Style Preferences
 - Use early exit/return patterns to avoid nested conditionals
-- Assert preconditions early with guard clauses
+- Assert preconditions early with assert statements
 - Prefer flat code over deep nesting
 - Return early when conditions aren't met
+- Use assertions to fail fast instead of defensive if/else
 
 ## Machine Hostnames
 - `vanik` - work MacBook (Shopify)
