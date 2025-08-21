@@ -21,6 +21,12 @@
 - Don't add packages like atuin (was rejected)
 - Don't modify scripts without being asked
 
+## Code Style Preferences
+- Use early exit/return patterns to avoid nested conditionals
+- Assert preconditions early with guard clauses
+- Prefer flat code over deep nesting
+- Return early when conditions aren't met
+
 ## Machine Hostnames
 - `vanik` - work MacBook (Shopify)
 - `tejas` - personal MacBook
