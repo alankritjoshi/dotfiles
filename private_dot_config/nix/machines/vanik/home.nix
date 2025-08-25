@@ -3,6 +3,7 @@
 {
   imports = [
     ../../modules/home/common.nix
+    ./claude-code.nix
   ];
   
   # Machine-specific home configuration
