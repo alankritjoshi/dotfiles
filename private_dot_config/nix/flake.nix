@@ -29,7 +29,7 @@
     };
     
     # Helper function for Darwin configurations
-    mkDarwinConfiguration = { hostname, machineType }:
+    mkDarwinConfiguration = { hostname }:
       nix-darwin.lib.darwinSystem {
         system = systems.darwin;
         specialArgs = { inherit inputs username hostname; };
@@ -63,19 +63,16 @@
       # Work laptop (Shopify)
       "vanik" = mkDarwinConfiguration {
         hostname = "vanik";
-        machineType = "work-laptop";
       };
       
       # Personal MacBook
       "tejas" = mkDarwinConfiguration {
         hostname = "tejas";
-        machineType = "personal-laptop";
       };
       
       # Personal Mac Mini
       "griha" = mkDarwinConfiguration {
         hostname = "griha";
-        machineType = "personal-desktop";
       };
     };
     

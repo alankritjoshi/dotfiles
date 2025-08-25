@@ -3,7 +3,8 @@
 {
   # Machine-specific configuration for Arch Linux desktop
   alankrit = {
-    machineType = "personal-desktop";
+    isWork = false;
+    isPersonal = true;
     isLinux = true;
     enableHyprland = true;
     enableGaming = true;

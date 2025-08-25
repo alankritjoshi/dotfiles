@@ -2,22 +2,16 @@
 
 {
   options.alankrit = {
-    # Machine type options
-    machineType = lib.mkOption {
-      type = lib.types.enum [ "work-laptop" "personal-desktop" "personal-laptop" ];
-      description = "The type of machine this configuration is for";
-    };
-    
-    # Derived options based on machine type
+    # Machine classification
     isWork = lib.mkOption {
       type = lib.types.bool;
-      default = config.alankrit.machineType == "work-laptop";
+      default = false;
       description = "Whether this is a work machine";
     };
     
     isPersonal = lib.mkOption {
       type = lib.types.bool;
-      default = config.alankrit.machineType != "work-laptop";
+      default = true;
       description = "Whether this is a personal machine";
     };
     

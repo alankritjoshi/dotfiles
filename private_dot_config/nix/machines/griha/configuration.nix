@@ -3,7 +3,8 @@
 {
   # Machine-specific configuration for Mac Mini
   alankrit = {
-    machineType = "personal-desktop";
+    isWork = false;
+    isPersonal = true;
     isDarwin = true;
   };
   

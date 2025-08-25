@@ -3,7 +3,8 @@
 {
   # Machine-specific configuration for work laptop
   alankrit = {
-    machineType = "work-laptop";
+    isWork = true;
+    isPersonal = false;
     isDarwin = true;
   };
   

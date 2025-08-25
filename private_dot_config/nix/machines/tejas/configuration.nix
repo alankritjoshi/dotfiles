@@ -3,7 +3,8 @@
 {
   # Machine-specific configuration for personal MacBook
   alankrit = {
-    machineType = "personal-laptop";
+    isWork = false;
+    isPersonal = true;
     isDarwin = true;
   };
   
