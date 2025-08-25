@@ -52,11 +52,6 @@
         ];
       };
     
-    # Import devshell configuration
-    devshellConfig = import ./devshell.nix { 
-      inherit nixpkgs;
-      system = systems.darwin; # Default to darwin for now
-    };
   in {
     # Darwin configurations
     darwinConfigurations = {
@@ -88,7 +83,31 @@
       };
     };
     
-    # Development shells
-    devShells = devshellConfig.devShells;
+    # Development shells for system management
+    devShells.${systems.darwin}.default = nixpkgs.legacyPackages.${systems.darwin}.mkShell {
+      buildInputs = with nixpkgs.legacyPackages.${systems.darwin}; [
+        home-manager.packages.${systems.darwin}.home-manager
+        nix-darwin.packages.${systems.darwin}.darwin-rebuild
+        nixfmt-rfc-style
+      ];
+      shellHook = ''
+        echo "Nix development shell activated"
+        echo ""
+        echo "System management commands:"
+        echo "  sudo darwin-rebuild switch --flake .          # Apply system configuration"
+        echo "  home-manager switch --flake .#$HOST           # Apply home configuration"
+        echo ""
+        echo "Upgrade commands:"
+        echo "  nix flake update                              # Update all flake inputs"
+        echo "  nix flake update nixpkgs                      # Update nixpkgs only"
+        echo "  nix flake update home-manager                 # Update home-manager only"
+        echo "  nix flake update nix-darwin                   # Update nix-darwin only"
+        echo ""
+        echo "Utilities:"
+        echo "  nixfmt *.nix                                  # Format nix files"
+        echo "  nix flake check                               # Validate flake configuration"
+        echo "  home-manager news --flake .#$HOST             # Read home-manager news"
+      '';
+    };
   };
 }
