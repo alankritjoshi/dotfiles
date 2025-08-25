@@ -16,14 +16,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     
-    # Hyprland (for Linux)
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, hyprland, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, ... }:
   let
     username = "alankritjoshi";
     
@@ -57,31 +52,6 @@
         ];
       };
     
-    # Helper function for NixOS configurations (future)
-    mkNixosConfiguration = { hostname, machineType }:
-      nixpkgs.lib.nixosSystem {
-        system = systems.linux;
-        specialArgs = { inherit inputs username hostname; };
-        
-        modules = [
-          ./modules/linux/system.nix
-          ./modules/common/options.nix
-          ./machines/${hostname}/configuration.nix
-          ./machines/${hostname}/hardware.nix
-          
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.${username} = import ./machines/${hostname}/home.nix;
-              extraSpecialArgs = { inherit inputs username hyprland; };
-              backupFileExtension = "backup";
-            };
-          }
-        ];
-      };
-    
     # Import devshell configuration
     devshellConfig = import ./devshell.nix { 
       inherit nixpkgs;
@@ -109,12 +79,15 @@
       };
     };
     
-    # NixOS configurations
-    nixosConfigurations = {
-      # Arch Linux desktop with Hyprland (experimental/cutting-edge)
-      "agrani" = mkNixosConfiguration {
-        hostname = "agrani";
-        machineType = "personal-desktop";
+    # Standalone Home Manager configurations (for non-NixOS systems)
+    homeConfigurations = {
+      # Arch Linux desktop
+      "${username}@agrani" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${systems.linux};
+        extraSpecialArgs = { inherit inputs username; };
+        modules = [
+          ./machines/agrani/home.nix
+        ];
       };
     };
     
