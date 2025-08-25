@@ -126,8 +126,7 @@ if ! command -v $REBUILD_CMD &>/dev/null; then
 else
     echo "Nix configuration already installed, rebuilding..."
     
-    # Update flake inputs and rebuild
-    nix flake update
+    # Just rebuild without updating flakes
     run_darwin_rebuild sudo $REBUILD_CMD switch --flake ".#${FLAKE_TARGET}"
 fi
 
@@ -135,14 +134,16 @@ echo "Configuration applied successfully!"
 echo ""
 echo "To manually rebuild in the future, run:"
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    echo "  sudo darwin-rebuild switch --flake ~/.config/nix"
+    echo "  chezmoi apply                                    # Apply dotfiles and rebuild"
+    echo "  sudo darwin-rebuild switch --flake ~/.config/nix # Just rebuild nix config"
 else
-    echo "  sudo nixos-rebuild switch --flake ~/.config/nix"
+    echo "  chezmoi apply                                     # Apply dotfiles and rebuild"
+    echo "  sudo nixos-rebuild switch --flake ~/.config/nix  # Just rebuild nix config"
 fi
 echo ""
 echo "To update packages, run:"
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    echo "  nix flake update ~/.config/nix && sudo darwin-rebuild switch --flake ~/.config/nix"
+    echo "  cd ~/.config/nix && nix flake update && sudo darwin-rebuild switch --flake ."
 else
-    echo "  nix flake update ~/.config/nix && sudo nixos-rebuild switch --flake ~/.config/nix"
+    echo "  cd ~/.config/nix && nix flake update && sudo nixos-rebuild switch --flake ."
 fi

@@ -10,6 +10,9 @@
     gnused
     gawk
     
+    # === Nix Tools ===
+    home-manager
+    
     # === GUI Applications from nixpkgs ===
     
     # Development (work fine from nixpkgs)

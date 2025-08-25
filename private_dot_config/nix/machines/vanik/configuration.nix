@@ -20,6 +20,6 @@
   networking.computerName = "vanik";
   
   # Work-specific system settings
-  # Enable nix management for work laptop (no Determinate installer)
-  nix.enable = true;
+  # Let Shopify dev tools manage nix.conf to avoid conflicts
+  nix.enable = false;
 }

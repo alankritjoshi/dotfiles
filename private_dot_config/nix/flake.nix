@@ -114,7 +114,7 @@
         echo ""
         echo "System management commands:"
         echo "  sudo darwin-rebuild switch --flake .          # Apply system + home config (Darwin)"
-        echo "  home-manager switch --flake .#$USER@$HOST     # Apply home config only (faster iteration)"
+        echo "  home-manager switch --flake .#$USER@$(hostname)     # Apply home config only (faster iteration)"
         echo ""
         echo "Note: On Darwin, home-manager is integrated with darwin-rebuild but can still"
         echo "      be used separately for faster user-level changes without sudo"

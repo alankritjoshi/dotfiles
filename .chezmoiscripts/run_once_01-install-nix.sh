@@ -4,6 +4,13 @@ set -e
 
 echo "Checking for Nix installation..."
 
+# Skip automatic installation on work machine - dev handles it
+if [ "$(hostname -s)" = "vanik" ] && ! command -v nix &>/dev/null; then
+    echo "On work machine - please run 'dev' first to install nix"
+    echo "Then run 'chezmoi apply' again"
+    exit 1
+fi
+
 if ! command -v nix &>/dev/null; then
     echo "Nix not found, installing..."
     

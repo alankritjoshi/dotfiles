@@ -39,6 +39,7 @@
   home.packages = with pkgs; [
     # === Development Tools ===
     neovim
+    tree-sitter
     sqlite
     # neovide # Commented out as in original
     lazygit
