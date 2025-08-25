@@ -115,17 +115,6 @@
     hugo         # Static site generator
   ];
 
-  # Fish shell configuration
-  programs.fish = {
-    enable = true;
-    interactiveShellInit = ''
-      # Source additional fish config managed by chezmoi
-      if test -f ~/.config/fish/chezmoi_config.fish
-        source ~/.config/fish/chezmoi_config.fish
-      end
-    '';
-  };
-
   # Starship prompt
   programs.starship = {
     enable = true;

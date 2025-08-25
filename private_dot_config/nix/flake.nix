@@ -38,6 +38,13 @@
           ./modules/darwin/system.nix
           ./modules/common/options.nix
           ./machines/${hostname}/configuration.nix
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.${username} = import ./machines/${hostname}/home.nix;
+            home-manager.extraSpecialArgs = { inherit inputs username; };
+          }
         ];
       };
     
@@ -70,9 +77,9 @@
       };
     };
     
-    # Home Manager configurations (now separate from Darwin)
+    # Home Manager configurations (for standalone use)
     homeConfigurations = {
-      # Darwin machines
+      # Darwin machines (can be used for faster iteration without sudo)
       "${username}@vanik" = mkHomeConfiguration {
         hostname = "vanik";
         system = systems.darwin;
@@ -106,12 +113,11 @@
         echo "Nix development shell activated"
         echo ""
         echo "System management commands:"
-        echo "  sudo darwin-rebuild switch --flake .          # Apply system config only (Darwin)"
-        echo "  home-manager switch --flake .#$USER@$HOST     # Apply home config (all machines)"
+        echo "  sudo darwin-rebuild switch --flake .          # Apply system + home config (Darwin)"
+        echo "  home-manager switch --flake .#$USER@$HOST     # Apply home config only (faster iteration)"
         echo ""
-        echo "Quick iteration:"
-        echo "  home-manager switch --flake .#$USER@$HOST     # Fast user-level changes"
-        echo "  sudo darwin-rebuild switch --flake .          # Slower system-level changes"
+        echo "Note: On Darwin, home-manager is integrated with darwin-rebuild but can still"
+        echo "      be used separately for faster user-level changes without sudo"
         echo ""
         echo "Upgrade commands:"
         echo "  nix flake update                              # Update all flake inputs"
