@@ -49,7 +49,6 @@
     # === Languages & Package Managers ===
     go
     delve        # Go debugger
-    uv           # Python package manager
     nodejs       # Includes npm
     bun          # Fast JS runtime
     
@@ -167,6 +166,11 @@
     enable = true;
     userName = "Alankrit Joshi";
     
+    # Git aliases
+    aliases = {
+      prune-branches = "!git fetch --prune && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -D";
+    };
+    
     # SSH signing configuration
     signing = {
       key = "~/.ssh/id_ed25519.pub";
@@ -182,17 +186,30 @@
       };
     };
     
+    # Global gitignore patterns
+    ignores = [
+      ".tool-version"
+      ".vscode/"
+      "*.code-workspace"
+      "*.idea/"
+      "*.iml"
+      "*.DS_Store"
+      "*.bundle/config"
+      "*.claude/settings.local.json"
+    ];
+    
     # Common git config
     extraConfig = {
-      core.editor = "nvim";
+      core = {
+        editor = "nvim";
+        autocrlf = "input";
+        fsmonitor = true;
+        untrackedcache = true;
+      };
       init.defaultBranch = "main";
       merge.conflictstyle = "zdiff3";
       gpg.format = "ssh";
       gpg.ssh.allowedSignersFile = "~/.ssh/allowed_signers";
-      
-      # Performance
-      core.fsmonitor = true;
-      core.untrackedcache = true;
       
       # Better defaults
       push.default = "current";
@@ -201,6 +218,14 @@
       fetch.prune = true;
       diff.colorMoved = "default";
       rerere.enabled = true;
+      
+      # Git LFS
+      filter.lfs = {
+        clean = "git-lfs clean -- %f";
+        smudge = "git-lfs smudge -- %f";
+        process = "git-lfs filter-process";
+        required = true;
+      };
     };
   };
 }

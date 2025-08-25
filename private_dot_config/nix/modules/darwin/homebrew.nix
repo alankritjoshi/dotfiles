@@ -25,6 +25,7 @@
     brews = [
       "nvm"     # Node version manager
       "tabiew"  # Table viewer
+      "uv"      # Python package manager
     ] ++ lib.optionals config.alankrit.isWork [
       # Work-specific brews can go here
     ] ++ lib.optionals config.alankrit.isPersonal [
