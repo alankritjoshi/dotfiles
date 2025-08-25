@@ -2,7 +2,8 @@
 
 ## Critical Rules
 - **ALWAYS edit files in `~/.local/share/chezmoi/`** - NEVER edit applied files in `~/.config/`
-- **ALWAYS use `chezmoi apply`** - NEVER run `darwin-rebuild` directly
+- **NEVER run `chezmoi apply`** - User will run this manually
+- **NEVER run `darwin-rebuild`** directly
 - Git config is managed by nix-darwin, NOT chezmoi
 - Don't create files unless absolutely necessary
 - Don't add documentation unless explicitly requested
@@ -11,7 +12,7 @@
 - When modifying configs, ALWAYS edit in `~/.local/share/chezmoi/`
 - For nix configs: edit `~/.local/share/chezmoi/private_dot_config/nix/`
 - For other dotfiles: edit corresponding files in `~/.local/share/chezmoi/`
-- After editing, run `chezmoi apply` to apply changes
+- After editing, inform user to run `chezmoi apply` to apply changes
 
 ## User Preferences
 - Be concise and direct (no fluff)
@@ -35,6 +36,7 @@
 - `agrani` - Linux desktop (Arch + Hyprland)
 
 ## What NOT to Do
+- ❌ Run `chezmoi apply` (user will run manually)
 - ❌ Run darwin-rebuild directly
 - ❌ Manage gitconfig with chezmoi
 - ❌ Modify scripts without being asked
