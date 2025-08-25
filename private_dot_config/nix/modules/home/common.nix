@@ -37,73 +37,83 @@
 
   # User-specific packages
   home.packages = with pkgs; [
-    # Development tools
+    # === Development Tools ===
     neovim
     sqlite
     # neovide # Commented out as in original
-    lazygit # Was commented in original, but useful for git workflow
-    gh # GitHub CLI (config managed by chezmoi)
+    lazygit
+    gh           # GitHub CLI (config managed by chezmoi)
+    delta        # Better git diff
     
-    # Languages and runtimes
+    # === Languages & Package Managers ===
     go
-    delve
-    uv # Python version and package manager
+    delve        # Go debugger
+    uv           # Python package manager
+    nodejs       # Includes npm
+    bun          # Fast JS runtime
     
-    # Dotfiles management
+    # === Build Tools ===
+    cmake
+    gnumake
+    pkg-config
+    autoconf
+    gettext
+    
+    # === Dotfiles Management ===
     chezmoi
-    age # Encryption tool for secrets
+    age          # Encryption tool for secrets
     
-    # Command line tools
-    eza
-    fzf
-    zoxide
-    ripgrep
-    fd
-    sd
-    bat
-    trash-cli
-    yazi
+    # === Modern CLI Tools ===
+    eza          # Better ls
+    bat          # Better cat
+    fd           # Better find
+    ripgrep      # Better grep
+    sd           # Better sed
+    fzf          # Fuzzy finder
+    zoxide       # Smart cd
+    trash-cli    # Safe rm
+    yazi         # File manager
     
-    # Network tools
-    httpie
-    xh
-    jq
-    fx
-    htmlq
-    jless
+    # === Network Tools ===
+    httpie       # Better curl
+    xh           # Rust httpie
+    nmap         # Network scanner
+    netcat       # Network utility
+    wrk          # HTTP benchmarking
+    oha          # HTTP load testing
+    iperf        # Network performance
     
-    # Data tools
-    miller # mlr command for CSV/JSON
+    # === File & Data Tools ===
+    jq           # JSON processor
+    fx           # JSON viewer
+    htmlq        # HTML processor
+    jless        # JSON pager
+    miller       # CSV/JSON tool (mlr command)
     # tabiew is in homebrew
     
-    # Terminal multiplexers and tools
+    # === Terminal & Shell ===
+    fish
     zellij
     starship
     
-    # Utilities
-    gum
-    glow
-    tldr
+    # === System Monitoring ===
+    htop
+    btop         # Better top
+    
+    # === Archive Tools ===
+    zip
+    unzip
+    p7zip
+    
+    # === Documentation & UI ===
+    tldr         # Simplified man pages
+    glow         # Markdown renderer
+    gum          # Shell scripts UI
     # slides # Commented out as in original
     # marp-cli # Commented out as in original
     
-    # Productivity
-    hugo # Was commented in original but useful
-    
-    # System tools
-    openssh # includes ssh-copy-id
-    openssl
-    coreutils
-    gnused
-    gettext
-    autoconf
-    bash
-    fish
-    
-    # Performance testing
-    wrk
-    iperf
-    oha
+    # === Productivity ===
+    hugo         # Static site generator
   ];
 
   # Fish shell configuration

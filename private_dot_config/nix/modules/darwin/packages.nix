@@ -1,47 +1,14 @@
 { config, pkgs, lib, ... }:
 
 {
-  # System-level packages
+  # Darwin-specific system packages
   environment.systemPackages = with pkgs; [
-    # Essential tools
-    vim
-    git
-    curl
-    wget
-    
-    # System utilities
+    # === GNU Tools (macOS needs these) ===
     coreutils
     findutils
     gnugrep
     gnused
     gawk
-    
-    # Build tools
-    cmake
-    gnumake
-    pkg-config
-    
-    # Archive tools
-    zip
-    unzip
-    p7zip
-    
-    # Process management
-    htop
-    btop
-    
-    # Network diagnostics
-    nmap
-    netcat
-    
-    # Development
-    gh # GitHub CLI
-    alejandra # Nix code formatter
-    
-    # Shell
-    fish
-    bash
-    zsh
     
     # === GUI Applications from nixpkgs ===
     
