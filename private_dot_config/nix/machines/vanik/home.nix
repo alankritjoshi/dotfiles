@@ -3,7 +3,6 @@
 {
   imports = [
     ../../modules/home/common.nix
-    ../../modules/home/work.nix
   ];
   
   # Machine-specific home configuration
@@ -17,5 +16,18 @@
   # Work-specific packages
   home.packages = with pkgs; [
     # Shopify-specific tools would go here
+    # Note: Cloudflare Warp is installed via Homebrew cask on macOS
   ];
+  
+  # Work-specific environment variables
+  home.sessionVariables = {
+    WORK_ENV = "shopify";
+  };
+  
+  # Work-specific shell aliases
+  programs.fish.shellAliases = {
+    # Shopify-specific aliases
+    dev = "source /opt/dev/dev.fish";
+    spin = "dev spin";
+  };
 }

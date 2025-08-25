@@ -38,17 +38,16 @@
           ./modules/darwin/system.nix
           ./modules/common/options.nix
           ./machines/${hostname}/configuration.nix
-          
-          home-manager.darwinModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.${username} = import ./machines/${hostname}/home.nix;
-              extraSpecialArgs = { inherit inputs username; };
-              backupFileExtension = "backup";
-            };
-          }
+        ];
+      };
+    
+    # Helper function for Home Manager configurations
+    mkHomeConfiguration = { hostname, system }:
+      home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${system};
+        extraSpecialArgs = { inherit inputs username; };
+        modules = [
+          ./machines/${hostname}/home.nix
         ];
       };
     
@@ -71,15 +70,28 @@
       };
     };
     
-    # Standalone Home Manager configurations (for non-NixOS systems)
+    # Home Manager configurations (now separate from Darwin)
     homeConfigurations = {
+      # Darwin machines
+      "${username}@vanik" = mkHomeConfiguration {
+        hostname = "vanik";
+        system = systems.darwin;
+      };
+      
+      "${username}@tejas" = mkHomeConfiguration {
+        hostname = "tejas";
+        system = systems.darwin;
+      };
+      
+      "${username}@griha" = mkHomeConfiguration {
+        hostname = "griha";
+        system = systems.darwin;
+      };
+      
       # Arch Linux desktop
-      "${username}@agrani" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${systems.linux};
-        extraSpecialArgs = { inherit inputs username; };
-        modules = [
-          ./machines/agrani/home.nix
-        ];
+      "${username}@agrani" = mkHomeConfiguration {
+        hostname = "agrani";
+        system = systems.linux;
       };
     };
     
@@ -94,8 +106,12 @@
         echo "Nix development shell activated"
         echo ""
         echo "System management commands:"
-        echo "  sudo darwin-rebuild switch --flake .          # Apply system configuration"
-        echo "  home-manager switch --flake .#$HOST           # Apply home configuration"
+        echo "  sudo darwin-rebuild switch --flake .          # Apply system config only (Darwin)"
+        echo "  home-manager switch --flake .#$USER@$HOST     # Apply home config (all machines)"
+        echo ""
+        echo "Quick iteration:"
+        echo "  home-manager switch --flake .#$USER@$HOST     # Fast user-level changes"
+        echo "  sudo darwin-rebuild switch --flake .          # Slower system-level changes"
         echo ""
         echo "Upgrade commands:"
         echo "  nix flake update                              # Update all flake inputs"
@@ -106,7 +122,6 @@
         echo "Utilities:"
         echo "  nixfmt *.nix                                  # Format nix files"
         echo "  nix flake check                               # Validate flake configuration"
-        echo "  home-manager news --flake .#$HOST             # Read home-manager news"
       '';
     };
   };
