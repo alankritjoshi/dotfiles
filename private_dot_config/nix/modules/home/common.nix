@@ -92,7 +92,6 @@
     # tabiew is in homebrew
     
     # === Terminal & Shell ===
-    fish
     zellij
     starship
     
