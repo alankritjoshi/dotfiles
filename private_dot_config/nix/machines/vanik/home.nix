@@ -10,8 +10,14 @@
   home.homeDirectory = lib.mkForce "/Users/${username}";
   home.stateVersion = "24.05";
   
-  # Let dev manage git config on work machine
-  programs.git.enable = lib.mkForce false;
+  # Git configuration for work machine (integrates with dev)
+  programs.git = {
+    userEmail = "alankrit.joshi@shopify.com";
+    extraConfig.maintenance.repo = "/Users/${username}/world/trees/root/src";
+    includes = [
+      { path = "/Users/${username}/.config/dev/gitconfig"; }
+    ];
+  };
   
   # Work-specific packages
   home.packages = with pkgs; [
