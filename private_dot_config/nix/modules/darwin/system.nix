@@ -31,11 +31,20 @@
       dock = {
         autohide = true;
         autohide-delay = 0.0;
-        autohide-time-modifier = 0.5;
+        autohide-time-modifier = 0.15;
         tilesize = 48;
         show-recents = false;
         minimize-to-application = true;
         mru-spaces = false;
+        expose-group-apps = true;
+        persistent-apps = [
+          "/Applications/Google Chrome.app"
+          "/Applications/Nix Apps/WezTerm.app"
+          "/Applications/Xcode.app"
+          "/System/Applications/iPhone Mirroring.app"
+          "/System/Applications/Music.app"
+          "/System/Applications/Messages.app"
+        ];
       };
       
       # Global macOS settings
@@ -72,6 +81,9 @@
       
       # Launch Services
       LaunchServices.LSQuarantine = false;
+      
+      # Spaces (Mission Control)
+      spaces.spans-displays = true;  # Mission Control spans across multiple displays
     };
     
     # Keyboard remapping

@@ -22,4 +22,13 @@
   # Work-specific system settings
   # Let Shopify dev tools manage nix.conf to avoid conflicts
   nix.enable = false;
+  
+  # Dock configuration for work machine - override default
+  system.defaults.dock.persistent-apps = lib.mkForce [
+    "/Applications/Nix Apps/WezTerm.app"
+    "/Applications/Nix Apps/Cursor.app"
+    "/Applications/Google Chrome.app"
+    "/Applications/Slack.app"
+    "/System/Applications/Music.app"
+  ];
 }
