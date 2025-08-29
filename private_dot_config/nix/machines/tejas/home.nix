@@ -14,5 +14,6 @@
   # Personal git configuration
   programs.git = {
     userEmail = "alankritjoshi@gmail.com";
+    signing.key = "~/.ssh/id_ed25519_tejas.pub";
   };
 }

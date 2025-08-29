@@ -14,6 +14,7 @@
   # Git configuration for work machine (integrates with dev)
   programs.git = {
     userEmail = "alankrit.joshi@shopify.com";
+    signing.key = "~/.ssh/id_ed25519_vanik.pub";
     extraConfig.maintenance.repo = "/Users/${username}/world/trees/root/src";
     includes = [
       { path = "/Users/${username}/.config/dev/gitconfig"; }

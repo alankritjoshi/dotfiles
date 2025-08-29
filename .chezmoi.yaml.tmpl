@@ -1,3 +1,4 @@
+{{- $machine := promptChoiceOnce . "machine" "Which machine is this?" (list "vanik" "griha" "tejas" "agrani") -}}
 git:
   autoCommit: true
   autoPush: true
@@ -7,4 +8,9 @@ diff:
   exclude: ["scripts"]
 data:
   email: alankritjoshi@gmail.com
+  machine: {{ $machine | quote }}
+encryption: age
+age:
+  command: rage
+  identity: ~/.config/chezmoi/key.txt
 

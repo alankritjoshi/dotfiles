@@ -33,3 +33,21 @@ LICENSE
 .config/gh/config.yml
 .config/dev/
 .config/graphite/
+
+# Machine-specific SSH keys
+{{ if ne .machine "vanik" }}
+.ssh/id_ed25519_vanik
+.ssh/id_ed25519_vanik.pub
+{{ end }}
+{{ if ne .machine "griha" }}
+.ssh/id_ed25519_griha
+.ssh/id_ed25519_griha.pub
+{{ end }}
+{{ if ne .machine "tejas" }}
+.ssh/id_ed25519_tejas
+.ssh/id_ed25519_tejas.pub
+{{ end }}
+{{ if ne .machine "agrani" }}
+.ssh/id_ed25519_agrani
+.ssh/id_ed25519_agrani.pub
+{{ end }}

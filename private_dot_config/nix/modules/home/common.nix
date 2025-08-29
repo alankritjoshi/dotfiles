@@ -61,7 +61,7 @@
     
     # === Dotfiles Management ===
     chezmoi
-    age          # Encryption tool for secrets
+    rage         # Rust implementation of age encryption
     
     # === Modern CLI Tools ===
     eza          # Better ls
@@ -173,7 +173,6 @@
     
     # SSH signing configuration
     signing = {
-      key = "~/.ssh/id_ed25519.pub";
       signByDefault = true;
     };
     
