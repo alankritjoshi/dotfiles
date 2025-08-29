@@ -181,6 +181,9 @@ alt-shift-enter = 'exec-and-forget open -n -a /opt/homebrew/bin/wezterm'
 
 alt-f = '''exec-and-forget aerospace layout floating && osascript -e 'tell application "System Events" to key code 3 using {option down, command down}' || aerospace layout tiling'''
 # alt-space = 'layout floating tiling'
+
+# Random wallpaper
+ctrl-alt-cmd-space = 'exec-and-forget /run/current-system/sw/bin/random-wallpaper'
 # alt-f = [
 #   'exec-and-forget bash ${HOME}/.config/aerospace/toggle-floating-centered.sh',
 #   'mode main',

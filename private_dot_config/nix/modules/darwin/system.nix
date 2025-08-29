@@ -1,6 +1,17 @@
 { config, pkgs, lib, ... }:
 
 {
+  imports = [
+    ./appearance.nix
+    ./wallpapers.nix
+  ];
+  
+  # Default appearance for all Darwin machines
+  alankrit.darwin.appearance = {
+    enable = true;
+    theme = "dark";
+  };
+  
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   
@@ -49,7 +60,6 @@
       
       # Global macOS settings
       NSGlobalDomain = {
-        AppleInterfaceStyle = "Dark";
         AppleKeyboardUIMode = 3; # Full keyboard control
         ApplePressAndHoldEnabled = false; # Disable press-and-hold for keys
         InitialKeyRepeat = 15;
