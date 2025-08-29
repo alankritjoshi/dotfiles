@@ -40,7 +40,7 @@
         persistent-apps = [
           "/Applications/Google Chrome.app"
           "/Applications/Nix Apps/WezTerm.app"
-          "/Applications/Xcode.app"
+          "/Applications/Xcode-beta.app"
           "/System/Applications/iPhone Mirroring.app"
           "/System/Applications/Music.app"
           "/System/Applications/Messages.app"
