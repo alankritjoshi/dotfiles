@@ -1,6 +1,10 @@
 { config, pkgs, inputs, username, ... }:
 
 {
+  imports = [
+    ./claude-code.nix
+  ];
+
   # Home Manager needs a bit of information about you and the paths it should manage
   home.username = username;
   # home.homeDirectory is set in machine-specific home.nix files
@@ -194,7 +198,7 @@
       "*.iml"
       "*.DS_Store"
       "*.bundle/config"
-      "*.claude/settings.local.json"
+      ".claude/settings.local.json"
     ];
     
     # Common git config
