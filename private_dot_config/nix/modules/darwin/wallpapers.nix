@@ -72,8 +72,10 @@
         exit 1
       fi
       
-      # Find all image files using fd
+      # Find all image files using fd - handle spaces properly
+      IFS=$'\n'
       WALLPAPERS=($(${fd}/bin/fd -e jpg -e jpeg -e png -e webp . "$WALLPAPER_DIR" 2>/dev/null))
+      unset IFS
       
       # Check if any wallpapers found
       if [ ''${#WALLPAPERS[@]} -eq 0 ]; then
