@@ -52,9 +52,6 @@
       # Browsers (needs to register URL schemes)
       "google-chrome"
       
-      # Development tools
-      "google-cloud-sdk"
-      
       # System utilities (need system permissions)
       "betterdisplay"     # Display control APIs
       "soundsource"       # Core Audio access
