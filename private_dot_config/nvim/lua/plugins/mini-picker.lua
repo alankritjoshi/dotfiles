@@ -1,6 +1,8 @@
 return {
   {
     "echasnovski/mini.pick",
+    lazy = false,
+    priority = 1000,
     dependencies = {
       "echasnovski/mini.icons",
       "echasnovski/mini.extra",
@@ -8,6 +10,9 @@ return {
     config = function()
       local MiniPick = require("mini.pick")
       local MiniExtra = require("mini.extra")
+      
+      -- Configure LazyVim to use mini.pick
+      vim.g.lazyvim_picker = "mini"
       
       -- Set up mini.extra first
       MiniExtra.setup()
@@ -56,7 +61,7 @@ return {
             border = "rounded",
             winblend = 0,
           },
-          prompt_cursor = "█",
+          prompt_caret = "█",
           prompt_prefix = "> ",
         },
       })
@@ -251,24 +256,88 @@ return {
         })
       end
       
-      -- Main keymaps
-      vim.keymap.set("n", "<leader>ff", function() files_with_actions() end, { desc = "Find Files" })
-      vim.keymap.set("n", "<leader>fg", function() grep_with_actions() end, { desc = "Live Grep" })
-      vim.keymap.set("n", "<leader>fb", MiniPick.builtin.buffers, { desc = "Buffers" })
-      vim.keymap.set("n", "<leader>fh", MiniPick.builtin.help, { desc = "Help" })
-      vim.keymap.set("n", "<leader>fr", function() MiniExtra.pickers.oldfiles() end, { desc = "Recent Files" })
-      vim.keymap.set("n", "<leader>fc", function() MiniExtra.pickers.commands() end, { desc = "Commands" })
-      vim.keymap.set("n", "<leader>fk", function() MiniExtra.pickers.keymaps() end, { desc = "Keymaps" })
-      vim.keymap.set("n", "<leader>fm", function() MiniExtra.pickers.marks() end, { desc = "Marks" })
+      -- Setup LazyVim.pick integration
+      local LazyVim = require("lazyvim.util")
+      LazyVim.pick = {
+        name = "mini",
+        picker = {
+          name = "mini",
+        },
+        open = function(cmd, opts)
+          opts = opts or {}
+          if cmd == "files" then
+            return files_with_actions(opts)
+          elseif cmd == "grep" then
+            return grep_with_actions(opts)
+          elseif cmd == "live_grep" then
+            return grep_with_actions(opts)
+          elseif cmd == "grep_string" then
+            local word = opts.word or vim.fn.expand("<cword>")
+            return MiniPick.builtin.grep({ pattern = word }, opts)
+          elseif cmd == "buffers" then
+            return MiniPick.builtin.buffers(opts)
+          elseif cmd == "help_tags" then
+            return MiniPick.builtin.help(opts)
+          elseif cmd == "oldfiles" then
+            return MiniExtra.pickers.oldfiles(opts)
+          elseif cmd == "commands" then
+            return MiniExtra.pickers.commands(opts)
+          elseif cmd == "keymaps" then
+            return MiniExtra.pickers.keymaps(opts)
+          elseif cmd == "marks" then
+            return MiniExtra.pickers.marks(opts)
+          elseif cmd == "git_files" then
+            return MiniExtra.pickers.git_files(opts)
+          elseif cmd == "git_status" then
+            return MiniExtra.pickers.git_hunks(opts)
+          elseif cmd == "git_commits" then
+            return MiniExtra.pickers.git_commits(opts)
+          elseif cmd == "git_branches" then
+            return MiniExtra.pickers.git_branches(opts)
+          elseif cmd == "diagnostics" then
+            return MiniExtra.pickers.diagnostic(opts)
+          elseif cmd == "lsp_references" then
+            return MiniExtra.pickers.lsp({ scope = "references" }, opts)
+          elseif cmd == "lsp_definitions" then
+            return MiniExtra.pickers.lsp({ scope = "definition" }, opts)
+          elseif cmd == "lsp_implementations" then
+            return MiniExtra.pickers.lsp({ scope = "implementation" }, opts)
+          elseif cmd == "lsp_type_definitions" then
+            return MiniExtra.pickers.lsp({ scope = "type_definition" }, opts)
+          elseif cmd == "lsp_document_symbols" then
+            return MiniExtra.pickers.lsp({ scope = "document_symbol" }, opts)
+          elseif cmd == "lsp_workspace_symbols" then
+            return MiniExtra.pickers.lsp({ scope = "workspace_symbol" }, opts)
+          elseif cmd == "colorscheme" then
+            return MiniPick.builtin.cli({ command = { "colorscheme" } }, opts)
+          elseif cmd == "resume" then
+            return MiniPick.builtin.resume(opts)
+          elseif cmd == "config_files" then
+            return files_with_actions({ cwd = vim.fn.stdpath("config") })
+          else
+            vim.notify("mini.pick: Unknown command " .. cmd, vim.log.levels.ERROR)
+          end
+        end,
+      }
+      
+      -- Main keymaps (these override LazyVim defaults)
+      vim.keymap.set("n", "<leader>ff", function() LazyVim.pick("files")() end, { desc = "Find Files" })
+      vim.keymap.set("n", "<leader>fg", function() LazyVim.pick("live_grep")() end, { desc = "Live Grep" })
+      vim.keymap.set("n", "<leader>fb", function() LazyVim.pick("buffers")() end, { desc = "Buffers" })
+      vim.keymap.set("n", "<leader>fh", function() LazyVim.pick("help_tags")() end, { desc = "Help" })
+      vim.keymap.set("n", "<leader>fr", function() LazyVim.pick("oldfiles")() end, { desc = "Recent Files" })
+      vim.keymap.set("n", "<leader>fc", function() LazyVim.pick("commands")() end, { desc = "Commands" })
+      vim.keymap.set("n", "<leader>fk", function() LazyVim.pick("keymaps")() end, { desc = "Keymaps" })
+      vim.keymap.set("n", "<leader>fm", function() LazyVim.pick("marks")() end, { desc = "Marks" })
       vim.keymap.set("n", "<leader>fd", pick_directory_and_grep, { desc = "Find directory and search" })
       
       -- Git pickers
-      vim.keymap.set("n", "<leader>gc", function() MiniExtra.pickers.git_commits() end, { desc = "Git Commits" })
-      vim.keymap.set("n", "<leader>gs", function() MiniExtra.pickers.git_files() end, { desc = "Git Status" })
+      vim.keymap.set("n", "<leader>gc", function() LazyVim.pick("git_commits")() end, { desc = "Git Commits" })
+      vim.keymap.set("n", "<leader>gs", function() LazyVim.pick("git_status")() end, { desc = "Git Status" })
       
       -- LSP pickers
-      vim.keymap.set("n", "<leader>ss", function() MiniExtra.pickers.lsp({ scope = "document_symbol" }) end, { desc = "Document Symbols" })
-      vim.keymap.set("n", "<leader>sS", function() MiniExtra.pickers.lsp({ scope = "workspace_symbol" }) end, { desc = "Workspace Symbols" })
+      vim.keymap.set("n", "<leader>ss", function() LazyVim.pick("lsp_document_symbols")() end, { desc = "Document Symbols" })
+      vim.keymap.set("n", "<leader>sS", function() LazyVim.pick("lsp_workspace_symbols")() end, { desc = "Workspace Symbols" })
       
       -- Search in specific directory
       vim.keymap.set("n", "<leader>sD", function()
