@@ -36,11 +36,6 @@
       playerctl             # Media controls
       brightnessctl         # Brightness control
       
-      # === Terminal Emulators (Linux) ===
-      alacritty             # GPU-accelerated terminal
-      kitty                 # Feature-rich terminal
-      foot                  # Lightweight Wayland terminal
-      
       # === File Managers ===
       nautilus              # GUI file manager
       thunar                # Lightweight file manager

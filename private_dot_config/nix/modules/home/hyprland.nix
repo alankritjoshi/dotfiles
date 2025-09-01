@@ -91,8 +91,7 @@
       
       # Window rules
       windowrulev2 = [
-        "opacity 0.9 0.9,class:^(Alacritty)$"
-        "opacity 0.9 0.9,class:^(kitty)$"
+        "opacity 0.9 0.9,class:^(org.wezfurlong.wezterm)$"
         "float,class:^(1Password)$"
         "float,class:^(pavucontrol)$"
         "float,class:^(nm-connection-editor)$"
@@ -104,7 +103,7 @@
       
       bind = [
         # Applications
-        "$mod, Return, exec, alacritty"
+        "$mod, Return, exec, wezterm"
         "$mod, Q, killactive"
         "$mod, M, exit"
         "$mod, E, exec, nautilus"

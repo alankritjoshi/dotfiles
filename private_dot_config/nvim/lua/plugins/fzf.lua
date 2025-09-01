@@ -1,6 +1,8 @@
+-- Disabled in favor of snacks_picker
 return {
   {
     "ibhagwan/fzf-lua",
+    enabled = false,
     dependencies = { "echasnovski/mini.icons" },
     keys = {
       {

@@ -5,6 +5,7 @@
     ../../modules/home/common.nix
     ../../modules/home/personal.nix
     ../../modules/home/hyprland.nix
+    ../../modules/home/linux-desktop.nix
   ];
   
   # Machine-specific home configuration
@@ -20,6 +21,9 @@
   
   # Linux-specific home packages
   home.packages = with pkgs; [
+    # Terminal emulators
+    wezterm      # Cross-platform GPU-accelerated terminal
+    
     # Desktop integration
     xdg-utils
     xdg-user-dirs

@@ -16,6 +16,7 @@
     keycastr
     keymapp
     iina
+    utm
     
   ] ++ lib.optionals pkgs.stdenv.isLinux [
     # Linux personal-specific

@@ -130,7 +130,7 @@
     extraConfig = {
       modi = "drun,run,window,ssh";
       show-icons = true;
-      terminal = "alacritty";
+      terminal = "wezterm";
       drun-display-format = "{icon} {name}";
       display-drun = "   Apps ";
       display-run = "   Run ";
