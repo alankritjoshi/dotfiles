@@ -19,12 +19,10 @@ config.font = wezterm.font("Hack Nerd Font Mono", { weight = "Regular", stretch 
 config.font_size = 23.0
 config.macos_window_background_blur = 30
 
--- window_background_opacity = 0.7,
--- text_background_opacity = 0.7,
--- window_background_opacity = 0.4,
--- text_background_opacity = 0.5,
-config.window_background_opacity = 0.9
-config.text_background_opacity = 0.6
+-- config.window_background_opacity = 0.7
+-- config.text_background_opacity = 0.7
+config.window_background_opacity = 0.8
+config.text_background_opacity = 0.7
 config.window_decorations = "RESIZE"
 config.window_close_confirmation = "NeverPrompt"
 config.scrollback_lines = 10000
