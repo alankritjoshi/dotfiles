@@ -1,0 +1,18 @@
+AddKeysToAgent yes
+IdentityFile ~/.ssh/id_ed25519_%h
+
+Host vanik
+  Hostname vanik.local
+  User alankritjoshi
+
+Host tejas
+  Hostname tejas.local
+  User alankritjoshi
+
+Host griha
+  Hostname griha.local
+  User alankritjoshi
+
+Host agrani
+  Hostname agrani.local
+  User alankritjoshi

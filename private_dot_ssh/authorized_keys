@@ -1,0 +1,11 @@
+# vanik (work MacBook)
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICSRp9q5j17rD1BXUlA6cXzyR8tQ8oS5i6gYurhgcYVS
+
+# tejas (personal MacBook)
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN64F9O3mh3c1TrO4Gkquk/AxhUPWjJbhhcLudPMJjYa tejas
+
+# griha (Mac Mini)
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMYhxIA+eOEedGY4pj+YGTsUIIeRMwnO+wWQ0V6HVtpF griha
+
+# agrani (Linux desktop)
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEd0AQDAivCh8K6haXFg4LpSMqKhUpgowJNQo8LBEuNp agrani
