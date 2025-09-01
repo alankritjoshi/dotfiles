@@ -1,66 +1,81 @@
 # Alankrit's Dotfiles
 
-Declarative configuration for Darwin (macOS) and Linux systems using **nix-darwin**, **home-manager**, and **chezmoi**.
+Declarative configuration for Darwin (macOS) and Linux systems using **chezmoi**, **nix** and **home-manager**.
 
 ## Prerequisites
 
 ### macOS
+
 - **Xcode Command Line Tools** (required for building packages):
+
   ```bash
   xcode-select --install
   ```
 
-### Linux
-- Base system installation (Arch, NixOS, etc.)
-
 ## Quick Setup
 
 ```bash
-# One-liner installation
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply alankritjoshi
 ```
 
 This will:
-1. Install chezmoi and clone dotfiles
-2. Install Nix and setup nix-darwin
-3. Configure the system and install packages
-4. Decrypt SSH keys (prompts for passphrase)
+
+1. Install `chezmoi` and setup dotfiles in `~/.local/share/chezmoi` 
+2. Run `chezmoi apply` -> run the `.chezmoiscripts` and sync dotfiles
+3. Install Nix and, if a Mac, setup nix-darwin
+4. Install common nixpkgs + `brew` and `mas` for Mac packages 
+5. Run home manager for some configs that are more nix-like
 
 ## Daily Usage
 
+### Modifying existing config
+
+For changes to chezmoi-tracked files:
+
+- Option 1
+  - Make changes to the synced config e.g., `~/.config/nvim/init.lua`. Test it out
+  - `chezmoi re-add`
+- Option 2
+  - Make changes and save+push on exit with `chezmoi edit ~/.config/nvim/init.lua`
+
+#### Recommended for
+
+1. Small changes to exiting configuration files tracked by chezmoi
+2. Non-nix related changes
+
+### Applying/removing new config
+
+- For additions/removals of files, previous workflow will become annoying as those commands do not work on untracked files
+- Previous workflow doesn't run chezmoi scripts that are sometimes necessary
+- `chezmoi add <new file>` and `chezmoi destroy` will have to be used in confunction with `chezmoi re-add`
+
+Instead, do:
+
+1. `chezmoi cd` - to `cd` into `~/.local/share/chezmoi` which is source of truth from remote and includes all the scripts
+2. Make any changes - add, delete, edit. Note that it won't be effective in the system yet
+3. Sync to system and make the changes effective with `chezmoi apply`
+
+#### Recommended for
+
+1. Large changes to Neovim configuration, including addition/removal of plugins
+2. Any changes to nix configuration, as those changes typically require execution of scripts
+
+### Update
+
+If dotfiles remote is ahead of configuration on the device, run `chezmoi update` to pull and apply the remote changes
+
+### Update nix packages
+
 ```bash
-# Apply configuration changes (ALWAYS use this)
-chezmoi apply
-
-# Update dotfiles from remote
-chezmoi update
-
-# Update packages
-cd ~/.config/nix && nix flake update
-chezmoi apply
+nix flake update
 ```
 
-### When changing nix configuration
+### Apply without scripts
+
+Sometimes, especially when debugging, script execution may need to be excluded
+
 ```bash
-# First apply config files without running scripts
 chezmoi apply --exclude scripts
-
-# Then run full apply to rebuild with new config
-chezmoi apply
-```
-
-## Development Shells
-
-Isolated environments without global installation:
-
-```bash
-cd ~/.config/nix
-nix develop                    # Default shell
-nix develop .#go              # Go development
-nix develop .#python          # Python development  
-nix develop .#rust            # Rust development
-nix develop .#node            # Node.js development
-nix develop .#full            # All languages + tools
 ```
 
 ## Architecture
@@ -68,84 +83,38 @@ nix develop .#full            # All languages + tools
 ```
 ~/.local/share/chezmoi/           # Dotfiles repo
 ├── private_dot_config/
-│   ├── nix/                     # System configuration
-│   │   ├── flake.nix            # Main flake
-│   │   ├── devshell.nix         # Dev shells
-│   │   ├── machines/            # Machine configs
-│   │   └── modules/             # Modular configs
-│   ├── fish/                    # Fish shell
-│   ├── aerospace/               # Window manager
-│   └── nvim/                    # Neovim config
-├── private_dot_ssh/             # Encrypted SSH for signing commits
-├── .chezmoiscripts/             # Bootstrap scripts
-├── .chezmoiencrypted/           # Encrypted SSH keys
-├── CLAUDE.md                    # AI assistant guide
-└── ROADMAP.md                   # Future plans
-```
-
-## Configuration
-
-### Machines
-- **Work laptop** (`vanik`): Shopify MacBook
-- **Personal MacBook** (`tejas`): Personal development machine  
-- **Mac Mini** (`griha`): Personal desktop/server
-- **Linux Desktop** (`agrani`): Arch Linux with Hyprland
-
-### Package Strategy
-- **Nix packages**: CLI tools, development utilities (all platforms)
-- **Homebrew casks**: GUI applications on Darwin (via nix-darwin)
-- **Chezmoi**: Dotfiles and encrypted secrets
-
-### Adding Packages
-
-Edit the appropriate file:
-- Universal → `~/.config/nix/modules/common/packages.nix`
-- Darwin GUI apps → `~/.config/nix/modules/darwin/homebrew.nix`
-- Darwin CLI tools → `~/.config/nix/modules/darwin/packages.nix`
-- Linux packages → `~/.config/nix/modules/linux/packages.nix`
-- Work-specific → `~/.config/nix/modules/home/work.nix`
-- Personal-specific → `~/.config/nix/modules/home/personal.nix`
-
-Then apply:
-```bash
-chezmoi apply --exclude scripts  # Update configs first
-chezmoi apply                     # Then rebuild
-```
-
-### Managing Dotfiles
-
-```bash
-# Edit files directly
-vim ~/.config/fish/config.fish
-
-# Update chezmoi source
-chezmoi re-add
-
-# Push changes
-chezmoi git add .
-chezmoi git commit -m "Update config"
-chezmoi git push
+│   ├── nix/                                          # System configuration
+│   │   ├── flake.nix                                 # Main flake
+│   │   ├── devshell.nix                              # Dev shells
+│   │   ├── machines/                                 # Machine configs
+│   │   └── modules/                                  # Modular configs
+│   ├── fish/                                         # Fish shell
+│   ├── aerospace/                                    # Window manager
+│   └── nvim/                                         # Neovim config
+├── key.txt.age                                       # Rage `passphrase` encrypted key
+├── private_dot_ssh/
+│   └── encrypted_private_id_ed25519_*.age            # Rage `Key` encrypted SSH Keys
+├── .chezmoiscripts/                                  # Bootstrap scripts
+└── CLAUDE.md                                         # AI assistant guide
 ```
 
 ## SSH Key Management
 
-Keys are encrypted with age using passphrase protection:
+### How encryption was done
 
-```bash
-# Set 1Password item ID for SSH key
-OP_SSH_KEY_ID="pp4al2x5g4tkfg6etruniky3we"
+1. Main `key.txt` was generated and `rage` encrypted with passphrase as `key.txt.age`
+2. SSH Key pair was generated for each machine
+3. Main `key.txt` was used to `rage` encrypt SSH keys in `.private_dot_ssh`
 
-# Test decryption
-chezmoi age decrypt --passphrase ~/.local/share/chezmoi/.chezmoiencrypted/encrypted_private_id_ed25519.age | head -n 1
+### How decryption works
 
-# Re-encrypt from 1Password
-op item get "$OP_SSH_KEY_ID" --account my.1password.com --fields "private key" --reveal | \
-  chezmoi age encrypt --passphrase --output ~/.local/share/chezmoi/.chezmoiencrypted/encrypted_private_id_ed25519.age
-```
+1. First time setup script run by chezmoi prompts user for passphrase to rage decrypt `key.txt.age`
+2. Once decrypted in `~/key.txt`, chezmoi automatically uses it to rage decrypt the ssh keys and puts them in `~/.ssh`
 
 ## Troubleshooting
 
 ### Nix conflicts
+
 ```bash
 # Move conflicting files
 sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.before-nix-darwin
@@ -153,12 +122,14 @@ chezmoi apply
 ```
 
 ### Build failures
+
 ```bash
 # Detailed error trace
 darwin-rebuild build --flake ~/.config/nix#$(hostname -s) --show-trace
 ```
 
 ### Nix store corruption (missing .drv files)
+
 If you get errors like `error: opening file '/nix/store/...-user-dbus-services.drv': No such file or directory`:
 
 ```bash
@@ -181,6 +152,7 @@ chezmoi apply
 ```
 
 ### Rollback
+
 ```bash
 sudo darwin-rebuild rollback
 ```
@@ -188,7 +160,6 @@ sudo darwin-rebuild rollback
 ## Important Notes
 
 - **Always use `chezmoi apply`** - never run `darwin-rebuild` directly
-- **When changing nix config**: Run `chezmoi apply --exclude scripts` first, then `chezmoi apply`
 - **Unknown hostname**: Script will prompt to select configuration
 
 ## License
