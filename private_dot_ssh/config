@@ -1,5 +1,4 @@
 AddKeysToAgent yes
-IdentityFile ~/.ssh/id_ed25519_%h
 
 Host vanik
   Hostname vanik.local
