@@ -102,14 +102,14 @@ chezmoi apply --exclude scripts
 
 ### How encryption was done
 
-1. Main `key.txt` was generated and `rage` encrypted with passphrase as `key.txt.age`
+1. Main `key.txt` was generated with `rage-keygen -o key.txt` and `rage` encrypted with passphrase as `key.txt.age`
 2. SSH Key pair was generated for each machine
 3. Main `key.txt` was used to `rage` encrypt SSH keys in `.private_dot_ssh`
 
 ### How decryption works
 
 1. First time setup script run by chezmoi prompts user for passphrase to rage decrypt `key.txt.age`
-2. Once decrypted in `~/key.txt`, chezmoi automatically uses it to rage decrypt the ssh keys and puts them in `~/.ssh`
+2. Once decrypted in `~/.config/chezmoi/key.txt`, chezmoi automatically uses it to rage decrypt the ssh keys and puts them in `~/.ssh`
 
 ## Troubleshooting
 
