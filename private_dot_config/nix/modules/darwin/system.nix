@@ -62,8 +62,8 @@
       NSGlobalDomain = {
         AppleKeyboardUIMode = 3; # Full keyboard control
         ApplePressAndHoldEnabled = false; # Disable press-and-hold for keys
-        InitialKeyRepeat = 15;
-        KeyRepeat = 2;
+        InitialKeyRepeat = 10; # Shortest delay until repeat
+        KeyRepeat = 1; # Fastest key repeat rate
         NSAutomaticCapitalizationEnabled = false;
         NSAutomaticDashSubstitutionEnabled = false;
         NSAutomaticPeriodSubstitutionEnabled = false;
@@ -72,6 +72,9 @@
         NSNavPanelExpandedStateForSaveMode = true;
         NSNavPanelExpandedStateForSaveMode2 = true;
         _HIHideMenuBar = false;
+        # Spring loading
+        "com.apple.springing.enabled" = true; # Enable spring loading
+        "com.apple.springing.delay" = 0.0; # Shortest spring loading delay
       };
       
       # Screenshots
