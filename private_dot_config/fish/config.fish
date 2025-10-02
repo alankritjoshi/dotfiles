@@ -177,6 +177,7 @@ enable_transience
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/opt/curl/bin
 fish_add_path $HOME/go/bin
+fish_add_path /opt/homebrew/opt/python@3.11/libexec/bin
 
 # Added by Windsurf
 fish_add_path /Users/alankritjoshi/.codeium/windsurf/bin
