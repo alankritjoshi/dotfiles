@@ -208,7 +208,10 @@ if test -f /opt/dev/dev.fish
     source /opt/dev/dev.fish
 end
 
-alias cld claude
+alias cld "devx claude"
+alias cdx "devx codex"
+
+test -x /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init && /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init fish | source
 
 # Source environment variables from ~/.env file
 if test -f ~/.env

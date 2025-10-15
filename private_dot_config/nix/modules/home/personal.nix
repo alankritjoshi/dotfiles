@@ -5,9 +5,6 @@
   
   # Personal-specific packages from nixpkgs
   home.packages = with pkgs; [
-    # Communication
-    discord
-    
     # Media
     qbittorrent
     

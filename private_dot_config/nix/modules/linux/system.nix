@@ -19,7 +19,6 @@
       brave
       
       # === Communication ===
-      discord
       element-desktop           # Matrix client
       signal-desktop
       
