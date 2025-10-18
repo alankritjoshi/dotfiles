@@ -82,13 +82,12 @@
       
     ] ++ lib.optionals config.alankrit.isPersonal [
       # === Personal-specific apps ===
-      
+
       # Productivity (not in nixpkgs)
       "craft"
       "updf"
-      
-      # Browsers
-      "comet"
+
+      # TODO: Add comet browser when available in brew
 
       # Communication
       "discord"

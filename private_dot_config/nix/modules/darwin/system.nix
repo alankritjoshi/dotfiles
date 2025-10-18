@@ -48,14 +48,20 @@
         minimize-to-application = true;
         mru-spaces = false;
         expose-group-apps = true;
-        persistent-apps = [
-          "/Applications/Google Chrome.app"
-          "/Applications/Nix Apps/WezTerm.app"
-          "/Applications/Xcode.app"
-          "/System/Applications/iPhone Mirroring.app"
-          "/System/Applications/Music.app"
-          "/System/Applications/Messages.app"
-        ];
+        persistent-apps =
+          lib.optionals config.alankrit.isWork [
+            "/Applications/Google Chrome.app"
+          ] ++
+          lib.optionals config.alankrit.isPersonal [
+            "/Applications/Comet.app"
+          ] ++
+          [
+            "/Applications/Nix Apps/WezTerm.app"
+            "/Applications/Xcode.app"
+            "/System/Applications/iPhone Mirroring.app"
+            "/System/Applications/Music.app"
+            "/System/Applications/Messages.app"
+          ];
       };
       
       # Global macOS settings
@@ -108,6 +114,17 @@
   
   # Security settings
   security.pam.services.sudo_local.touchIdAuth = true;
+
+  # Set default browser based on machine type
+  system.activationScripts.postUserActivation.text = ''
+    ${if config.alankrit.isWork then ''
+      /usr/bin/defaults write com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers -array-add '{LSHandlerURLScheme=http;LSHandlerRoleAll=com.google.Chrome;}'
+      /usr/bin/defaults write com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers -array-add '{LSHandlerURLScheme=https;LSHandlerRoleAll=com.google.Chrome;}'
+    '' else ''
+      /usr/bin/defaults write com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers -array-add '{LSHandlerURLScheme=http;LSHandlerRoleAll=com.cometbrowser.comet;}'
+      /usr/bin/defaults write com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers -array-add '{LSHandlerURLScheme=https;LSHandlerRoleAll=com.cometbrowser.comet;}'
+    ''}
+  '';
   
   # Shell configuration
   environment.shells = with pkgs; [ bash zsh fish ];
