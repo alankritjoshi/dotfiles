@@ -52,9 +52,6 @@
       # Browsers (needs to register URL schemes)
       "google-chrome"
 
-      # Input enhancements
-      "klack"             # Keyboard sound feedback
-      
       # System utilities (need system permissions)
       "betterdisplay"     # Display control APIs
       "soundsource"       # Core Audio access
@@ -104,7 +101,8 @@
     
     # Mac App Store apps (personal machines only - requires Apple ID login)
     masApps = lib.optionalAttrs config.alankrit.isPersonal {
-      # Personal-specific Mac App Store apps
+      "Klack" = 6446206067;
+      "Xcode" = 497799835;
       "Dato" = 1470584107;
       "Encrypto" = 935235287;
     };
