@@ -18,7 +18,7 @@ return {
         desc = "Oil open buffer for root",
       },
     },
-    dependencies = { { "echasnovski/mini.icons", opts = {} } },
+    dependencies = { { "nvim-mini/mini.icons", opts = {} } },
     opts = {
       use_default_keymaps = false,
       skip_confirm_for_simple_edits = true,

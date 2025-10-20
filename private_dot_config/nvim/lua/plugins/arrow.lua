@@ -3,7 +3,7 @@ return {
     "otavioschwanck/arrow.nvim",
     lazy = false,
     dependencies = {
-      { "echasnovski/mini.icons" },
+      { "nvim-mini/mini.icons" },
     },
     opts = {
       leader_key = ",", -- Recommended to be a single key
