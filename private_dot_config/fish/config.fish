@@ -210,6 +210,7 @@ end
 
 alias cld "devx claude"
 alias cdx "devx codex"
+alias oc opencode
 
 test -x /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init && /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init fish | source
 
