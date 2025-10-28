@@ -52,6 +52,11 @@
       # Browsers (needs to register URL schemes)
       "google-chrome"
 
+      # Development tools
+      "opencode"
+      "codex"
+      "claude"
+
       # System utilities (need system permissions)
       "betterdisplay"     # Display control APIs
       "soundsource"       # Core Audio access
