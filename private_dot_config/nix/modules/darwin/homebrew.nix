@@ -26,6 +26,7 @@
       "nvm"     # Node version manager
       "tabiew"  # Table viewer
       "uv"      # Python package manager
+      "opencode"
     ] ++ lib.optionals config.alankrit.isWork [
       # Work-specific brews can go here
     ] ++ lib.optionals config.alankrit.isPersonal [
@@ -52,10 +53,7 @@
       # Browsers (needs to register URL schemes)
       "google-chrome"
 
-      # Development tools
-      "opencode"
       "codex"
-      "claude"
 
       # System utilities (need system permissions)
       "betterdisplay"     # Display control APIs
