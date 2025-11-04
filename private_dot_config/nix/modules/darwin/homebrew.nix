@@ -52,6 +52,7 @@
       
       # Browsers (needs to register URL schemes)
       "google-chrome"
+      "ghostty"
 
       "codex"
 

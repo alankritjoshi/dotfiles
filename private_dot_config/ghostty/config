@@ -1,0 +1,10 @@
+theme = "Catppuccin Mocha"
+background = "#000000"
+background-opacity = 0.8
+background-opacity-cells = true
+background-blur = 30
+font-family = "Hack Nerd Font Mono"
+font-size = 23
+cursor-style = block
+confirm-close-surface = false
+macos-titlebar-style = hidden
