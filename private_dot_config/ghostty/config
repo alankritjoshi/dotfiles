@@ -8,3 +8,4 @@ font-size = 23
 cursor-style = block
 confirm-close-surface = false
 macos-titlebar-style = hidden
+macos-option-as-alt = true
