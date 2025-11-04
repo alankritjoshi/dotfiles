@@ -56,7 +56,7 @@
             "/Applications/Comet.app"
           ] ++
           [
-            "/Applications/Nix Apps/WezTerm.app"
+            "/Applications/Ghostty.app"
             "/Applications/Xcode.app"
             "/System/Applications/iPhone Mirroring.app"
             "/System/Applications/Music.app"
