@@ -9,9 +9,5 @@ cursor-style = block
 confirm-close-surface = false
 macos-titlebar-style = hidden
 macos-option-as-alt = true
-
-window-padding-y = 0
-window-padding-x = 0
-window-padding-balance = true
-window-padding-color = extend-always
-window-step-resize = true
+custom-shader = shaders/cursor_warp.glsl
+custom-shader = shaders/ripple_cursor.glsl
