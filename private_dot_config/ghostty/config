@@ -7,6 +7,8 @@ font-family = "Hack Nerd Font Mono"
 font-size = 23
 cursor-style = block
 confirm-close-surface = false
+# https://github.com/lukejanicke/ghostty-app-icons
+macos-icon = custom
 macos-titlebar-style = hidden
 macos-option-as-alt = true
 custom-shader = shaders/cursor_warp.glsl
