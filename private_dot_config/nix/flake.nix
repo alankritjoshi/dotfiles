@@ -27,6 +27,18 @@
       darwin = "aarch64-darwin";
       linux = "x86_64-linux";
     };
+
+    overlays = [
+      (import ./overlays/fish-disable-checks.nix)
+    ];
+
+    pkgsFor = system:
+      import nixpkgs {
+        inherit system overlays;
+        config = {
+          allowUnfree = true;
+        };
+      };
     
     # Helper function for Darwin configurations
     mkDarwinConfiguration = { hostname }:
@@ -35,6 +47,7 @@
         specialArgs = { inherit inputs username hostname; };
         
         modules = [
+          { nixpkgs.overlays = overlays; }
           ./modules/darwin/system.nix
           ./modules/common/options.nix
           ./machines/${hostname}/configuration.nix
@@ -51,7 +64,7 @@
     # Helper function for Home Manager configurations
     mkHomeConfiguration = { hostname, system }:
       home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = pkgsFor system;
         extraSpecialArgs = { inherit inputs username; };
         modules = [
           ./machines/${hostname}/home.nix
@@ -103,8 +116,10 @@
     };
     
     # Development shells for system management
-    devShells.${systems.darwin}.default = nixpkgs.legacyPackages.${systems.darwin}.mkShell {
-      buildInputs = with nixpkgs.legacyPackages.${systems.darwin}; [
+    devShells.${systems.darwin}.default =
+      let darwinPkgs = pkgsFor systems.darwin; in
+      darwinPkgs.mkShell {
+      buildInputs = with darwinPkgs; [
         home-manager.packages.${systems.darwin}.home-manager
         nix-darwin.packages.${systems.darwin}.darwin-rebuild
         nixfmt-rfc-style
