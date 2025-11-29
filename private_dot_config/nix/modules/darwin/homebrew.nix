@@ -31,6 +31,7 @@
       # Work-specific brews can go here
     ] ++ lib.optionals config.alankrit.isPersonal [
       # Personal-specific brews can go here
+      "neomutt"
     ];
     
     # GUI applications (casks)
@@ -49,6 +50,7 @@
       # Productivity (needs system integration)
       "raycast"
       "google-drive"
+      "voiceink"
       
       # Browsers (needs to register URL schemes)
       "google-chrome"
