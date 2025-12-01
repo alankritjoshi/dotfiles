@@ -39,23 +39,22 @@
     casks = [
       # === Common apps for all machines ===
       
-      # Security (needs system integration)
+      # Security
       "1password"
       "1password-cli"
       
-      # Window management (needs Accessibility permissions)
-      "aerospace"
-      "dockdoor"
+      # Window management
+      "lasso-app"
       
-      # Productivity (needs system integration)
+      # Productivity
       "raycast"
-      "google-drive"
       "voiceink"
       
       # Browsers (needs to register URL schemes)
       "google-chrome"
-      "ghostty"
 
+      # Coding
+      "ghostty"
       "codex"
 
       # System utils
@@ -66,8 +65,11 @@
       "stats"             # System monitoring
       "jordanbaird-ice"   # Menu bar control
       "keepingyouawake"   # Power management
-      "logi-options+"     # Device management
       "pearcleaner"       # File system access
+
+      # Misc 
+      "google-drive"
+      "logi-options+"     # Device management
       
     ] ++ lib.optionals config.alankrit.isWork [
       # === Work-specific apps (Shopify) ===
