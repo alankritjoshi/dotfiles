@@ -26,7 +26,6 @@
   # Dock configuration for work machine - override default
   system.defaults.dock.persistent-apps = lib.mkForce [
     "/Applications/Ghostty.app"
-    "/Applications/Nix Apps/Cursor.app"
     "/Applications/Google Chrome.app"
     "/Applications/Slack.app"
     "/System/Applications/Music.app"

@@ -57,10 +57,7 @@
           ] ++
           [
             "/Applications/Ghostty.app"
-            "/Applications/Xcode.app"
-            "/System/Applications/iPhone Mirroring.app"
             "/System/Applications/Music.app"
-            "/System/Applications/Messages.app"
           ];
       };
       
