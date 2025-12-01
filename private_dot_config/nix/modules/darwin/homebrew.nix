@@ -46,7 +46,6 @@
       # Window management (needs Accessibility permissions)
       "aerospace"
       "dockdoor"
-      "shortcat"
       
       # Productivity (needs system integration)
       "raycast"
@@ -59,7 +58,8 @@
 
       "codex"
 
-      # System utilities (need system permissions)
+      # System utils
+      "bloom"
       "betterdisplay"     # Display control APIs
       "soundsource"       # Core Audio access
       "daisydisk"         # Full Disk Access
