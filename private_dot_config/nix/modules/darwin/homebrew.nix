@@ -45,6 +45,7 @@
       
       # Window management (needs Accessibility permissions)
       "aerospace"
+      "dockdoor"
       "shortcat"
       
       # Productivity (needs system integration)

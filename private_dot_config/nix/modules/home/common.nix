@@ -33,6 +33,7 @@
     "$HOME/go/bin"
     "$HOME/.cargo/bin"
     "$HOME/.codeium/windsurf/bin"
+    "$HOME/.npm-global/bin"  # Add npm global bin to PATH
   ];
   
   # Disable man page generation to avoid hangs
@@ -169,6 +170,11 @@
     git = true;
     icons = "auto";
   };
+  
+  # NPM configuration for global packages
+  home.file.".npmrc".text = ''
+    prefix=~/.npm-global
+  '';
   
   # Nix-index for command-not-found
   programs.nix-index = {
