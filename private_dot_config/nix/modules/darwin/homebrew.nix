@@ -80,7 +80,7 @@
       "tuple"
       
       # Security & Monitoring (not in nixpkgs)
-      "santa"
+      # "santa"  # Temporarily disabled due to uninstall issues
       "trailer"
       
       # VPN (required for Shopify access)
