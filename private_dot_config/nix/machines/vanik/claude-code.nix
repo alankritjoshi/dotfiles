@@ -6,7 +6,7 @@
     apiKeyHelper = "/opt/dev/bin/devx llm-gateway print-token --key";
     env = {
       ANTHROPIC_BASE_URL = "https://proxy.shopify.ai/vendors/anthropic-claude-code";
-      ANTHROPIC_MODEL = "claude-opus-4-1";
+      ANTHROPIC_MODEL = "claude-opus-4-5";
       MAX_THINKING_TOKENS = "32000";
     };
     mcpServers = {
