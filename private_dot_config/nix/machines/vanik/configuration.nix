@@ -22,6 +22,9 @@
   # Work-specific system settings
   # Let Shopify dev tools manage nix.conf to avoid conflicts
   nix.enable = false;
+
+  # Don't cleanup employer-managed apps (like Santa)
+  homebrew.onActivation.cleanup = lib.mkForce "none";
   
   # Dock configuration for work machine - override default
   system.defaults.dock.persistent-apps = lib.mkForce [
