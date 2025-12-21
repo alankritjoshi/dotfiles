@@ -212,6 +212,103 @@ alias cld claude
 alias cdx codex
 alias oc opencode
 
+function gwt --description "Create/open a git worktree under .wt/<branch> and cd into it. --clean prunes stale worktrees and removes stale target dir."
+    set -l clean 0
+    set -l args $argv
+
+    if test (count $args) -ge 1; and test "$args[1]" = --clean
+        set clean 1
+        set args $args[2..-1]
+    end
+
+    set -l branch $args[1]
+    set -l base (test -n "$args[2]"; and echo $args[2]; or echo origin/main)
+
+    if test -z "$branch"
+        echo "usage: gwt [--clean] <branch> [base]"
+        return 1
+    end
+
+    # Prune stale worktree records first (only when requested)
+    if test $clean -eq 1
+        git worktree prune
+    end
+
+    mkdir -p .wt
+    set -l path (realpath .wt/$branch)
+
+    # If already a registered worktree, just cd into it
+    if git worktree list --porcelain | string match -q -- "worktree $path"
+        cd "$path"
+        return 0
+    end
+
+    # Path exists but is not registered as a worktree => stale folder
+    if test -e "$path"
+        if test $clean -eq 1
+            echo "gwt: removing stale dir '$path' (not a registered worktree)"
+            rm -rf "$path"; or return $status
+        else
+            echo "gwt: '$path' already exists but is not registered as a git worktree."
+            echo "Tip: re-run with --clean, or inspect with: git worktree list"
+            return 1
+        end
+    end
+
+    # Create/attach worktree
+    if git show-ref --verify --quiet refs/heads/$branch
+        git worktree add "$path" "$branch"; or return $status
+    else
+        git worktree add -b "$branch" "$path" "$base"; or return $status
+    end
+
+    cd "$path"
+end
+
+function gwt-rm --description "Remove git worktree at .wt/<branch> (does NOT delete branch). Flags: --force, --prune"
+    set -l force 0
+    set -l prune 0
+    set -l args
+
+    for a in $argv
+        switch $a
+            case --force -f
+                set force 1
+            case --prune -p
+                set prune 1
+            case '*'
+                set -a args $a
+        end
+    end
+
+    set -l branch $args[1]
+    if test -z "$branch"
+        echo "usage: gwt-rm [--force|-f] [--prune|-p] <branch>"
+        return 1
+    end
+
+    set -l path (realpath .wt/$branch 2>/dev/null)
+    if test -z "$path"
+        set path (pwd)/.wt/$branch
+    end
+
+    if git worktree list --porcelain | string match -q -- "worktree $path"
+        if test $force -eq 1
+            git worktree remove --force "$path"; or return $status
+        else
+            git worktree remove "$path"; or return $status
+        end
+    else
+        echo "gwt-rm: '$path' is not a registered worktree."
+        echo "Run: git worktree list"
+        return 1
+    end
+
+    if test $prune -eq 1
+        git worktree prune
+    end
+end
+
 test -x /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init && /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init fish | source
 
 # Source environment variables from ~/.env file

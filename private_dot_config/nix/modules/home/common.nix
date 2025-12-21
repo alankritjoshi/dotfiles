@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, username, ... }:
+{ config, pkgs, lib, inputs, username, ... }:
 
 {
   imports = [
@@ -33,9 +33,14 @@
     "$HOME/go/bin"
     "$HOME/.cargo/bin"
     "$HOME/.codeium/windsurf/bin"
-    "$HOME/.npm-global/bin"  # Add npm global bin to PATH
+    "$HOME/.npm-global/bin"
   ];
-  
+
+  # Configure npm to use ~/.npm-global for global packages (avoids sudo)
+  home.activation.npmConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    ${pkgs.nodejs}/bin/npm config set prefix ~/.npm-global
+  '';
+
   # Disable man page generation to avoid hangs
   programs.man.enable = false;
   manual.manpages.enable = false;
@@ -170,12 +175,7 @@
     git = true;
     icons = "auto";
   };
-  
-  # NPM configuration for global packages
-  home.file.".npmrc".text = ''
-    prefix=~/.npm-global
-  '';
-  
+
   # Nix-index for command-not-found
   programs.nix-index = {
     enable = true;
