@@ -31,7 +31,19 @@
       # Work-specific brews can go here
     ] ++ lib.optionals config.alankrit.isPersonal [
       # Personal-specific brews can go here
-      "neomutt"
+
+      # Install Python, Ruby, etc.
+      "mise"
+
+      # Env Injection
+      "shadowenv"
+
+      # Ruby
+      "gmp"
+      "libyaml"
+
+      # Python
+      "pipx"
     ];
     
     # GUI applications (casks)
@@ -110,7 +122,7 @@
     # Mac App Store apps (personal machines only - requires Apple ID login)
     masApps = lib.optionalAttrs config.alankrit.isPersonal {
       "Klack" = 6446206067;
-      "Xcode" = 497799835;
+      # "Xcode" = 497799835;
       "Dato" = 1470584107;
       "Encrypto" = 935235287;
     };
