@@ -70,6 +70,15 @@ return {
         },
         marksman = {},
         sourcekit = {},
+        -- Disable LazyVim's Mason-based ruby_lsp/rubocop on work machine, we use shadowenv-based setup
+        ruby_lsp = {
+          mason = false,
+          enabled = false,
+        },
+        rubocop = {
+          mason = false,
+          enabled = false,
+        },
       },
       setup = {
         gopls = function(_, opts)
