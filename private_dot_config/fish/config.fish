@@ -181,13 +181,6 @@ fish_add_path /opt/homebrew/opt/python@3.11/libexec/bin
 # Added by Windsurf
 fish_add_path /Users/alankritjoshi/.codeium/windsurf/bin
 
-# Set up CPPFLAGS and LDFLAGS for Homebrew
-set -x CPPFLAGS "-I"(brew --prefix)/include
-set -x LDFLAGS "-L"(brew --prefix)/lib
-set -gx LDFLAGS "-L"(brew --prefix)/opt/curl/lib
-set -gx CPPFLAGS "-I"(brew --prefix)/opt/curl/include
-set -gx PKG_CONFIG_PATH /opt/homebrew/opt/curl/lib/pkgconfig
-
 # if status is-interactive
 #     set ZELLIJ_AUTO_ATTACH true
 #     set ZELLIJ_AUTO_EXIT true
@@ -309,6 +302,8 @@ function gwt-rm --description "Remove git worktree at .wt/<branch> (does NOT del
 end
 
 test -x /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init && /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init fish | source
+
+mise activate fish | source
 
 # Source environment variables from ~/.env file
 if test -f ~/.env
