@@ -14,7 +14,6 @@ return {
       },
       indent = {
         enable = true,
-        disable = { "ruby" },  -- Use Vim's built-in Ruby indent instead
       },
     })
   end,
