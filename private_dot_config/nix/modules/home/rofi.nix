@@ -130,7 +130,7 @@
     extraConfig = {
       modi = "drun,run,window,ssh";
       show-icons = true;
-      terminal = "wezterm";
+      terminal = "ghostty";
       drun-display-format = "{icon} {name}";
       display-drun = "   Apps ";
       display-run = "   Run ";

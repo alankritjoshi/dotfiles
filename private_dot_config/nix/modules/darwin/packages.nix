@@ -12,13 +12,6 @@
     
     # === Nix Tools ===
     home-manager
-    
-    # === GUI Applications from nixpkgs ===
-    
-    # Development (work fine from nixpkgs)
-    wezterm
-    code-cursor
-    
   ] ++ lib.optionals config.alankrit.isWork [
     # Work-specific apps
     # Note: Cloudflare Warp is installed via Homebrew cask on macOS

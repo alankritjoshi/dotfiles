@@ -68,7 +68,7 @@
       EDITOR = "nvim";
       VISUAL = "nvim";
       BROWSER = "google-chrome";
-      TERMINAL = "wezterm";
+      TERMINAL = "ghostty";
       
       # Wayland-specific
       MOZ_ENABLE_WAYLAND = "1";
