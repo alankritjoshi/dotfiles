@@ -242,5 +242,6 @@ return {
 	{
 		"shopify/vim-sorbet",
 		ft = "ruby",
+		cond = vim.fn.hostname() == "vanik",
 	},
 }
