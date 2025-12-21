@@ -13,10 +13,7 @@ return {
       command = vim.fn.expand("~/.config/nvim/rubocop-formatter-wrapper.sh"),
       args = { "--auto-correct-all", "--format", "quiet", "--stderr", "--stdin", "$FILENAME" },
       stdin = true,
-      cwd = function(params)
-        local root_file = require("conform.util").root_file({ "dev.yml", ".shadowenv.d", ".rubocop.yml", "Gemfile" })
-        return root_file(params)
-      end,
+      cwd = require("conform.util").root_file({ "dev.yml", ".shadowenv.d", ".rubocop.yml", "Gemfile" }),
     }
 
     return opts

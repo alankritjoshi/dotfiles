@@ -5,15 +5,13 @@ return {
 		init = function()
 			local util = require("lspconfig.util")
 
-			local function make_capabilities()
+			local function get_capabilities()
 				local ok_cmp, cmp = pcall(require, "cmp_nvim_lsp")
 				if ok_cmp then
 					return cmp.default_capabilities()
 				end
 				return vim.lsp.protocol.make_client_capabilities()
 			end
-
-			local capabilities = make_capabilities()
 
 			local function project_label(root)
 				if not root or root == "" then
@@ -128,7 +126,7 @@ return {
 					name = string.format("ruby_lsp(%s)", project_label(root)),
 					cmd = ruby_cmd(root),
 					root_dir = root,
-					capabilities = capabilities,
+					capabilities = get_capabilities(),
 				}
 				local client_id = vim.lsp.start(config, {
 					bufnr = bufnr,
@@ -157,7 +155,7 @@ return {
 					name = string.format("sorbet(%s)", project_label(root)),
 					cmd = sorbet_cmd(),
 					root_dir = root,
-					capabilities = capabilities,
+					capabilities = get_capabilities(),
 					filetypes = { "ruby" },
 				}
 				local client_id = vim.lsp.start(config, {
