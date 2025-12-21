@@ -9,8 +9,8 @@ return {
         html = { "rustywind", "htmlbeautifier" },
         go = { "goimports", "gofumpt" },
         python = { "isort", "ruff_format", "ruff_fix" },
-        markdown = { { "prettierd", "prettier" }, "markdownlint", "markdown-toc" },
-        ["markdown.mdx"] = { { "prettierd", "prettier" }, "markdownlint", "markdown-toc" },
+        markdown = { "prettierd", "prettier", "markdownlint", "markdown-toc", stop_after_first = true },
+        ["markdown.mdx"] = { "prettierd", "prettier", "markdownlint", "markdown-toc", stop_after_first = true },
         swift = { "swift_format" },
       },
       formatters = {
