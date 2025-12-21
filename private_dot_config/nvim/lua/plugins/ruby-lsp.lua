@@ -6,11 +6,12 @@ return {
 			local util = require("lspconfig.util")
 
 			local function get_capabilities()
+				local capabilities = vim.lsp.protocol.make_client_capabilities()
 				local ok_cmp, cmp = pcall(require, "cmp_nvim_lsp")
 				if ok_cmp then
-					return cmp.default_capabilities()
+					capabilities = vim.tbl_deep_extend("force", capabilities, cmp.default_capabilities())
 				end
-				return vim.lsp.protocol.make_client_capabilities()
+				return capabilities
 			end
 
 			local function project_label(root)
