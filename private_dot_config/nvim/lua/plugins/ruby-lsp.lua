@@ -24,13 +24,22 @@ return {
 				return root:gsub("[^%w_%-]+", "_")
 			end
 
+			local function has_shadowenv(root)
+				if not root or root == "" then
+					return false
+				end
+				if vim.fn.executable("shadowenv") ~= 1 then
+					return false
+				end
+				local shadowenv_dir = util.path.join(root, ".shadowenv.d")
+				return vim.loop.fs_stat(shadowenv_dir) ~= nil
+			end
+
 			local function ruby_cmd(root)
-				if vim.fn.executable("shadowenv") == 1 then
-					if root and root ~= "" then
-						local bin = util.path.join(root, "bin", "ruby-lsp")
-						if bin and vim.loop.fs_stat(bin) then
-							return { "shadowenv", "exec", "--", bin }
-						end
+				if has_shadowenv(root) then
+					local bin = util.path.join(root, "bin", "ruby-lsp")
+					if bin and vim.loop.fs_stat(bin) then
+						return { "shadowenv", "exec", "--", bin }
 					end
 					return { "shadowenv", "exec", "--", "ruby-lsp" }
 				end
@@ -40,14 +49,19 @@ return {
 					if bin and vim.loop.fs_stat(bin) then
 						return { bin }
 					end
+					-- If Gemfile exists, use bundle exec
+					local gemfile = util.path.join(root, "Gemfile")
+					if vim.loop.fs_stat(gemfile) then
+						return { "bundle", "exec", "ruby-lsp" }
+					end
 				end
 
 				return { "ruby-lsp" }
 			end
 
-			local function sorbet_cmd()
+			local function sorbet_cmd(root)
 				local command = { "bundle", "exec", "srb", "tc", "--lsp" }
-				if vim.fn.executable("shadowenv") == 1 then
+				if has_shadowenv(root) then
 					local prefixed = { "shadowenv", "exec", "--" }
 					return vim.list_extend(prefixed, command)
 				end
@@ -153,7 +167,7 @@ return {
 
 				local config = {
 					name = string.format("sorbet(%s)", project_label(root)),
-					cmd = sorbet_cmd(),
+					cmd = sorbet_cmd(root),
 					root_dir = root,
 					capabilities = get_capabilities(),
 					filetypes = { "ruby" },
