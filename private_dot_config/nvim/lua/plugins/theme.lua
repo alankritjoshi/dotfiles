@@ -30,13 +30,21 @@ return {
           SnacksPickerHeader = { bg = "NONE" },
           SnacksPickerSelection = { bg = "#45475a", fg = "#cdd6f4" },
           SnacksPickerMatch = { fg = "#f38ba8", bold = true },
+          -- Blink.cmp with distinct menu vs docs
+          BlinkCmpMenu = { bg = "#11111b" },
+          BlinkCmpMenuBorder = { fg = "#585b70", bg = "#11111b" },
+          BlinkCmpMenuSelection = { bg = "#313244", fg = "#cdd6f4", bold = true },
+          BlinkCmpDoc = { bg = "#181825" },
+          BlinkCmpDocBorder = { fg = "#6c7086", bg = "#181825" },
+          BlinkCmpSignatureHelp = { bg = "#181825" },
+          BlinkCmpSignatureHelpBorder = { fg = "#6c7086", bg = "#181825" },
         }
       end,
       color_overrides = {
         mocha = {
-          base = "#000000",
-          mantle = "#000000",
-          crust = "#000000",
+          base = "#181825",
+          mantle = "#181825",
+          crust = "#11111b",
         },
       },
       })
