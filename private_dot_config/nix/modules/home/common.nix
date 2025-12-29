@@ -185,27 +185,12 @@
   # Common Git configuration
   programs.git = {
     enable = true;
-    userName = "Alankrit Joshi";
-    
-    # Git aliases
-    aliases = {
-      prune-branches = "!git fetch --prune && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -D";
-    };
-    
+
     # SSH signing configuration
     signing = {
       signByDefault = true;
     };
-    
-    # Delta for better diffs
-    delta = {
-      enable = true;
-      options = {
-        navigate = true;
-        dark = true;
-      };
-    };
-    
+
     # Global gitignore patterns
     ignores = [
       ".tool-version"
@@ -217,9 +202,16 @@
       "*.bundle/config"
       ".claude/settings.local.json"
     ];
-    
+
     # Common git config
-    extraConfig = {
+    settings = {
+      user.name = "Alankrit Joshi";
+
+      # Git aliases
+      alias = {
+        prune-branches = "!git fetch --prune && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -D";
+      };
+
       core = {
         editor = "nvim";
         autocrlf = "input";
@@ -230,7 +222,7 @@
       merge.conflictstyle = "zdiff3";
       gpg.format = "ssh";
       gpg.ssh.allowedSignersFile = "~/.ssh/allowed_signers";
-      
+
       # Better defaults
       push.default = "current";
       push.autoSetupRemote = true;
@@ -238,7 +230,7 @@
       fetch.prune = true;
       diff.colorMoved = "default";
       rerere.enabled = true;
-      
+
       # Git LFS
       filter.lfs = {
         clean = "git-lfs clean -- %f";
@@ -246,6 +238,16 @@
         process = "git-lfs filter-process";
         required = true;
       };
+    };
+  };
+
+  # Delta for better diffs
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      navigate = true;
+      dark = true;
     };
   };
 }

@@ -9,16 +9,19 @@
   home.homeDirectory = lib.mkForce "/home/${username}";
   home.stateVersion = "24.05";
 
-  programs.git = {
-    userEmail = "alankritjoshi@gmail.com";
-    signing.key = "~/.ssh/id_ed25519_trishool.pub";
+  programs.git.settings = {
+    user.email = "alankritjoshi@gmail.com";
+    user.signingkey = "~/.ssh/id_ed25519_trishool.pub";
   };
 
   # Minimal packages for Ubuntu VM
   home.packages = with pkgs; [
-    # Essential tools only
+    # Essential tools
     ripgrep
     fd
     git
+
+    # Build tools (needed for nvim-treesitter)
+    gcc
   ];
 }

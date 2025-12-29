@@ -14,9 +14,9 @@
   home.stateVersion = "24.05";
   
   # Personal git configuration
-  programs.git = {
-    userEmail = "alankritjoshi@gmail.com";
-    signing.key = "~/.ssh/id_ed25519_agrani.pub";
+  programs.git.settings = {
+    user.email = "alankritjoshi@gmail.com";
+    user.signingkey = "~/.ssh/id_ed25519_agrani.pub";
   };
   
   # Linux-specific home packages
