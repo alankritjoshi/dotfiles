@@ -19,3 +19,4 @@ Host agrani
 Host trishool
   Hostname trishool
   User alankritjoshi
+  SetEnv TERM=xterm-256color
