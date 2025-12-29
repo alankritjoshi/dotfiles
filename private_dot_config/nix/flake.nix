@@ -114,6 +114,12 @@
         hostname = "agrani";
         system = systems.linux;
       };
+
+      # Ubuntu VM
+      "${username}@trishool" = mkHomeConfiguration {
+        hostname = "trishool";
+        system = systems.linux;
+      };
     };
     
     # Development shells for system management

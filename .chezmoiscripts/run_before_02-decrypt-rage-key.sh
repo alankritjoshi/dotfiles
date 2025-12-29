@@ -2,7 +2,17 @@
 if [ ! -f ~/.config/chezmoi/key.txt ]; then
   echo "Decrypting rage identity key (one-time setup)..."
   mkdir -p ~/.config/chezmoi
-  
+
+  # Source Nix if not already available (handles fresh installations)
+  if ! command -v nix &>/dev/null; then
+    # Check for Determinate Systems installation
+    if [ -x "/nix/var/nix/profiles/default/bin/nix" ]; then
+      export PATH="/nix/var/nix/profiles/default/bin:$PATH"
+    elif [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+      . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+    fi
+  fi
+
   # Use rage directly if available, otherwise use nix run
   if command -v rage &>/dev/null; then
     rage -d ~/.local/share/chezmoi/key.txt.age > ~/.config/chezmoi/key.txt

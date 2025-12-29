@@ -51,3 +51,8 @@ LICENSE
 .ssh/id_ed25519_agrani
 .ssh/id_ed25519_agrani.pub
 {{ end }}
+{{ if ne .machine "trishool" }}
+.ssh/id_ed25519_trishool
+.ssh/id_ed25519_trishool.pub
+{{ end }}
+
