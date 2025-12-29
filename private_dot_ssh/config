@@ -16,6 +16,6 @@ Host agrani
   Hostname agrani.local
   User alankritjoshi
 
-Host trishool 
-  Hostname trishool.local
+Host trishool
+  Hostname trishool
   User alankritjoshi
