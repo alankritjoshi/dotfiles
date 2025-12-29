@@ -9,3 +9,6 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMYhxIA+eOEedGY4pj+YGTsUIIeRMwnO+wWQ0V6HVtpF
 
 # agrani (Linux desktop)
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEd0AQDAivCh8K6haXFg4LpSMqKhUpgowJNQo8LBEuNp agrani
+
+# trishool (Ubuntu)
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEvbPq5eHi5OYd76bas1LO898iED4/jjKfSsJMl2hlaj trishool
