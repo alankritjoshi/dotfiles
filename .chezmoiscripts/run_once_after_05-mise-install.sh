@@ -8,6 +8,11 @@ if [[ "$HOSTNAME" != "tejas" && "$HOSTNAME" != "griha" && "$HOSTNAME" != "agrani
   exit 0
 fi
 
+if [[ "$HOSTNAME" == "trishool" ]]; then
+  sudo apt-get update
+  sudo apt-get install -y libatomic1 zlib1g
+fi
+
 if ! command -v mise &>/dev/null; then
   echo "Installing mise..."
   curl https://mise.run | sh
