@@ -19,5 +19,10 @@
     fd
     git
     gcc
+    zlib
   ];
+
+  home.sessionVariables = {
+    LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib:${pkgs.zlib}/lib";
+  };
 }
