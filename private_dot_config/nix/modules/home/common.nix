@@ -51,6 +51,7 @@
     neovim
     tree-sitter
     sqlite
+    fish
     # neovide # Commented out as in original
     lazygit
     gh           # GitHub CLI (config managed by chezmoi)
@@ -116,16 +117,6 @@
     # === Productivity ===
     hugo         # Static site generator
   ];
-
-  # Fish shell
-  programs.fish = {
-    enable = true;
-    shellInit = ''
-      if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
-        source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
-      end
-    '';
-  };
 
   # Starship prompt
   programs.starship = {
