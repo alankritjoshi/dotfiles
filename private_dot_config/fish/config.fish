@@ -165,10 +165,12 @@ alias st _find_and_edit_dir_with_zellij_tab
 
 set fzf_fd_opts --hidden --follow
 
-# zoxide and starship are initialized by home-manager fish integration
+zoxide init fish | source
+
 function starship_transient_prompt_func
     starship module character
 end
+starship init fish | source
 enable_transience
 
 fish_add_path $HOME/.local/bin

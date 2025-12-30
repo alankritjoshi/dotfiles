@@ -28,6 +28,8 @@
 - Prefer flat code over deep nesting
 - Return early when conditions aren't met
 - Use assertions to fail fast instead of defensive if/else
+- NEVER add comments when removing code - just remove it
+- Don't add explanatory comments unless explicitly asked
 
 ## Machine Hostnames
 - `vanik` - work MacBook (Shopify)
