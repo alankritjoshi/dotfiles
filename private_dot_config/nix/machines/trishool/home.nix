@@ -18,6 +18,5 @@
     ripgrep
     fd
     git
-    gcc
   ];
 }

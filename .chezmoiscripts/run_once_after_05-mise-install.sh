@@ -10,7 +10,7 @@ fi
 
 if [[ "$HOSTNAME" == "trishool" ]]; then
   sudo apt-get update
-  sudo apt-get install -y libatomic1 zlib1g
+  sudo apt-get install -y build-essential libatomic1 zlib1g-dev libssl-dev libreadline-dev libyaml-dev
 fi
 
 if ! command -v mise &>/dev/null; then
