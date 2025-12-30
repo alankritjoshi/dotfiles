@@ -51,6 +51,7 @@
     neovim
     tree-sitter
     sqlite
+    fish
     # neovide # Commented out as in original
     lazygit
     gh           # GitHub CLI (config managed by chezmoi)
