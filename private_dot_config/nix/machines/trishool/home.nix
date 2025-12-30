@@ -14,15 +14,10 @@
     user.signingkey = "~/.ssh/id_ed25519_trishool.pub";
   };
 
-  # Minimal packages for Ubuntu VM
   home.packages = with pkgs; [
-    # Essential tools
     ripgrep
     fd
     git
-    mise
-
-    # Build tools (needed for nvim-treesitter)
     gcc
   ];
 }
