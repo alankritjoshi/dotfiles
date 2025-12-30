@@ -13,10 +13,4 @@
     user.email = "alankritjoshi@gmail.com";
     user.signingkey = "~/.ssh/id_ed25519_trishool.pub";
   };
-
-  home.packages = with pkgs; [
-    ripgrep
-    fd
-    git
-  ];
 }

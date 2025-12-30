@@ -57,12 +57,6 @@
     gh           # GitHub CLI (config managed by chezmoi)
     delta        # Better git diff
     
-    # === Languages & Package Managers ===
-    go
-    delve        # Go debugger
-    nodejs       # Includes npm
-    bun          # Fast JS runtime
-    
     # === Build Tools ===
     cmake
     gnumake
@@ -75,7 +69,6 @@
     rage         # Rust implementation of age encryption
     
     # === Modern CLI Tools ===
-    eza          # Better ls
     bat          # Better cat
     fd           # Better find
     ripgrep      # Better grep
@@ -104,8 +97,7 @@
     
     # === Terminal & Shell ===
     zellij
-    starship
-    
+
     # === System Monitoring ===
     htop
     btop         # Better top
