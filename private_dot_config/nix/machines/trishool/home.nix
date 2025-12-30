@@ -3,7 +3,6 @@
 {
   imports = [
     ../../modules/home/common.nix
-    ../../modules/home/personal.nix
   ];
 
   home.username = username;
@@ -21,6 +20,7 @@
     ripgrep
     fd
     git
+    mise
 
     # Build tools (needed for nvim-treesitter)
     gcc

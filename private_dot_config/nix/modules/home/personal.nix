@@ -19,10 +19,6 @@
     utm
     
   ] ++ lib.optionals pkgs.stdenv.isLinux [
-    # Linux personal-specific
-    obs-studio
-    kdenlive
-    audacity
   ];
   
   # Personal environment variables
