@@ -15,10 +15,10 @@ if [ ! -f ~/.config/chezmoi/key.txt ]; then
 
   # Use rage directly if available, otherwise use nix run
   if command -v rage &>/dev/null; then
-    rage -d ~/.local/share/chezmoi/key.txt.age > ~/.config/chezmoi/key.txt
+    rage -d -o ~/.config/chezmoi/key.txt ~/.local/share/chezmoi/key.txt.age
   elif command -v nix &>/dev/null; then
     echo "Using nix run to execute rage..."
-    nix run nixpkgs#rage -- -d ~/.local/share/chezmoi/key.txt.age > ~/.config/chezmoi/key.txt
+    nix run nixpkgs#rage -- -d -o ~/.config/chezmoi/key.txt ~/.local/share/chezmoi/key.txt.age
   else
     echo "❌ Neither rage nor nix is available"
     echo "This shouldn't happen - nix should be installed by run_once_before_01-install-nix.sh"
