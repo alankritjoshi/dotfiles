@@ -32,9 +32,6 @@
     ] ++ lib.optionals config.alankrit.isPersonal [
       # Personal-specific brews can go here
 
-      # Install Python, Ruby, etc.
-      "mise"
-
       # Env Injection
       "shadowenv"
 

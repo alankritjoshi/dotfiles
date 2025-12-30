@@ -5,9 +5,12 @@
   
   # Personal-specific packages from nixpkgs
   home.packages = with pkgs; [
+    # Development tools
+    mise
+
     # Media
     qbittorrent
-    
+
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     # macOS personal-specific
     keycastr
