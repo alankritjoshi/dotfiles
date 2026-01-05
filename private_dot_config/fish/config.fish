@@ -127,7 +127,7 @@ alias oc opencode
 
 test -x /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init && /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init fish | source
 
-mise activate fish | source
+command -q mise && mise activate fish | source
 
 # Source environment variables from ~/.env file
 if test -f ~/.env
