@@ -82,7 +82,7 @@ alias jf="je ~/.config/fish/config.fish"
 alias jc="je ~/.config/zellij/config.kdl"
 alias jt="je ~/.config/aerospace/aerospace.toml"
 alias jg="je ~/.gitconfig"
-alias j="ja || zellij -l ~/.config/zellij/layouts/default.kdl"
+alias jz="ja || zellij -l ~/.config/zellij/layouts/default.kdl"
 
 alias s _find_and_edit_dir_with_zellij_pane
 alias st _find_and_edit_dir_with_zellij_tab
