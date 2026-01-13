@@ -194,6 +194,8 @@
       "*.DS_Store"
       "*.bundle/config"
       ".claude/settings.local.json"
+      ".opencode/"
+      "!.opencode/"
     ];
 
     # Common git config
