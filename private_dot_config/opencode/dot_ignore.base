@@ -1,0 +1,6 @@
+# Base ignore patterns for opencode
+# These patterns INCLUDE files that .gitignore would exclude
+# Format: !pattern (negates gitignore, making files visible to LLM)
+
+# GitHub workflows and config
+!.github/

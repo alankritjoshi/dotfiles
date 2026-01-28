@@ -1,0 +1,15 @@
+# Shopify-specific ignore patterns for opencode
+# These patterns INCLUDE Shopify config files for LLM context
+
+# Shopify build and deploy config
+!.shopify-build/
+!.shopify-rails/
+
+# Service configuration
+!dev.yml
+!service.yml
+!cusco.yml
+!shipit.*.yml
+
+# Slices configuration
+!slices.yml

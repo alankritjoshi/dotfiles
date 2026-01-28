@@ -195,7 +195,8 @@
       "*.bundle/config"
       ".claude/settings.local.json"
       ".opencode/"
-      "!.opencode/"
+      ".ignore"
+      "AGENTS.md"
     ];
 
     # Common git config
