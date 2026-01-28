@@ -1,7 +1,53 @@
 command_timeout = 1000
+
 [battery]
 disabled = true
 
-# turn off aws stuff
 [aws]
 disabled = true
+
+[gcloud]
+disabled = true
+
+[package]
+disabled = true
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+
+[directory.substitutions]
+"~/src/github.com/Shopify" = " "
+"~/src/github.com" = " "
+
+[nodejs]
+format = '[$symbol]($style)'
+
+[ruby]
+format = '[$symbol]($style)'
+
+[python]
+format = '[$symbol]($style)'
+
+[golang]
+format = '[$symbol]($style)'
+
+[rust]
+format = '[$symbol]($style)'
+
+[lua]
+format = '[$symbol]($style)'
+
+[nix_shell]
+format = '[$symbol]($style)'
+symbol = ' '
+
+[git_branch]
+format = '[$symbol$branch]($style) '
+
+[custom.worktree]
+command = "basename $(pwd)"
+when = '[ "$(git rev-parse --git-common-dir 2>/dev/null)" != "$(git rev-parse --git-dir 2>/dev/null)" ]'
+symbol = " "
+format = '[$symbol$output]($style) '
+style = 'bold purple'
