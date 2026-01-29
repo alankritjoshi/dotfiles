@@ -97,33 +97,12 @@ enable_transience
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/opt/curl/bin
 fish_add_path $HOME/go/bin
-fish_add_path /opt/homebrew/opt/python@3.11/libexec/bin
-
-# Added by Windsurf
-fish_add_path /Users/alankritjoshi/.codeium/windsurf/bin
-
-# if status is-interactive
-#     set ZELLIJ_AUTO_ATTACH true
-#     set ZELLIJ_AUTO_EXIT true
-#
-#     if not set -q ZELLIJ
-#         if test "$ZELLIJ_AUTO_ATTACH" = true
-#             j
-#         end
-#
-#         if test "$ZELLIJ_AUTO_EXIT" = true
-#             kill $fish_pid
-#         end
-#     end
-# end
 
 if test -f /opt/dev/dev.fish
     source /opt/dev/dev.fish
 end
 
-alias cld claude
 alias cdx codex
-alias oc opencode
 
 test -x /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init && /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init fish | source
 
