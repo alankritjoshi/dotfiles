@@ -197,6 +197,8 @@
       ".opencode/"
       ".ignore"
       "AGENTS.md"
+      ".graphite"
+      ".graphite.tmp"
     ];
 
     # Common git config

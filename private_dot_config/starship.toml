@@ -35,44 +35,8 @@ disabled = true
 format = '[\[$status\]]($style) '
 
 [custom.dir]
-description = "Smart directory with org logos and worktree support"
-shell = "sh"
-command = '''
-gh=$(printf '\uf113')
-if git rev-parse --git-dir > /dev/null 2>&1; then
-  common=$(git rev-parse --git-common-dir 2>/dev/null)
-  gitdir=$(git rev-parse --git-dir 2>/dev/null)
-  if [ "$common" != "$gitdir" ]; then
-    repo_path=$(echo "$common" | sed 's|/\.git$||')
-    repo_name=$(basename "$repo_path")
-    wt_name=$(basename "$(pwd)")
-    case "$repo_path" in
-      */github.com/Shopify/*) printf "🛍️/%s (󰙅 %s)" "$repo_name" "$wt_name" ;;
-      */github.com/*) printf "%s/%s (󰙅 %s)" "$gh" "$repo_name" "$wt_name" ;;
-      *) printf "%s (󰙅 %s)" "$repo_name" "$wt_name" ;;
-    esac
-  else
-    repo_root=$(git rev-parse --show-toplevel 2>/dev/null)
-    if [ -n "$repo_root" ]; then
-      repo_name=$(basename "$repo_root")
-      case "$repo_root" in
-        */github.com/Shopify/*) printf "🛍️/%s" "$repo_name" ;;
-        */github.com/*) printf "%s/%s" "$gh" "$repo_name" ;;
-        *) printf "%s" "$repo_name" ;;
-      esac
-    else
-      dir_name=$(basename "$(pwd)")
-      case "$(pwd)" in
-        */github.com/Shopify/*) printf "🛍️/%s" "$dir_name" ;;
-        */github.com/*) printf "%s/%s" "$gh" "$dir_name" ;;
-        *) printf "%s" "$dir_name" ;;
-      esac
-    fi
-  fi
-else
-  pwd | sed "s|^$HOME|~|"
-fi
-'''
+description = "Smart directory with org logos, worktree, and graphite stack"
+command = '~/.config/starship/prompt-dir.sh'
 when = "true"
 format = '[$output]($style) '
 style = 'bold cyan'
