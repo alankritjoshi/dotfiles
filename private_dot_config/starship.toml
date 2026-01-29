@@ -1,5 +1,21 @@
 command_timeout = 1000
 
+format = """
+${custom.dir}\
+$git_branch\
+$git_status\
+$nodejs\
+$ruby\
+$python\
+$golang\
+$rust\
+$lua\
+$nix_shell\
+$cmd_duration\
+$line_break\
+$status\
+$character"""
+
 [battery]
 disabled = true
 
@@ -13,17 +29,65 @@ disabled = true
 disabled = true
 
 [directory]
-truncation_length = 3
-truncate_to_repo = true
+disabled = true
 
-[directory.substitutions]
-"~/src/github.com/Shopify" = " "
-"~/src/github.com" = " "
+[status]
+format = '[\[$status\]]($style) '
+
+[custom.dir]
+description = "Smart directory with org logos and worktree support"
+shell = "sh"
+command = '''
+gh=$(printf '\uf113')
+if git rev-parse --git-dir > /dev/null 2>&1; then
+  common=$(git rev-parse --git-common-dir 2>/dev/null)
+  gitdir=$(git rev-parse --git-dir 2>/dev/null)
+  if [ "$common" != "$gitdir" ]; then
+    repo_path=$(echo "$common" | sed 's|/\.git$||')
+    repo_name=$(basename "$repo_path")
+    wt_name=$(basename "$(pwd)")
+    case "$repo_path" in
+      */github.com/Shopify/*) printf "🛍️/%s (󰙅 %s)" "$repo_name" "$wt_name" ;;
+      */github.com/*) printf "%s/%s (󰙅 %s)" "$gh" "$repo_name" "$wt_name" ;;
+      *) printf "%s (󰙅 %s)" "$repo_name" "$wt_name" ;;
+    esac
+  else
+    repo_root=$(git rev-parse --show-toplevel 2>/dev/null)
+    if [ -n "$repo_root" ]; then
+      repo_name=$(basename "$repo_root")
+      case "$repo_root" in
+        */github.com/Shopify/*) printf "🛍️/%s" "$repo_name" ;;
+        */github.com/*) printf "%s/%s" "$gh" "$repo_name" ;;
+        *) printf "%s" "$repo_name" ;;
+      esac
+    else
+      dir_name=$(basename "$(pwd)")
+      case "$(pwd)" in
+        */github.com/Shopify/*) printf "🛍️/%s" "$dir_name" ;;
+        */github.com/*) printf "%s/%s" "$gh" "$dir_name" ;;
+        *) printf "%s" "$dir_name" ;;
+      esac
+    fi
+  fi
+else
+  pwd | sed "s|^$HOME|~|"
+fi
+'''
+when = "true"
+format = '[$output]($style) '
+style = 'bold cyan'
+
+[git_branch]
+format = '[$symbol$branch]($style) '
+
+[git_status]
+format = '[$all_status$ahead_behind]($style)'
 
 [nodejs]
 format = '[$symbol]($style)'
 
 [ruby]
+symbol = '💎 '
 format = '[$symbol]($style)'
 
 [python]
@@ -40,14 +104,3 @@ format = '[$symbol]($style)'
 
 [nix_shell]
 format = '[$symbol]($style)'
-symbol = ' '
-
-[git_branch]
-format = '[$symbol$branch]($style) '
-
-[custom.worktree]
-command = "basename $(pwd)"
-when = '[ "$(git rev-parse --git-common-dir 2>/dev/null)" != "$(git rev-parse --git-dir 2>/dev/null)" ]'
-symbol = " "
-format = '[$symbol$output]($style) '
-style = 'bold purple'
