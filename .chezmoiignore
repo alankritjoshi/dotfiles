@@ -27,6 +27,14 @@ LICENSE
 *~
 .#*
 
+# Pi agent auto-managed (not chezmoi's concern)
+.pi/agent/auth.json
+.pi/agent/git
+.pi/agent/investigations
+.pi/agent/packages
+.pi/agent/sessions
+.pi/agent/_disabled_extensions
+
 # Secrets that shouldn't be in version control
 .npmrc
 .config/gh/hosts.yml
