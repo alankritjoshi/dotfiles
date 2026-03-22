@@ -1,3 +1,8 @@
+---
+name: chezmoi
+description: Chezmoi dotfile management — two instances (personal + shopify), naming conventions, templates, and non-interactive usage
+---
+
 # Chezmoi Dotfile Management
 
 ## Setup
