@@ -16,6 +16,7 @@ Config files:
 - **ALWAYS edit files in the chezmoi source dir** — never edit applied files directly
 - **NEVER run `chezmoi apply`** — user applies manually
 - **NEVER run `darwin-rebuild`** — user runs manually
+- When running `chezmoi diff`, use `--no-pager` to avoid interactive mode
 - Personal source: `~/.local/share/chezmoi/`
 - Shopify source: `~/.local/share/chezmoi-shopify/`
 
@@ -26,6 +27,16 @@ cz           # chezmoi (personal)
 czs          # chezmoi --config ~/.config/chezmoi-shopify.yaml (shopify)
 cza          # apply both instances
 czu          # update both instances
+```
+
+## Non-Interactive Usage
+
+Always use `--no-pager` when running chezmoi commands that produce output:
+```bash
+chezmoi diff --no-pager          # personal
+czs diff --no-pager              # shopify
+chezmoi managed --no-pager       # list managed files
+chezmoi cat ~/.pi/agent/AGENTS.md  # preview rendered template
 ```
 
 ## File Separation
