@@ -98,14 +98,6 @@ fish_add_path $HOME/.local/bin
 fish_add_path $HOME/opt/curl/bin
 fish_add_path $HOME/go/bin
 
-if test -f /opt/dev/dev.fish
-    source /opt/dev/dev.fish
-end
-
-alias cdx codex
-
-test -x /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init && /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init fish | source
-
 command -q mise && mise activate fish | source
 
 # Source environment variables from ~/.env file
