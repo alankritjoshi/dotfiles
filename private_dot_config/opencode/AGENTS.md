@@ -9,6 +9,7 @@ Load these with `/skill <name>` for detailed guidance:
 - **shopify-ruby** - Slices, dev CLI, Sorbet/Tapioca, rubocop
 - **infra-central** - Gordon job management (project-specific)
 - **lineage-developer** - Lineage sync workflows (project-specific)
+- **data-warehouse** - dbt build, test, validate, deploy in data-warehouse repo
 
 ## Quick Reference
 
