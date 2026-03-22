@@ -1,0 +1,37 @@
+# Global Rules
+
+## Markdown
+- After creating or writing a markdown file, preview it with `md <file>` in a background job
+
+## Code Style
+- Be concise and direct
+- Early exit/return patterns, assert preconditions, flat code over nesting
+- Conventional Commits format for commit messages
+- Explain what you're about to do before doing it
+- When making multiple changes, commit frequently with focused messages
+- Fish shell, not Zsh or Bash
+- Never add comments when removing code
+- Don't add explanatory comments unless asked
+{{ if eq .machine "vanik" }}
+## Shopify Development
+
+### Dev CLI
+- See `dev` skill for full reference
+- Always prefer `dev` commands over direct tools
+- Read `dev.yml` when entering a new project
+
+### Git & Graphite
+- Current directory may be a git worktree. Treat it as repo root.
+- **NEVER use `git add .` or `git add -A`** — always stage files/subdirectories individually
+- Use `gt_*` tools for branch management, not raw git commands
+- Use `gt_create` for new branches, `gt_submit` for push + PR (never `git checkout -b` / `git push` / `gh pr create`)
+- Use `gh_*` tools to view GitHub issues and PRs
+
+### Shopify Config Files
+On Shopify projects, these files are gitignored but useful context:
+- `.shopify-build/` — build configuration
+- `dev.yml` — dev CLI configuration
+- `slices.yml` — slice definitions
+- `service.yml`, `cusco.yml` — service configuration
+Read them directly when exploring a new project.
+{{ end -}}
