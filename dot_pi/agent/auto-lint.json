@@ -1,0 +1,7 @@
+[
+  {
+    "match": "my-project",
+    "command": "npx eslint --fix --format compact {{file}}",
+    "extensions": [".ts", ".tsx", ".js", ".jsx"]
+  }
+]
