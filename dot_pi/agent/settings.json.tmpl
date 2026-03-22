@@ -1,0 +1,18 @@
+{
+  "lastChangelogVersion": "0.61.0",
+  "packages": [
+{{ if eq .machine "vanik" -}}
+    "https://github.com/shopify-playground/shop-pi-fy",
+{{ end -}}
+    "https://github.com/davebcn87/pi-autoresearch"
+  ],
+  "defaultThinkingLevel": "high",
+  "theme": "catppuccin-mocha",
+  "defaultProvider": "anthropic-1m",
+  "defaultModel": "claude-opus-4-6",
+  "compaction": {
+    "enabled": true,
+    "reserveTokens": 32768,
+    "keepRecentTokens": 50000
+  }
+}
