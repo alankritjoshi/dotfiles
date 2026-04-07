@@ -55,6 +55,19 @@ assert("sort | uniq", isSafeCommand("sort file | uniq -c"), true);
 assert("python3 -c standalone", isSafeCommand('python3 -c "print(1+1)"'), true);
 assert("node -e standalone", isSafeCommand('node -e "console.log(1)"'), true);
 
+// --- isSafeCommand: chezmoi ---
+console.log("=== isSafeCommand: chezmoi ===");
+assert("chezmoi diff", isSafeCommand("chezmoi diff --no-pager"), true);
+assert("chezmoi shopify diff", isSafeCommand("chezmoi --config ~/.config/chezmoi-shopify.yaml diff --no-pager"), true);
+assert("chezmoi managed", isSafeCommand("chezmoi managed --no-pager"), true);
+assert("chezmoi cat", isSafeCommand("chezmoi cat ~/.pi/agent/AGENTS.md"), true);
+assert("chezmoi data", isSafeCommand("chezmoi data"), true);
+assert("chezmoi status", isSafeCommand("chezmoi status"), true);
+assert("chezmoi apply blocked", isSafeCommand("chezmoi apply"), false);
+assert("chezmoi edit blocked", isSafeCommand("chezmoi edit ~/.config/fish/config.fish"), false);
+assert("chezmoi add blocked", isSafeCommand("chezmoi add ~/.config/something"), false);
+assert("chezmoi init blocked", isSafeCommand("chezmoi init alankritjoshi/dotfiles"), false);
+
 // --- isSafeCommand: destructive (must block) ---
 console.log("=== isSafeCommand: destructive ===");
 assert("rm", isSafeCommand("rm -rf /"), false);
