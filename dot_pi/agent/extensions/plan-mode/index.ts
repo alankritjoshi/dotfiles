@@ -17,8 +17,8 @@
  * - /plan-classify to heuristically classify tools and agents for plan mode
  * - --plan flag to start in plan mode
  * - Bash restricted to allowlisted read-only commands
- * - save_plan tool writes plan to .pi/plans/<topic>.md and opens md preview
- * - save_plan allowed in plan mode (bypasses write restriction)
+ * - save_plan tool writes plan to .pi/plans/<date>-<time>-<topic>.md and opens md preview
+ * - save_plan works with or without /plan topic (derives from param, heading, or defaults)
  * - [DONE:n] progress tracking
  * - Todo widget above editor for plan step tracking
  * - Custom header banner when plan mode is active
@@ -54,6 +54,15 @@ function slugify(text: string): string {
 		.slice(0, 60);
 }
 
+function generateFilename(topic: string): string {
+	const now = new Date();
+	const date = now.toISOString().slice(0, 10);
+	const hhmm = String(now.getHours()).padStart(2, "0")
+		+ String(now.getMinutes()).padStart(2, "0");
+	const slug = slugify(topic);
+	return `${date}-${hhmm}-${slug}.md`;
+}
+
 function ensurePlansDir(cwd: string): string {
 	const plansDir = path.join(cwd, ".pi", "plans");
 	fs.mkdirSync(plansDir, { recursive: true });
@@ -62,10 +71,33 @@ function ensurePlansDir(cwd: string): string {
 
 function writePlanFile(cwd: string, topic: string, content: string): string {
 	const plansDir = ensurePlansDir(cwd);
-	const filename = `${slugify(topic)}.md`;
+	const filename = generateFilename(topic);
 	const filePath = path.join(plansDir, filename);
 	fs.writeFileSync(filePath, content, "utf-8");
 	return filePath;
+}
+
+function focusChromeTab(): void {
+	const child = spawn("osascript", ["-e", 'tell application "Google Chrome" to activate'], {
+		detached: true,
+		stdio: "ignore",
+	});
+	child.on("error", () => {});
+	child.unref();
+}
+
+function openMarkdownPreview(filePath: string, mdServerPath: string | null): boolean {
+	if (mdServerPath === filePath) {
+		focusChromeTab();
+		return false;
+	}
+	const child = spawn("md", [filePath], {
+		detached: true,
+		stdio: "ignore",
+	});
+	child.on("error", () => {});
+	child.unref();
+	return true;
 }
 
 export default function planModeExtension(pi: ExtensionAPI): void {
@@ -74,7 +106,8 @@ export default function planModeExtension(pi: ExtensionAPI): void {
 	let todoItems: TodoItem[] = [];
 	let planTopic: string | null = null;
 	let allToolNames: string[] = [];
-	let planSavedThisTurn = false;
+	let lastSavedPath: string | null = null;
+	let mdServerPath: string | null = null;
 
 	function captureAllTools(): void {
 		allToolNames = pi.getAllTools().map((t) => t.name);
@@ -240,35 +273,42 @@ export default function planModeExtension(pi: ExtensionAPI): void {
 	pi.registerTool({
 		name: "save_plan",
 		label: "Save Plan",
-		description: "Save the plan to .pi/plans/<topic>.md and open a markdown preview. Only works when a plan topic is set via /plan <topic>.",
+		description: "Save the plan to .pi/plans/<date>-<time>-<topic>.md and open a markdown preview.",
 		promptSnippet: "Save plan to file and open markdown preview.",
 		promptGuidelines: [
 			"After register_plan_steps, call save_plan with the full plan markdown content.",
-			"Only call this when a plan topic is set (via /plan <topic>).",
+			"After saving the plan, if there are any open questions or unresolved decisions, call the ask tool with those questions so the user can answer them before execution begins.",
 		],
 		parameters: Type.Object({
 			content: Type.String({ description: "Full plan content in markdown format." }),
 		}),
 		async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
-			if (!planTopic) {
-				return { content: [{ type: "text", text: "No plan topic set. Use /plan <topic> first." }], isError: true };
-			}
 			if (!params.content?.trim()) {
 				return { content: [{ type: "text", text: "Empty plan content." }], isError: true };
 			}
 
-			try {
-				const filePath = writePlanFile(ctx.cwd, planTopic, `# Plan: ${planTopic}\n\n${params.content}`);
-				planSavedThisTurn = true;
+			const topic = planTopic
+				|| params.content.match(/^#\s+(.+)/m)?.[1]?.slice(0, 60).trim()
+				|| "plan";
 
-				spawn("md", [filePath], {
-					detached: true,
-					stdio: "ignore",
-				}).unref();
+			try {
+				let filePath: string;
+				if (lastSavedPath && fs.existsSync(lastSavedPath)) {
+					filePath = lastSavedPath;
+					fs.writeFileSync(filePath, params.content, "utf-8");
+				} else {
+					filePath = writePlanFile(ctx.cwd, topic, params.content);
+				}
+				const relativePath = path.relative(ctx.cwd, filePath);
+				lastSavedPath = filePath;
+				persistState();
+				if (openMarkdownPreview(filePath, mdServerPath)) {
+					mdServerPath = filePath;
+				}
 
 				return {
-					content: [{ type: "text", text: `Plan saved to ${filePath}` }],
-					details: { path: filePath, topic: planTopic },
+					content: [{ type: "text", text: `Plan saved to ${relativePath}` }],
+					details: { path: relativePath, topic },
 				};
 			} catch (err) {
 				return { content: [{ type: "text", text: `Failed to save plan: ${err}` }], isError: true };
@@ -288,7 +328,7 @@ export default function planModeExtension(pi: ExtensionAPI): void {
 				const t = result.content?.[0];
 				return new Text(theme.fg("error", t && "text" in t ? t.text : "Error"), 0, 0);
 			}
-			const d = result.details as { path?: string } | undefined;
+			const d = result.details as { path?: string; topic?: string } | undefined;
 			return new Text(theme.fg("success", `✓ Saved to ${d?.path ?? "plan file"}`), 0, 0);
 		},
 	});
@@ -430,6 +470,7 @@ export default function planModeExtension(pi: ExtensionAPI): void {
 			todos: todoItems,
 			executing: executionMode,
 			topic: planTopic,
+			lastSavedPath,
 		});
 	}
 
@@ -440,18 +481,20 @@ export default function planModeExtension(pi: ExtensionAPI): void {
 		executionMode = false;
 		todoItems = [];
 		planTopic = null;
+		lastSavedPath = null;
 
 		const entries = ctx.sessionManager.getEntries();
 
 		const planModeEntry = entries
 			.filter((e: { type: string; customType?: string }) => e.type === "custom" && e.customType === "plan-mode")
-			.pop() as { data?: { enabled: boolean; todos?: TodoItem[]; executing?: boolean; topic?: string } } | undefined;
+			.pop() as { data?: { enabled: boolean; todos?: TodoItem[]; executing?: boolean; topic?: string; lastSavedPath?: string } } | undefined;
 
 		if (planModeEntry?.data) {
 			planModeEnabled = planModeEntry.data.enabled ?? false;
 			todoItems = planModeEntry.data.todos ?? [];
 			executionMode = planModeEntry.data.executing ?? false;
 			planTopic = planModeEntry.data.topic ?? null;
+			lastSavedPath = planModeEntry.data.lastSavedPath ?? null;
 		}
 
 		if (executionMode && todoItems.length > 0) {
@@ -503,6 +546,7 @@ export default function planModeExtension(pi: ExtensionAPI): void {
 			if (topic?.toLowerCase() === "clear") {
 				todoItems = [];
 				planTopic = null;
+				lastSavedPath = null;
 				planModeEnabled = false;
 				executionMode = false;
 				restoreAllTools();
@@ -517,6 +561,7 @@ export default function planModeExtension(pi: ExtensionAPI): void {
 			if (planModeEnabled && topic) {
 				planTopic = topic;
 				todoItems = [];
+				lastSavedPath = null;
 				persistState();
 				setPlanHeader(ctx);
 				updateTodoDisplay(ctx);
@@ -689,7 +734,6 @@ Restrictions:
 - Subagent: allowed agents: ${allowedList}. Agents with write tools (edit, write) are blocked.
 
 Use subagent to dispatch read-only agents for parallel research tasks.
-Use the supervisor skill (/skill:supervisor) for complex multi-step work — it will only dispatch allowed agents in plan mode.
 Use the ask tool for clarifying questions with the user before planning.
 
 Produce a structured plan with these sections:
@@ -701,7 +745,8 @@ Produce a structured plan with these sections:
 
 After your plan:
 1. Call register_plan_steps with an array of concise, actionable step descriptions (implementation steps only).
-2. Call save_plan with the full plan markdown content to persist it and open a preview.
+2. Call save_plan with the full plan markdown content to persist it and open a preview. This works with or without a /plan topic.
+3. If there are open questions, call the ask tool with them so the user can answer before execution begins. Use single-select for either/or questions, multi-select for preference lists, and no options for open-ended questions.
 
 Do NOT attempt to make changes — just describe what you would do.`,
 					display: false,
@@ -714,7 +759,7 @@ Do NOT attempt to make changes — just describe what you would do.`,
 			if (remaining.length === 0) return;
 
 			const todoList = remaining.map((t) => `${t.step}. ${t.text}`).join("\n");
-			const planRef = planTopic ? `\nPlan file: .pi/plans/${slugify(planTopic)}.md` : "";
+			const planRef = planTopic ? `\nPlan topic: ${planTopic} (see .pi/plans/)` : "";
 			return {
 				message: {
 					customType: "plan-execution-context",
@@ -778,29 +823,6 @@ After completing a step, call complete_plan_step with the step number.`,
 		}
 
 		if (checkAllComplete(ctx)) return;
-
-		// Reset per-turn flag
-		const alreadySaved = planSavedThisTurn;
-		planSavedThisTurn = false;
-
-		if (!planModeEnabled) return;
-		if (alreadySaved) return;
-
-		// Fallback: write plan file if save_plan wasn't called
-		const lastMsg = [...event.messages].reverse().find(isAssistantMessage);
-		if (!lastMsg || lastMsg.stopReason === "aborted" || lastMsg.stopReason === "error") return;
-
-		if (planTopic) {
-			const fullPlanText = getTextContent(lastMsg);
-			if (fullPlanText) {
-				try {
-					const filePath = writePlanFile(ctx.cwd, planTopic, `# Plan: ${planTopic}\n\n${fullPlanText}`);
-					ctx.ui.notify(`Plan saved to ${filePath} (fallback — use save_plan tool next time)`, "info");
-				} catch {
-					// non-fatal
-				}
-			}
-		}
 	});
 
 	// --- Session lifecycle ---
