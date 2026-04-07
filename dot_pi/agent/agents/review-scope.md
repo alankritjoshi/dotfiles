@@ -2,7 +2,7 @@
 name: review-scope
 description: PR scope & size review — changeset focus, splitting opportunities, cognitive load
 tools: read, bash
-model: gemini-2.5-flash
+model: claude-sonnet-4-5
 ---
 
 # PR Scope & Size Reviewer
