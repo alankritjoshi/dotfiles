@@ -116,6 +116,9 @@ if test -f ~/.env
     end
 end
 
+# Added by tec agent
+test -x /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init && /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init fish | source
+
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
