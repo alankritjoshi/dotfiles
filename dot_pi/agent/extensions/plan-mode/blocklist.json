@@ -64,9 +64,14 @@
     "gcal_availability",
     "gcal_events",
     "gcal_list",
+    "gdoc_create",
+    "gdoc_edit",
+    "gdoc_write",
     "gdrive_search",
     "gh_issue_list",
     "gh_issue_view",
+    "gh_pr_checks",
+    "gh_pr_job_logs",
     "gh_pr_list",
     "gh_pr_view",
     "gh_repo_view",
@@ -91,6 +96,7 @@
     "memory_append",
     "memory_list",
     "memory_read",
+    "memory_search",
     "observe_ai_docs",
     "observe_datasets",
     "observe_error_group",
@@ -115,7 +121,9 @@
     "save_plan",
     "search_output",
     "slack_canvas",
+    "slack_dm",
     "slack_history",
+    "slack_post",
     "slack_profile",
     "slack_search",
     "slack_thread",
@@ -144,5 +152,5 @@
     "scout",
     "validator"
   ],
-  "lastClassified": "2026-03-22"
+  "lastClassified": "2026-03-25"
 }
