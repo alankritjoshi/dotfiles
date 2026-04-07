@@ -1,9 +1,29 @@
 # Global Rules
 
+## User Questions — ALWAYS Use `ask` Tool
+
+- NEVER ask questions as plain text in the chat. ALWAYS use the `ask` tool.
+- When choosing between approaches → `ask` with single-select options (`multi: false`)
+- When gathering multiple preferences → `ask` with tabbed multi-question interface
+- When confirming actions → `ask` with Yes/No options
+- When you need free-form input → `ask` with no options (user types their answer)
+- Provide clear, actionable options when available
+- Include a `context` field to guide the question
+
 ## Markdown
+
 - After creating or writing a markdown file, preview it with `md <file>` in a background job
 
+## CLI Tool Preferences
+
+When using `bash`, prefer modern CLI tools over legacy ones:
+- `rg` instead of `grep` (ripgrep — faster, respects .gitignore)
+- `fd` instead of `find` (fd-find — faster, saner defaults)
+- `sd` instead of `sed` (simpler syntax, no escaping hell)
+- NEVER use `grep`, `find`, or `sed` in bash commands
+
 ## Code Style
+
 - Be concise and direct
 - Early exit/return patterns, assert preconditions, flat code over nesting
 - Conventional Commits format for commit messages
@@ -16,19 +36,38 @@
 ## Shopify Development
 
 ### Dev CLI
+
 - See `dev` skill for full reference
 - Always prefer `dev` commands over direct tools
 - Read `dev.yml` when entering a new project
 
 ### Git & Graphite
+
 - Current directory may be a git worktree. Treat it as repo root.
 - **NEVER use `git add .` or `git add -A`** — always stage files/subdirectories individually
-- Use `gt_*` tools for branch management, not raw git commands
-- Use `gt_create` for new branches, `gt_submit` for push + PR (never `git checkout -b` / `git push` / `gh pr create`)
+- In Graphite repos, use `gt` CLI commands via bash (not raw git commands for branch ops)
+- Use `gt ls --stack` to view the current stack before branch operations
+- Use `gt create` for new branches, `gt submit` for push + PR (never `git checkout -b` / `git push` / `gh pr create`)
 - Use `gh_*` tools to view GitHub issues and PRs
 
+### Before ANY Ruby/Rails Work
+
+- ALWAYS read the `shopify-ruby` skill first (`/skill:shopify-ruby`)
+- ALWAYS use `dev` commands — read the `dev` skill for reference
+- NEVER run `rubocop`, `bin/rails test`, `bundle exec` directly — use `dev` equivalents
+- Run `dev test`, `dev check style-ruby`, `dev check slices-style` instead
+
+### CI Failure Investigation
+
+1. `gh_pr_checks` for status overview (includes Buildkite build URLs)
+2. `bk_failed_jobs` with the build number from the Buildkite URL
+3. `bk_job_logs` to download all logs at once, then `read`/`grep` the log files
+4. If checks aren't showing yet, wait and retry `gh_pr_checks`
+
 ### Shopify Config Files
+
 On Shopify projects, these files are gitignored but useful context:
+
 - `.shopify-build/` — build configuration
 - `dev.yml` — dev CLI configuration
 - `slices.yml` — slice definitions
