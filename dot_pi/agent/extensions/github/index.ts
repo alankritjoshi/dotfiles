@@ -1,3 +1,14 @@
+/**
+ * GitHub Extension (slim)
+ *
+ * Only tools NOT provided by tool-gateway:
+ * - gh_pr_checks — detailed check runs for a PR
+ * - gh_pr_job_logs — CI job logs for a PR (GitHub Actions)
+ * - gh_repo_view — repository metadata
+ *
+ * For issues and PRs, use tool-gateway's github_* tools.
+ */
+
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
 import { Text } from "@mariozechner/pi-tui";
@@ -30,208 +41,67 @@ export default function (pi: ExtensionAPI) {
     };
   }
 
-  // ─── gh_issue_view ────────────────────────────────────────────────────────
+  // ─── gh_pr_checks ─────────────────────────────────────────────────────────
 
   pi.registerTool({
-    name: "gh_issue_view",
-    label: "GitHub — View Issue",
+    name: "gh_pr_checks",
+    label: "GitHub — View PR Checks",
     description:
-      "View a GitHub issue: title, body, labels, assignees, comments. " +
-      "Provide a URL or (owner + repo + number).",
-    parameters: Type.Object({
-      url: Type.Optional(Type.String({ description: "GitHub issue URL (e.g. https://github.com/owner/repo/issues/123)" })),
-      owner: Type.Optional(Type.String({ description: "Repository owner" })),
-      repo: Type.Optional(Type.String({ description: "Repository name" })),
-      number: Type.Optional(Type.Number({ description: "Issue number" })),
-      comments: Type.Optional(Type.Boolean({ description: "Include comments (default: true)" })),
-    }),
-    async execute(_id, params, signal) {
-      try {
-        const ref = resolveRef(params);
-        const includeComments = params.comments !== false;
-
-        const fields = "number,title,state,body,labels,assignees,milestone,createdAt,author,url";
-        const raw = await gh(
-          ["issue", "view", String(ref.number), "--repo", `${ref.owner}/${ref.repo}`, "--json", fields],
-          signal,
-        );
-        const issue = JSON.parse(raw);
-
-        const lines: string[] = [
-          `# #${issue.number} — ${issue.title}`,
-          `State: ${issue.state} | Author: ${issue.author?.login ?? "unknown"} | Created: ${issue.createdAt}`,
-          issue.labels?.length ? `Labels: ${issue.labels.map((l: any) => l.name).join(", ")}` : null,
-          issue.assignees?.length ? `Assignees: ${issue.assignees.map((a: any) => a.login).join(", ")}` : null,
-          issue.milestone ? `Milestone: ${issue.milestone.title}` : null,
-          `URL: ${issue.url}`,
-          "",
-          issue.body || "(no description)",
-        ].filter((l): l is string => l !== null);
-
-        if (includeComments) {
-          const commentsRaw = await gh(
-            ["issue", "view", String(ref.number), "--repo", `${ref.owner}/${ref.repo}`, "--json", "comments"],
-            signal,
-          );
-          const { comments } = JSON.parse(commentsRaw);
-          if (comments?.length) {
-            lines.push("", `--- ${comments.length} comment(s) ---`);
-            for (const c of comments) {
-              lines.push("", `**${c.author?.login ?? "unknown"}** (${c.createdAt}):`);
-              lines.push(c.body);
-            }
-          }
-        }
-
-        return ok(lines.join("\n"), { owner: ref.owner, repo: ref.repo, number: issue.number, state: issue.state });
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
-    renderCall(args, theme) {
-      const label = args.url || `${args.owner}/${args.repo}#${args.number}`;
-      return new Text(theme.fg("toolTitle", theme.bold("GitHub — View Issue ")) + theme.fg("muted", String(label)), 0, 0);
-    },
-    renderResult(result, _opts, theme) {
-      const d = result.details as any;
-      if (d?.error || !d?.owner) return new Text(theme.fg("error", "✗ failed"), 0, 0);
-      return new Text(theme.fg("success", "✓ ") + `${d.owner}/${d.repo}#${d.number} — ${d.state}`, 0, 0);
-    },
-  });
-
-  // ─── gh_issue_list ────────────────────────────────────────────────────────
-
-  pi.registerTool({
-    name: "gh_issue_list",
-    label: "GitHub — List Issues",
-    description:
-      "List or search issues in a GitHub repo. Returns title, number, state, labels, assignee.",
-    parameters: Type.Object({
-      owner: Type.String({ description: "Repository owner" }),
-      repo: Type.String({ description: "Repository name" }),
-      state: Type.Optional(Type.String({ description: "Filter by state: open, closed, all (default: open)" })),
-      label: Type.Optional(Type.String({ description: "Filter by label" })),
-      assignee: Type.Optional(Type.String({ description: "Filter by assignee" })),
-      search: Type.Optional(Type.String({ description: "Search query" })),
-      limit: Type.Optional(Type.Number({ description: "Max results (default: 20, max: 100)" })),
-    }),
-    async execute(_id, params, signal) {
-      try {
-        const limit = Math.min(params.limit ?? 20, 100);
-        const args = [
-          "issue", "list",
-          "--repo", `${params.owner}/${params.repo}`,
-          "--json", "number,title,state,labels,assignees,createdAt,author",
-          "--limit", String(limit),
-        ];
-        if (params.state) args.push("--state", params.state);
-        if (params.label) args.push("--label", params.label);
-        if (params.assignee) args.push("--assignee", params.assignee);
-        if (params.search) args.push("--search", params.search);
-
-        const raw = await gh(args, signal);
-        const issues = JSON.parse(raw);
-
-        if (!issues.length) return ok("No issues found.", { owner: params.owner, repo: params.repo, count: 0 });
-
-        const lines = issues.map((i: any) => {
-          const labels = i.labels?.map((l: any) => l.name).join(", ");
-          const assignee = i.assignees?.[0]?.login ?? "";
-          return `#${i.number}\t${i.state}\t${i.title}${labels ? `\t[${labels}]` : ""}${assignee ? `\t@${assignee}` : ""}`;
-        });
-
-        return ok(
-          `${issues.length} issue(s) in ${params.owner}/${params.repo}:\n\n${lines.join("\n")}`,
-          { owner: params.owner, repo: params.repo, count: issues.length },
-        );
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
-    renderCall(args, theme) {
-      const filters = [args.state, args.label, args.search].filter(Boolean).join(", ");
-      return new Text(
-        theme.fg("toolTitle", theme.bold("GitHub — List Issues ")) +
-        theme.fg("muted", `${args.owner}/${args.repo}`) +
-        (filters ? theme.fg("dim", ` (${filters})`) : ""),
-        0, 0,
-      );
-    },
-    renderResult(result, _opts, theme) {
-      const d = result.details as any;
-      if (d?.error || d?.count == null) return new Text(theme.fg("error", "✗ failed"), 0, 0);
-      return new Text(theme.fg("success", "✓ ") + `${d.count} issues`, 0, 0);
-    },
-  });
-
-  // ─── gh_pr_view ───────────────────────────────────────────────────────────
-
-  pi.registerTool({
-    name: "gh_pr_view",
-    label: "GitHub — View PR",
-    description:
-      "View a pull request: title, body, diff stats, review status, checks. " +
+      "Get detailed check runs for a pull request. Shows status, conclusion, and details for each check. " +
       "Provide a URL or (owner + repo + number).",
     parameters: Type.Object({
       url: Type.Optional(Type.String({ description: "GitHub PR URL" })),
       owner: Type.Optional(Type.String({ description: "Repository owner" })),
       repo: Type.Optional(Type.String({ description: "Repository name" })),
       number: Type.Optional(Type.Number({ description: "PR number" })),
-      comments: Type.Optional(Type.Boolean({ description: "Include review comments (default: false)" })),
     }),
     async execute(_id, params, signal) {
       try {
         const ref = resolveRef(params);
-        const fields = "number,title,state,body,author,createdAt,baseRefName,headRefName," +
-          "additions,deletions,changedFiles,mergeable,reviewDecision,statusCheckRollup,url,labels,assignees";
 
-        const raw = await gh(
-          ["pr", "view", String(ref.number), "--repo", `${ref.owner}/${ref.repo}`, "--json", fields],
+        const prRaw = await gh(
+          ["pr", "view", String(ref.number), "--repo", `${ref.owner}/${ref.repo}`, "--json", "number,headRefOid,headRefName,title"],
           signal,
         );
-        const pr = JSON.parse(raw);
+        const pr = JSON.parse(prRaw);
 
-        const checks = pr.statusCheckRollup ?? [];
-        const checkSummary: Record<string, number> = {};
-        for (const c of checks) checkSummary[c.conclusion || c.status || "pending"] = (checkSummary[c.conclusion || c.status || "pending"] || 0) + 1;
+        const checksRaw = await gh(
+          ["pr", "checks", String(ref.number), "--repo", `${ref.owner}/${ref.repo}`, "--json", "name,state,bucket,description,link,event,workflow,completedAt,startedAt"],
+          signal,
+        );
+        const checks = JSON.parse(checksRaw);
 
-        const lines: string[] = [
-          `# PR #${pr.number} — ${pr.title}`,
-          `State: ${pr.state} | Author: ${pr.author?.login ?? "unknown"} | Created: ${pr.createdAt}`,
-          `Branch: ${pr.headRefName} → ${pr.baseRefName}`,
-          `Changes: +${pr.additions} -${pr.deletions} (${pr.changedFiles} files)`,
-          `Mergeable: ${pr.mergeable} | Review: ${pr.reviewDecision || "none"}`,
-          pr.labels?.length ? `Labels: ${pr.labels.map((l: any) => l.name).join(", ")}` : null,
-          pr.assignees?.length ? `Assignees: ${pr.assignees.map((a: any) => a.login).join(", ")}` : null,
-          Object.keys(checkSummary).length ? `Checks: ${Object.entries(checkSummary).map(([s, n]) => `${n} ${s}`).join(", ")}` : null,
-          `URL: ${pr.url}`,
-          "",
-          pr.body || "(no description)",
-        ].filter((l): l is string => l !== null);
-
-        if (params.comments) {
-          const commentsArgs = ["pr", "view", String(ref.number), "--repo", `${ref.owner}/${ref.repo}`, "--json", "comments,reviews"];
-          const commentsRaw = await gh(commentsArgs, signal);
-          const data = JSON.parse(commentsRaw);
-          const allComments = [
-            ...(data.comments || []),
-            ...(data.reviews || []).filter((r: any) => r.body),
-          ].sort((a: any, b: any) => a.createdAt?.localeCompare(b.createdAt));
-
-          if (allComments.length) {
-            lines.push("", `--- ${allComments.length} comment(s)/review(s) ---`);
-            for (const c of allComments) {
-              const author = c.author?.login ?? "unknown";
-              const state = c.state ? ` [${c.state}]` : "";
-              lines.push("", `**${author}**${state} (${c.createdAt ?? c.submittedAt}):`);
-              lines.push(c.body);
-            }
-          }
+        if (!checks.length) {
+          return ok(
+            `No checks found for PR #${ref.number}.`,
+            { owner: ref.owner, repo: ref.repo, number: ref.number, count: 0 },
+          );
         }
 
+        const icon: Record<string, string> = { pass: "✓", fail: "✗", pending: "◐", skipping: "⊘", cancel: "⊘" };
+        const lines: string[] = [
+          `# Checks for PR #${ref.number} — ${pr.title}`,
+          `Commit: ${(pr.headRefOid || "").slice(0, 7)} (${pr.headRefName})`,
+          "",
+        ];
+
+        for (const check of checks) {
+          const bucket = check.bucket || "pending";
+          const name = check.name || "unknown";
+          const desc = check.description ? ` — ${check.description}` : "";
+          lines.push(`${icon[bucket] || "?"} ${name}${desc}`);
+          if (check.link) lines.push(`  ${check.link}`);
+        }
+
+        const passCount = checks.filter((c: any) => c.bucket === "pass").length;
+        const failCount = checks.filter((c: any) => c.bucket === "fail").length;
+        const skippedCount = checks.filter((c: any) => c.bucket === "skipping").length;
+        const pendingCount = checks.filter((c: any) => c.bucket === "pending").length;
+        const cancelCount = checks.filter((c: any) => c.bucket === "cancel").length;
+
         return ok(lines.join("\n"), {
-          owner: ref.owner, repo: ref.repo, number: pr.number,
-          state: pr.state, review: pr.reviewDecision || "none",
+          owner: ref.owner, repo: ref.repo, number: ref.number, count: checks.length,
+          passed: passCount, failed: failCount, skipped: skippedCount + cancelCount, pending: pendingCount,
         });
       } catch (err) {
         return errorResult(err);
@@ -239,76 +109,214 @@ export default function (pi: ExtensionAPI) {
     },
     renderCall(args, theme) {
       const label = args.url || `${args.owner}/${args.repo}#${args.number}`;
-      return new Text(theme.fg("toolTitle", theme.bold("GitHub — View PR ")) + theme.fg("muted", String(label)), 0, 0);
+      return new Text(theme.fg("toolTitle", theme.bold("GitHub — View PR Checks ")) + theme.fg("muted", String(label)), 0, 0);
     },
     renderResult(result, _opts, theme) {
       const d = result.details as any;
-      if (d?.error || !d?.number) return new Text(theme.fg("error", "✗ failed"), 0, 0);
-      return new Text(theme.fg("success", "✓ ") + `PR #${d.number} — ${d.state} (${d.review})`, 0, 0);
+      if (d?.error || d?.count == null) return new Text(theme.fg("error", "✗ failed"), 0, 0);
+      if (d.count === 0) return new Text(theme.fg("muted", "○ no checks"), 0, 0);
+      const summary = [
+        d.passed > 0 ? theme.fg("success", `${d.passed}✓`) : null,
+        d.failed > 0 ? theme.fg("error", `${d.failed}✗`) : null,
+        d.pending > 0 ? theme.fg("dim", `${d.pending}◐`) : null,
+        d.skipped > 0 ? theme.fg("muted", `${d.skipped}⊘`) : null,
+      ].filter(Boolean).join(" ");
+      return new Text(theme.fg("success", "✓ ") + `${d.count} checks — ${summary}`, 0, 0);
     },
   });
 
-  // ─── gh_pr_list ───────────────────────────────────────────────────────────
+  // ─── gh_pr_job_logs ───────────────────────────────────────────────────────
 
   pi.registerTool({
-    name: "gh_pr_list",
-    label: "GitHub — List PRs",
+    name: "gh_pr_job_logs",
+    label: "GitHub — View PR Job Logs",
     description:
-      "List or search pull requests in a GitHub repo.",
+      "Get CI job logs for a pull request. Shows output from failed or specific jobs. " +
+      "Only works for GitHub Actions — for Buildkite CI, use bk_failed_jobs and bk_job_logs instead. " +
+      "Provide a URL or (owner + repo + number). Optional job name filter (e.g. 'typecheck', 'test').",
     parameters: Type.Object({
-      owner: Type.String({ description: "Repository owner" }),
-      repo: Type.String({ description: "Repository name" }),
-      state: Type.Optional(Type.String({ description: "Filter by state: open, closed, merged, all (default: open)" })),
-      label: Type.Optional(Type.String({ description: "Filter by label" })),
-      author: Type.Optional(Type.String({ description: "Filter by author" })),
-      search: Type.Optional(Type.String({ description: "Search query" })),
-      limit: Type.Optional(Type.Number({ description: "Max results (default: 20, max: 100)" })),
+      url: Type.Optional(Type.String({ description: "GitHub PR URL" })),
+      owner: Type.Optional(Type.String({ description: "Repository owner" })),
+      repo: Type.Optional(Type.String({ description: "Repository name" })),
+      number: Type.Optional(Type.Number({ description: "PR number" })),
+      job: Type.Optional(Type.String({ description: "Specific job name to filter (e.g. 'typecheck', 'test')" })),
+      lines: Type.Optional(Type.Number({ description: "Number of log lines to return (default: 100, max: 500)" })),
     }),
     async execute(_id, params, signal) {
       try {
-        const limit = Math.min(params.limit ?? 20, 100);
-        const args = [
-          "pr", "list",
-          "--repo", `${params.owner}/${params.repo}`,
-          "--json", "number,title,state,author,headRefName,baseRefName,createdAt,reviewDecision,labels",
-          "--limit", String(limit),
-        ];
-        if (params.state) args.push("--state", params.state);
-        if (params.label) args.push("--label", params.label);
-        if (params.author) args.push("--author", params.author);
-        if (params.search) args.push("--search", params.search);
+        const ref = resolveRef(params);
+        const jobFilter = params.job?.toLowerCase() ?? "";
+        const lineCount = Math.min(params.lines ?? 100, 500);
 
-        const raw = await gh(args, signal);
-        const prs = JSON.parse(raw);
-
-        if (!prs.length) return ok("No PRs found.", { owner: params.owner, repo: params.repo, count: 0 });
-
-        const lines = prs.map((p: any) => {
-          const review = p.reviewDecision ? ` (${p.reviewDecision})` : "";
-          return `#${p.number}\t${p.state}\t${p.title}\t@${p.author?.login ?? "?"}${review}`;
-        });
-
-        return ok(
-          `${prs.length} PR(s) in ${params.owner}/${params.repo}:\n\n${lines.join("\n")}`,
-          { owner: params.owner, repo: params.repo, count: prs.length },
+        const prFields = "number,headRefName,title";
+        const prRaw = await gh(
+          ["pr", "view", String(ref.number), "--repo", `${ref.owner}/${ref.repo}`, "--json", prFields],
+          signal,
         );
+        const pr = JSON.parse(prRaw);
+
+        const checksRaw = await gh(
+          [
+            "api", "--paginate",
+            `/repos/${ref.owner}/${ref.repo}/commits/${pr.headRefName}/check-runs`,
+            "--jq", ".check_runs[] | .app.slug",
+          ],
+          signal,
+        ).catch(() => "");
+        const checkApps = checksRaw.split("\n").filter(Boolean);
+        const hasBuildkite = checkApps.some((app: string) => app.includes("buildkite"));
+        const hasGHActions = checkApps.some((app: string) => app === "github-actions");
+
+        if (hasBuildkite && !hasGHActions) {
+          return ok(
+            `PR #${ref.number} uses Buildkite for CI, not GitHub Actions.\n` +
+            `Use these tools instead:\n` +
+            `  1. gh_pr_checks — to find the Buildkite build URL\n` +
+            `  2. bk_failed_jobs — with the build URL to list failed jobs\n` +
+            `  3. bk_job_logs or bk_job_failure — to get the actual log output`,
+            { owner: ref.owner, repo: ref.repo, number: ref.number, count: 0, ci: "buildkite" },
+          );
+        }
+
+        const runsRaw = await gh(
+          [
+            "run", "list",
+            "--repo", `${ref.owner}/${ref.repo}`,
+            "--branch", pr.headRefName,
+            "--limit", "1",
+            "--json", "databaseId,status,conclusion",
+          ],
+          signal,
+        );
+        const runs = JSON.parse(runsRaw);
+        if (!runs.length) {
+          const hint = hasBuildkite
+            ? "\nThis repo uses Buildkite — use bk_failed_jobs with the build URL from gh_pr_checks."
+            : "";
+          return ok(
+            `No GitHub Actions workflow runs found for PR #${ref.number}.${hint}`,
+            { owner: ref.owner, repo: ref.repo, number: ref.number, count: 0 },
+          );
+        }
+
+        const runId = runs[0].databaseId;
+
+        const jobsRaw = await gh(
+          [
+            "run", "view", String(runId),
+            "--repo", `${ref.owner}/${ref.repo}`,
+            "--json", "jobs",
+          ],
+          signal,
+        );
+        const runData = JSON.parse(jobsRaw);
+        const jobs = runData.jobs ?? [];
+
+        let filteredJobs = jobs;
+        if (jobFilter) {
+          filteredJobs = jobs.filter((j: any) => j.name.toLowerCase().includes(jobFilter));
+        } else {
+          filteredJobs = jobs.filter((j: any) => j.conclusion && j.conclusion !== "success");
+        }
+
+        if (!filteredJobs.length) {
+          const msg = jobFilter
+            ? `No jobs matching "${jobFilter}" found.`
+            : "No failed jobs found.";
+          return ok(msg, { owner: ref.owner, repo: ref.repo, number: ref.number, count: 0 });
+        }
+
+        const lines: string[] = [
+          `# Job Logs for PR #${ref.number} — ${pr.title}`,
+          `Branch: ${pr.headRefName}`,
+          "",
+        ];
+
+        for (const job of filteredJobs) {
+          const jobName = job.name || "unknown";
+          const conclusion = job.conclusion || job.status || "pending";
+          const icon = conclusion === "success" ? "✓" : conclusion === "failure" ? "✗" : "◐";
+
+          lines.push(`${icon} **${jobName}** — ${conclusion}`);
+
+          if (job.databaseId) {
+            try {
+              const result = await pi.exec(
+                "gh",
+                ["run", "view", String(runId), "--repo", `${ref.owner}/${ref.repo}`, "--log-failed"],
+                { signal, timeout: 30000 },
+              );
+              const logsRaw = result.stdout || result.stderr;
+
+              if (logsRaw.trim()) {
+                const logLines = logsRaw.split("\n");
+                const relevantLines = logLines.filter((line: string) => {
+                  const lower = line.toLowerCase();
+                  return lower.includes(jobName.toLowerCase()) ||
+                    lower.includes("error") || lower.includes("fail") ||
+                    lower.includes("assert") || lower.includes("exception");
+                });
+
+                const outputLines = relevantLines.length > 0
+                  ? relevantLines.slice(-lineCount)
+                  : logLines.slice(-lineCount);
+
+                for (const line of outputLines) {
+                  lines.push(`  ${line}`);
+                }
+              } else {
+                lines.push("  (no log output)");
+              }
+            } catch (_logErr) {
+              try {
+                const fallback = await pi.exec(
+                  "gh",
+                  ["run", "view", String(runId), "--repo", `${ref.owner}/${ref.repo}`, "--log"],
+                  { signal, timeout: 30000 },
+                );
+                const logLines = (fallback.stdout || "").split("\n");
+
+                const jobLines = logLines.filter((line: string) =>
+                  line.toLowerCase().includes(jobName.toLowerCase()),
+                );
+                const outputLines = (jobLines.length > 0 ? jobLines : logLines).slice(-lineCount);
+                for (const line of outputLines) {
+                  lines.push(`  ${line}`);
+                }
+              } catch (_fallbackErr) {
+                lines.push("  (could not fetch logs)");
+              }
+            }
+          }
+
+          lines.push("");
+        }
+
+        return ok(lines.join("\n"), {
+          owner: ref.owner, repo: ref.repo, number: ref.number,
+          count: filteredJobs.length, jobNames: filteredJobs.map((j: any) => j.name),
+        });
       } catch (err) {
         return errorResult(err);
       }
     },
     renderCall(args, theme) {
-      const filters = [args.state, args.author, args.search].filter(Boolean).join(", ");
+      const label = args.url || `${args.owner}/${args.repo}#${args.number}`;
+      const jobPart = args.job ? theme.fg("dim", ` (${args.job})`) : "";
       return new Text(
-        theme.fg("toolTitle", theme.bold("GitHub — List PRs ")) +
-        theme.fg("muted", `${args.owner}/${args.repo}`) +
-        (filters ? theme.fg("dim", ` (${filters})`) : ""),
+        theme.fg("toolTitle", theme.bold("GitHub — View PR Job Logs ")) +
+        theme.fg("muted", String(label)) +
+        jobPart,
         0, 0,
       );
     },
     renderResult(result, _opts, theme) {
       const d = result.details as any;
       if (d?.error || d?.count == null) return new Text(theme.fg("error", "✗ failed"), 0, 0);
-      return new Text(theme.fg("success", "✓ ") + `${d.count} PRs`, 0, 0);
+      if (d.ci === "buildkite") return new Text(theme.fg("warning", "⚠ ") + "Buildkite CI — use bk_* tools", 0, 0);
+      if (d.count === 0) return new Text(theme.fg("muted", "○ no jobs"), 0, 0);
+      const jobs = (d.jobNames ?? []).join(", ");
+      return new Text(theme.fg("success", "✓ ") + `${d.count} job(s): ${jobs}`, 0, 0);
     },
   });
 
@@ -368,12 +376,9 @@ function resolveRef(params: {
   url?: string; owner?: string; repo?: string; number?: number;
 }): { owner: string; repo: string; number: number } {
   if (params.url) {
-    // Standard: github.com/owner/repo/issues/123 or github.com/owner/repo/pull/123
     const full = params.url.match(/github\.com\/([^/]+)\/([^/]+)\/(issues|pull)\/(\d+)/);
     if (full) return { owner: full[1], repo: full[2], number: parseInt(full[4], 10) };
 
-    // Repo named "issues" or "pull": github.com/owner/issues/123
-    // The second segment doubles as both repo name and path keyword.
     const short = params.url.match(/github\.com\/([^/]+)\/(issues|pull)\/(\d+)/);
     if (short) {
       return { owner: short[1], repo: short[2], number: parseInt(short[3], 10) };
