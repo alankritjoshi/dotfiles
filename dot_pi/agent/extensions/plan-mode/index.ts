@@ -32,12 +32,8 @@ import { Type } from "@sinclair/typebox";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { spawn } from "node:child_process";
-import { showPlanInterview, type PlanQuestion } from "./interview.js";
 import { isSafeCommand, markCompletedSteps, type TodoItem } from "./utils.js";
 import { classifyAllTools, classifyAllAgents, getBlockedTools, getAllowedAgents, getUnclassifiedTools, saveBlocklist, CORE_BLOCKED } from "./classify.js";
-
-const EXECUTION_MODE_TOOLS = ["read", "bash", "edit", "write"];
-
 
 function isAssistantMessage(m: AgentMessage): m is AssistantMessage {
 	return m.role === "assistant" && Array.isArray(m.content);
@@ -104,107 +100,6 @@ export default function planModeExtension(pi: ExtensionAPI): void {
 		description: "Start in plan mode (read-only exploration)",
 		type: "boolean",
 		default: false,
-	});
-
-	// --- Plan interview tool ---
-
-	const PlanQuestionSchema = Type.Object({
-		id: Type.String({ description: "Unique identifier for this question" }),
-		question: Type.String({ description: "The question to ask. Supports markdown." }),
-		context: Type.Optional(Type.String({ description: "Why this question matters for the plan." })),
-	});
-
-	pi.registerTool({
-		name: "plan_interview",
-		label: "Plan Interview",
-		description:
-			"Present planning questions as a tabbed interview. The user answers, skips, or adds their own. Loop until no questions remain.",
-		promptSnippet:
-			"Present planning questions as a tabbed interview during plan mode.",
-		promptGuidelines: [
-			"During planning, use plan_interview to ask clarifying questions instead of asking inline.",
-			"Loop: call plan_interview, process answers, call again with follow-up questions. Stop when you have no more questions and the user adds none.",
-			"Only include genuine questions — never include 'no questions' or 'skip' options. The tool has its own Done page.",
-		],
-		parameters: Type.Object({
-			questions: Type.Array(PlanQuestionSchema, {
-				description: "Questions to ask. May be empty — the user can still add their own.",
-			}),
-		}),
-		async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
-			const result = await showPlanInterview(ctx, params.questions as PlanQuestion[]);
-
-			if (!result) {
-				return {
-					content: [{ type: "text", text: "Cancelled." }],
-					details: { cancelled: true },
-				};
-			}
-
-			if (result.allSkipped) {
-				return {
-					content: [{ type: "text", text: "No questions answered and none added. Proceed with planning." }],
-					details: { answers: [], satisfied: true },
-				};
-			}
-
-			const lines: string[] = [];
-			for (const a of result.answers) {
-				lines.push(`Q: ${a.question}`);
-				lines.push(`A: ${a.answer}`);
-				lines.push("");
-			}
-			for (const uq of result.userQuestions) {
-				lines.push(`User question: ${uq}`);
-				lines.push("");
-			}
-
-			if (result.userQuestions.length > 0) {
-				lines.push("Answer the user's questions, then call plan_interview again with any follow-up questions.");
-			} else {
-				lines.push("Process these answers. Call plan_interview again if you have follow-up questions, or proceed with the plan.");
-			}
-
-			return {
-				content: [{ type: "text", text: lines.join("\n") }],
-				details: {
-					answers: result.answers.map((a) => ({ id: a.id, question: a.question })),
-					userQuestions: result.userQuestions,
-				},
-			};
-		},
-
-		renderCall(args, theme) {
-			const a = args as { questions?: { id: string }[] };
-			const count = a.questions?.length ?? 0;
-			let text = theme.fg("toolTitle", theme.bold("plan_interview "));
-			text += theme.fg("muted", count > 0 ? `${count} question${count !== 1 ? "s" : ""}` : "open floor");
-			return new Text(text, 0, 0);
-		},
-
-		renderResult(result, _options, theme) {
-			const d = result.details as
-				| { answers?: { id: string; question: string }[]; userQuestions?: string[]; satisfied?: boolean; cancelled?: boolean }
-				| undefined;
-			if (!d) {
-				const t = result.content?.[0];
-				return new Text(t && "text" in t ? t.text : "", 0, 0);
-			}
-			if (d.cancelled) {
-				return new Text(theme.fg("warning", "Cancelled"), 0, 0);
-			}
-			if (d.satisfied) {
-				return new Text(theme.fg("success", "✓ No questions — proceeding"), 0, 0);
-			}
-			const lines: string[] = [];
-			for (const a of d.answers ?? []) {
-				lines.push(`${theme.fg("success", "✓")} ${a.question}`);
-			}
-			for (const uq of d.userQuestions ?? []) {
-				lines.push(`${theme.fg("accent", "?")} ${uq}`);
-			}
-			return new Text(lines.join("\n"), 0, 0);
-		},
 	});
 
 	// --- Register plan steps tool ---
@@ -588,7 +483,7 @@ export default function planModeExtension(pi: ExtensionAPI): void {
 			pi.setActiveTools(getPlanModeTools());
 			setPlanHeader(ctx);
 		} else if (executionMode) {
-			pi.setActiveTools(EXECUTION_MODE_TOOLS);
+			restoreAllTools();
 			setExecutionHeader(ctx);
 		} else {
 			restoreAllTools();
@@ -795,8 +690,7 @@ Restrictions:
 
 Use subagent to dispatch read-only agents for parallel research tasks.
 Use the supervisor skill (/skill:supervisor) for complex multi-step work — it will only dispatch allowed agents in plan mode.
-Explore the codebase and use plan_interview for structured Q&A with the user.
-Loop: present questions, process answers, ask follow-ups. Then produce a structured plan.
+Use the ask tool for clarifying questions with the user before planning.
 
 Produce a structured plan with these sections:
 - **Context** — what exists today and why it needs to change

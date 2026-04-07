@@ -108,7 +108,6 @@
     "observe_series_query",
     "perplexity_fetch",
     "perplexity_search",
-    "plan_interview",
     "query_bq",
     "read",
     "read_output_chunk",
