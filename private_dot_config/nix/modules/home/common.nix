@@ -199,6 +199,7 @@
       "AGENTS.md"
       ".graphite"
       ".graphite.tmp"
+      ".pi/"
     ];
 
     # Common git config
