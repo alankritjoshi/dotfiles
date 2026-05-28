@@ -41,14 +41,18 @@ When using `bash`, prefer modern CLI tools over legacy ones:
 - Always prefer `dev` commands over direct tools
 - Read `dev.yml` when entering a new project
 
-### Git & Graphite
+### Git, GitStream & Stacks
 
 - Current directory may be a git worktree. Treat it as repo root.
-- **NEVER use `git add .` or `git add -A`** — always stage files/subdirectories individually
-- In Graphite repos, use `gt` CLI commands via bash (not raw git commands for branch ops)
-- Use `gt ls --stack` to view the current stack before branch operations
-- Use `gt create` for new branches, `gt submit` for push + PR (never `git checkout -b` / `git push` / `gh pr create`)
-- Use `gh_*` tools to view GitHub issues and PRs
+- **NEVER use `git add .` or `git add -A`** — always stage files/subdirectories individually.
+- For `shop/world` and other GitStream Full Mode repos, use plain `git` for branch creation, commits/amends, rebases, and pushes.
+- For single PRs in `shop/world`, use GitHub UI or `gh pr create` only when explicitly asked and outside plan mode.
+- Queue `shop/world` PRs through Merge Garden comments (`/merge`, `/cancel-merge`), not Graphite merge buttons.
+- Use `dev gitstream push-status <branch>` when GitHub, CI, or PR state looks stale after a push.
+- Avoid `gt get`, `gt sync`, and repeated restacks while debugging GitStream visibility or push failures.
+- Use `gt` only for intentional stacked PR management until `gs` is available.
+- Use `gh_*` tools to view GitHub issues and PRs.
+- **ALWAYS use `-R Shopify/infra-central`** with `gh pr edit` in worktrees (worktree resolves to wrong repo otherwise).
 
 ### Before ANY Ruby/Rails Work
 

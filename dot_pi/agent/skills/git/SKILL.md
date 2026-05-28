@@ -1,48 +1,52 @@
 ---
 name: git
-description: Git operations for commits, staging, and amendments. For branch management, use graphite skill and gt_* tools instead.
+description: Git operations for branch creation, commits, rebases, pushes, and PR preparation. Default workflow for shop/world GitStream repos; use graphite skill only for intentional stacks.
 ---
 
 # Git Operations
 
-For **branch management** (creating, reordering, pushing, PRs), use the `graphite` skill and `gt_*` tools.
-Use git directly only for **commits, staging, and amendments**.
+Use plain `git` as the default workflow for `shop/world` and other GitStream Full Mode repos.
+Use the `graphite` skill only when intentionally managing a stacked PR workflow until `gs` is available.
+
+## Core Rules
+
+- **Never use `git add .` or `git add -A`** — stage specific files or subdirectories.
+- In plan mode, do not mutate branches, commits, remotes, or PRs.
+- In `shop/world`, prefer `git fetch origin` and targeted fetches over broad recovery commands.
+- Avoid generic `git pull` in sparse World checkouts unless the user explicitly asks for it.
+- For stale GitHub, PR, or CI state after a push, check GitStream mirror state before guessing.
+
+## Branches
+
+```bash
+git switch -c <branch>      # Create and switch to a new branch
+git checkout -b <branch>    # Equivalent fallback
+git switch <branch>         # Switch to an existing branch
+git status                  # Inspect working tree
+git branch                  # List branches
+```
 
 ## Staging & Committing
 
-**NEVER use `git add .` or `git add -A`** — always stage files or subdirectories individually to avoid committing untracked files (e.g. `.pi/`, editor configs).
-
 ```bash
-git add <file>           # Stage specific file
-git add <dir>/           # Stage specific subdirectory
-git add -p               # Interactive staging (hunks)
-git commit -m "message"  # Commit with message
-git commit --amend       # Amend last commit
+git add <file>              # Stage a specific file
+git add <dir>/              # Stage a specific subdirectory
+git add -p                  # Interactive hunk staging
+git commit -m "message"     # Commit staged changes
+git commit --amend          # Amend HEAD
 ```
 
 ## Non-Interactive Commit Amendment
 
-To amend specific commits (not just HEAD) without interactive rebase:
-
-### Step 1: Create fixup commits
+To amend specific commits, create fixup commits and autosquash them:
 
 ```bash
 git add <file>
 git commit --fixup=<target-sha>
-```
-
-### Step 2: Autosquash rebase (non-interactive)
-
-```bash
 GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash <base-branch>
 ```
 
-This squashes fixup commits into their targets without opening an editor.
-
-### When to use this vs graphite
-
-- **Use `gt modify --into <branch>`** when amending a different branch in your stack
-- **Use fixup + autosquash** when amending specific commits within the same branch
+Use `gt modify --into <branch>` only when intentionally amending a different branch inside a Graphite-managed stack.
 
 ## Viewing History
 
@@ -50,19 +54,44 @@ This squashes fixup commits into their targets without opening an editor.
 git log --oneline -n 10                    # Recent commits
 git log --oneline <parent>..HEAD           # Commits on current branch only
 git diff <parent> -- <file>                # Changes to file on this branch
+git show HEAD                              # Inspect commit
 ```
 
-## Stashing
+## Fetching & Pushing in GitStream Repos
 
 ```bash
-git stash                    # Stash changes
-git stash pop                # Restore stashed changes
-git stash list               # List stashes
+git fetch origin
+git push
 ```
 
-## Important Notes
+If a pushed branch is not visible in GitHub, CI, or the PR:
 
-- **Never use `-i` flag** for interactive commands (not supported in agent context)
-- **Pushing/submitting**: Use `gt_submit` tool (or `gt submit` via bash), never `git push`
-- **Branch operations**: Use `gt_*` tools (`gt_create`, `gt_checkout`, `gt_modify`, etc.)
-- **Stack visualization**: Use `gt_stack` or `gt_ls` tools instead of `git log`
+```bash
+dev gitstream push-status <branch>
+```
+
+Interpret GitStream status before retrying pushes or using stack tools. Avoid `gt get`, `gt sync`, and repeated restacks while local, GitStream, and GitHub SHAs may be misaligned.
+
+## PRs and Merge Garden
+
+For single `shop/world` PRs, use GitHub UI or `gh pr create` when explicitly asked.
+
+Queue and cancel Merge Garden through PR comments:
+
+```bash
+gh pr comment <PR_NUMBER> --body "/merge"
+gh pr comment <PR_NUMBER> --body "/cancel-merge"
+```
+
+Do not use Graphite merge buttons for Merge Garden queue actions.
+
+## When to Use Graphite
+
+Use the `graphite` skill only for intentional stacked PR workflows:
+
+- inspecting a stack
+- creating branches that are part of a stack
+- moving/reordering/restacking a stack
+- submitting a stack until `gs` replaces `gt`
+
+For normal branch, commit, push, and single-PR work in `shop/world`, stay on plain `git`.
