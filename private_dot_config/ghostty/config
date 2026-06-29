@@ -2,7 +2,7 @@ background = "#000000"
 background-opacity = 0.95
 background-opacity-cells = true
 background-blur = 30
-system,no-attention,no-title,no-border
+bell-features = system,no-attention,no-title,no-border
 cursor-style = block
 custom-shader = shaders/cursor_warp.glsl
 custom-shader = shaders/ripple_cursor.glsl
@@ -11,7 +11,6 @@ font-family = "Hack Nerd Font Mono"
 font-size = 23
 # https://github.com/lukejanicke/ghostty-app-icons
 macos-icon = custom
-macos-icon-custom = Ghostty.icns
 macos-titlebar-style = hidden
 macos-option-as-alt = true
 notify-on-command-finish = unfocused
