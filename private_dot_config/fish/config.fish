@@ -2,9 +2,7 @@ if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
     source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
 end
 
-# Raise the open-files limit. macOS launchd defaults to 256, which Zellij
-# exhausts (sessions + plugins + switches) and then panics on SwitchSession
-# with EMFILE. Hard limit is unlimited, so bump the soft limit high.
+# Raise the open-files soft limit (macOS defaults to a low 256).
 ulimit -S -n 65536
 
 # Add homebrew for GUI apps
@@ -70,28 +68,6 @@ alias pp="poetry poe"
 alias dbx="databricks"
 alias b="brew"
 
-# Zellij
-alias jl="zellij list-sessions"
-alias jr="zellij run --"
-alias jrf="zellij run -f --"
-alias jal="zellij action new-tab -l .zellij/layout.kdl"
-alias ja="zellij attach"
-alias jd="zellij delete-session"
-alias jda="zellij delete-all-sessions"
-alias jk="zellij kill-session"
-alias jka="zellij kill-all-sessions"
-alias je="zellij edit -i"
-alias jv="je ~/.config/nvim"
-alias jb="je ~/.bootstrap"
-alias jf="je ~/.config/fish/config.fish"
-alias jc="je ~/.config/zellij/config.kdl"
-alias jt="je ~/.config/aerospace/aerospace.toml"
-alias jg="je ~/.gitconfig"
-alias jz="ja || zellij -l ~/.config/zellij/layouts/default.kdl"
-
-alias s _find_and_edit_dir_with_zellij_pane
-alias st _find_and_edit_dir_with_zellij_tab
-
 alias h="herdr"
 
 set fzf_fd_opts --hidden --follow
@@ -122,9 +98,6 @@ if test -f ~/.env
         end
     end
 end
-
-# Added by tec agent
-test -x /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init && /Users/alankritjoshi/.local/state/tec/profiles/base/current/global/init fish | source
 
 # bun
 set --export BUN_INSTALL "$HOME/.bun"

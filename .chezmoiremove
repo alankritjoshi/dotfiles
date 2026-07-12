@@ -1,0 +1,7 @@
+.config/zellij
+.config/fish/functions/_find_and_edit_dir_with_zellij_pane.fish
+.config/fish/functions/_find_and_edit_dir_with_zellij_tab.fish
+.config/fish/functions/jn.fish
+.config/fish/functions/jnt.fish
+.config/fish/completions/zellij.fish
+.config/fish/conf.d/graphite.fish

@@ -95,9 +95,6 @@
     miller       # CSV/JSON tool (mlr command)
     # tabiew is in homebrew
     
-    # === Terminal & Shell ===
-    zellij
-
     # === System Monitoring ===
     htop
     btop         # Better top

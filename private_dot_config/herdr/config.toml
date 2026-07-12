@@ -1,5 +1,5 @@
 # herdr configuration
-# Transition from Zellij: catppuccin-mocha, compact, no pane frames, ctrl+hjkl direct focus.
+# catppuccin-mocha, compact, no pane frames, ctrl+hjkl direct focus.
 # Style: hybrid — ctrl+alt+hjkl direct focus (herdr's recommended safe family), prefix ctrl+space
 # for everything else. Run `chezmoi apply` after editing, then `herdr server reload-config`.
 
@@ -7,11 +7,11 @@
 onboarding = false
 
 [theme]
-# Matches Zellij theme "catppuccin-mocha". Built-in name is "catppuccin".
+# catppuccin-mocha (built-in name is "catppuccin").
 name = "catppuccin"
 
 [ui]
-# Match Zellij pane_frames=false — no borders drawn around split panes.
+# No borders drawn around split panes.
 pane_borders = false
 # Agent panel ordered by attention queue, not grouped by space.
 agent_panel_sort = "priority"

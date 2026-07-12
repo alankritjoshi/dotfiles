@@ -13,4 +13,4 @@ max_width = 1200
 max_height = 1000
 
 [opener]
-edit = [{ run = 'zellij edit -i "$1"', desc = "Open File in the same pane" }]
+edit = [{ run = 'nvim "$1"', block = true, desc = "Open file in editor" }]
