@@ -5,3 +5,4 @@
 .config/fish/functions/jnt.fish
 .config/fish/completions/zellij.fish
 .config/fish/conf.d/graphite.fish
+.config/opencode

@@ -39,7 +39,6 @@ alias gwc="g wc --format=oneline | wc -l"
 alias dev="z ~/dev"
 alias src="z ~/src"
 alias cz="chezmoi"
-alias a="aerospace"
 
 # Useful git aliases
 alias gs="git status"
