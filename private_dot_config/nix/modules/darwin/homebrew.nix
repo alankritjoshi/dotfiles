@@ -8,12 +8,11 @@
     onActivation = {
       autoUpdate = true;
       upgrade = true;
-      cleanup = "zap";  # Remove anything not in the Brewfile
+      cleanup = "none";  # Don't uninstall unlisted pkgs (dev-managed brew services + manual installs stay)
     };
     
     # Taps
     taps = [
-      "nikitabobko/tap"  # For AeroSpace
     ] ++ lib.optionals config.alankrit.isWork [
       # Work-specific taps can go here
     ] ++ lib.optionals config.alankrit.isPersonal [
@@ -26,9 +25,10 @@
       "nvm"     # Node version manager
       "tabiew"  # Table viewer
       "uv"      # Python package manager
-      "opencode"
+      "hunk"    # Review-first terminal diff viewer for agent changesets
     ] ++ lib.optionals config.alankrit.isWork [
       # Work-specific brews can go here
+      "podman"  # OCI containers/pods (vanik only)
     ] ++ lib.optionals config.alankrit.isPersonal [
       # Personal-specific brews can go here
 
