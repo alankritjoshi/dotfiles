@@ -1,16 +1,18 @@
 {
-  "lastChangelogVersion": "0.65.0",
+  "lastChangelogVersion": "0.80.6",
   "packages": [
 {{ if eq .machine "vanik" }}    "https://github.com/shopify-playground/shop-pi-fy",
-    "git:github.com/shopify-playground/pi-tool-gateway-extension"
+    "git:github.com/shopify-playground/pi-tool-gateway-extension",
+    "https://github.com/shopify-playground/pitw",
+    "https://github.com/shopify-playground/pi-code-previews"
 {{ end }}  ],
-  "defaultThinkingLevel": "xhigh",
+  "defaultThinkingLevel": "max",
   "theme": "catppuccin-mocha",
-  "defaultProvider": "anthropic",
-  "defaultModel": "claude-opus-4-6",
+  "defaultProvider": "openai",
+  "defaultModel": "gpt-5.6-sol",
   "enabledModels": [
-    "anthropic/claude-opus-4-6",
-    "anthropic-250k*/claude-opus-4-6"
+    "anthropic/claude-opus-4-8",
+    "anthropic-250k*/claude-opus-4-8"
   ],
   "markdown": {
     "codeBlockIndent": ""

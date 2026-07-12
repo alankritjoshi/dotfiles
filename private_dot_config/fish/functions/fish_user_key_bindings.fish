@@ -12,13 +12,4 @@ function fish_user_key_bindings
     bind --erase --mode default --preset \cl
     bind --erase --mode insert --preset \cl
     bind --erase --mode visual --preset \cl
-
-
-    bind --erase --mode default --preset \cj
-    bind --erase --mode insert --preset \cj
-    bind --erase --mode visual --preset \cj
-
-
-    # bind --erase \cl
-    # bind -- erase \cj
 end

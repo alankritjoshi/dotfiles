@@ -1,0 +1,45 @@
+# herdr configuration
+# Transition from Zellij: catppuccin-mocha, compact, no pane frames, ctrl+hjkl direct focus.
+# Style: hybrid — ctrl+alt+hjkl direct focus (herdr's recommended safe family), prefix ctrl+space
+# for everything else. Run `chezmoi apply` after editing, then `herdr server reload-config`.
+
+# Skip first-run onboarding.
+onboarding = false
+
+[theme]
+# Matches Zellij theme "catppuccin-mocha". Built-in name is "catppuccin".
+name = "catppuccin"
+
+[ui]
+# Match Zellij pane_frames=false — no borders drawn around split panes.
+pane_borders = false
+# Agent panel ordered by attention queue, not grouped by space.
+agent_panel_sort = "priority"
+# Don't prompt for a tab name — create tabs immediately with generated names.
+prompt_new_tab_name = false
+
+[ui.toast]
+# off | herdr (in-app popup, click to jump to agent) | terminal (Ghostty desktop notif via OSC,
+#   activates terminal) | system (macOS Notification Center, needs permission).
+# delivery is mutually exclusive — pick one. terminal = desktop ping even when herdr isn't focused.
+delivery = "terminal"
+delay_seconds = 1
+
+[ui.sound]
+# Play a sound when agents change state (done / needs-attention) in background workspaces.
+enabled = true
+# Per-agent overrides: default | on | off. droid is muted by default.
+# [ui.sound.agents]
+# droid = "off"
+
+[keys]
+# Prefix is ctrl+space (overrides herdr's default ctrl+b).
+# The ONLY direct (no-prefix) chords: focus movement via ctrl+alt+hjkl.
+# Herdr's docs recommend ctrl+alt as the safe direct family (terminals leave it free,
+# macOS doesn't compose it). Everything else uses prefix — press prefix+? in-app for
+# the full list.
+prefix = "ctrl+space"
+focus_pane_left = ["prefix+h", "ctrl+alt+h"]
+focus_pane_down = ["prefix+j", "ctrl+alt+j"]
+focus_pane_up = ["prefix+k", "ctrl+alt+k"]
+focus_pane_right = ["prefix+l", "ctrl+alt+l"]

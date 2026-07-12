@@ -113,6 +113,10 @@ keybinds clear-defaults=true {
         bind "p" { Search "up"; }
         bind "w" { SearchToggleOption "Wrap"; }
     }
+    // session-jump plugin TEMPORARILY DISABLED (custom mnemonic switcher).
+    // Restored original built-in behaviour: Alt w then w opens the default
+    // session-manager. To re-enable the plugin, regenerate the a-z /space /0
+    // binds (python splice, see knowledge/zellij-session-jump.md).
     session {
         bind "d" { Detach; }
         bind "q" { Quit; }
@@ -140,7 +144,7 @@ keybinds clear-defaults=true {
         bind "esc" { SwitchToMode "normal"; }
         bind "enter" { SwitchToMode "normal"; }
     }
-    shared_among "resize" "pane" "tab" "search" "session" "move" {
+    shared_among "resize" "pane" "tab" "search" "move" {
         bind "space" { SwitchToMode "normal"; }
     }
     shared_among "resize" "prompt" {

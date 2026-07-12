@@ -2,6 +2,11 @@ if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
     source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
 end
 
+# Raise the open-files limit. macOS launchd defaults to 256, which Zellij
+# exhausts (sessions + plugins + switches) and then panics on SwitchSession
+# with EMFILE. Hard limit is unlimited, so bump the soft limit high.
+ulimit -S -n 65536
+
 # Add homebrew for GUI apps
 fish_add_path /opt/homebrew/bin
 
@@ -86,6 +91,8 @@ alias jz="ja || zellij -l ~/.config/zellij/layouts/default.kdl"
 
 alias s _find_and_edit_dir_with_zellij_pane
 alias st _find_and_edit_dir_with_zellij_tab
+
+alias h="herdr"
 
 set fzf_fd_opts --hidden --follow
 
