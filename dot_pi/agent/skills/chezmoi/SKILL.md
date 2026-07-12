@@ -81,7 +81,7 @@ If source is correct and disk is outdated → `chezmoi apply` (or `cza`)
 - `~/.pi/agent/git/` — pi package manager
 - `~/.pi/agent/sessions/`, `investigations/`, `packages/` — transient
 - Shop-pi-fy symlinks — managed by pi packages
-- Nix per-tool modules (aerospace, bat, fish, git, etc.) — TODO: add to chezmoi
+- Home Manager-generated configs/symlinks (`~/.config/bat`, `direnv`, `git`, etc.) — managed by Nix, not chezmoi
 
 ## Mixed Files
 
