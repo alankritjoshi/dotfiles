@@ -6,3 +6,4 @@
 .config/fish/completions/zellij.fish
 .config/fish/conf.d/graphite.fish
 .config/opencode
+.config/nix/machines/vanik/scripts/claude-statusline.rb
