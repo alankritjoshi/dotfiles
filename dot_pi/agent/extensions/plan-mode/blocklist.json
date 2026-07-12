@@ -1,7 +1,10 @@
 {
   "blocked": [
+    "annotate_start",
     "bg_run",
     "bg_stop",
+    "chrome_performance_start_trace",
+    "chrome_performance_stop_trace",
     "data_portal_cli_local_create_dashboard",
     "data_portal_cli_prod_create_dashboard",
     "data_portal_create_dashboard",
@@ -54,6 +57,10 @@
     "slack_send_message_draft"
   ],
   "allowed": [
+    "annotate_bookmarklet",
+    "annotate_list",
+    "annotate_resolve",
+    "annotate_stop",
     "ask",
     "bash",
     "bg_list",
@@ -68,6 +75,19 @@
     "bk_pipeline_info",
     "bk_pipelines",
     "bk_wait",
+    "chrome_click",
+    "chrome_emulate",
+    "chrome_evaluate_script",
+    "chrome_fill",
+    "chrome_list_console_messages",
+    "chrome_list_pages",
+    "chrome_navigate_page",
+    "chrome_new_page",
+    "chrome_performance_analyze_insight",
+    "chrome_select_page",
+    "chrome_take_screenshot",
+    "chrome_take_snapshot",
+    "chrome_wait_for",
     "complete_plan_step",
     "consult_advisors",
     "data_portal_analyze",
@@ -275,6 +295,9 @@
     "slack_who_am_i",
     "subagent",
     "tool_gateway_describe",
+    "tool_gateway_disable_backend",
+    "tool_gateway_enable_backend",
+    "tool_gateway_list_backends",
     "tool_gateway_run_tool",
     "tool_gateway_search_tools",
     "vault_get_ai_resource",
@@ -306,7 +329,8 @@
     "vault_set_search",
     "web_fetch",
     "web_search",
-    "web_search_summary"
+    "web_search_summary",
+    "worktree"
   ],
   "blockedAgents": [
     "executor"
@@ -327,5 +351,5 @@
     "scout",
     "validator"
   ],
-  "lastClassified": "2026-05-27"
+  "lastClassified": "2026-06-24"
 }
