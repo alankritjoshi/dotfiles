@@ -7,7 +7,7 @@
     # Run brew update and upgrade on activation
     onActivation = {
       autoUpdate = true;
-      upgrade = true;
+      upgrade = false;
       cleanup = "none";  # Don't uninstall unlisted pkgs (dev-managed brew services + manual installs stay)
     };
     
@@ -26,6 +26,7 @@
       "tabiew"  # Table viewer
       "uv"      # Python package manager
       "hunk"    # Review-first terminal diff viewer for agent changesets
+      "worktrunk" # Git worktree manager
     ] ++ lib.optionals config.alankrit.isWork [
       # Work-specific brews can go here
       "podman"  # OCI containers/pods (vanik only)
