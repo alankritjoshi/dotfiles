@@ -48,3 +48,8 @@ focus_pane_right = ["prefix+l", "ctrl+alt+l"]
 key = "prefix+d"
 type = "plugin_action"
 command = "shopify.hunk-review.open"
+
+[[keys.command]]
+key = "prefix+enter"
+type = "plugin_action"
+command = "shopify.hunk-review.submit"
