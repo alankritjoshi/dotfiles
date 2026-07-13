@@ -7,3 +7,4 @@
 .config/fish/conf.d/graphite.fish
 .config/opencode
 .config/nix/machines/vanik/scripts/claude-statusline.rb
+.pi/agent/extensions/herdr-hunk-review.ts

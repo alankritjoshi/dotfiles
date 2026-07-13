@@ -1,7 +1,9 @@
 // @ts-nocheck
-// herdr-hunk-review: when pi finishes a turn that changed a git-tracked repo,
-// record it for the current herdr pane/tab and announce that review is ready.
-// Live Hunk sessions are refreshed and de-duplicated by repository.
+// hunk: Pi-first Hunk review integration.
+//
+// Default surface: /hunk opens a Pi-rendered floating review overlay.
+// Optional Herdr adapter: when running inside Herdr, preserve the existing
+// authenticated receiver, notifications, and plugin handoff behavior.
 //
 // This is a hand-authored sibling of herdr's managed integration
 // (herdr-agent-state.ts). Herdr does NOT manage or overwrite this file.
@@ -22,7 +24,8 @@ import {
 } from "node:fs";
 import { createServer } from "node:http";
 import { homedir } from "node:os";
-import { basename, dirname, join } from "node:path";
+import { basename, dirname, join, resolve as resolvePath } from "node:path";
+import { matchesKey, truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 
 const HERDR_ENV = process.env.HERDR_ENV;
 const workspaceId = process.env.HERDR_WORKSPACE_ID;
@@ -394,7 +397,7 @@ async function startCommentReceiver(pi: any, ctx: any): Promise<ReceiverRuntime>
     } catch {}
     throw error;
   }
-  server.on("error", (error) => console.error("herdr-hunk-review: receiver error", error));
+  server.on("error", (error) => console.error("hunk: Herdr receiver error", error));
   return { server, registration, registrationPath };
 }
 
@@ -424,7 +427,7 @@ function writeReviewState(kind: "pane" | "tab", id: string | undefined, repo: st
     writeFileSync(temp, `${JSON.stringify({ version: 1, repo })}\n`, { encoding: "utf8", mode: 0o600 });
     renameSync(temp, target);
   } catch (error) {
-    console.error(`herdr-hunk-review: failed to record ${kind} review state`, error);
+    console.error(`hunk: failed to record ${kind} review state`, error);
   }
 }
 
@@ -568,10 +571,381 @@ async function notifyReady(repos: string[]): Promise<void> {
     ["notification", "show", "Hunk review ready", "--body", body, "--sound", "none"],
     { timeoutMs: 4000 },
   );
-  if (result.code !== 0) console.error("herdr-hunk-review: failed to show review notification", result.stderr);
+  if (result.code !== 0) console.error("hunk: failed to show Herdr review notification", result.stderr);
+}
+
+type ReviewFile = {
+  path: string;
+  previousPath?: string;
+  status: string;
+  preview: string;
+  truncated: boolean;
+};
+
+type OverlayNote = {
+  id: string;
+  filePath: string;
+  body: string;
+  createdAt: string;
+};
+
+type OverlayAction =
+  | { kind: "note"; index: number }
+  | { kind: "submit" }
+  | { kind: "refresh" }
+  | { kind: "close" };
+
+function truncateReviewText(text: string, maxBytes = 18_000, maxLines = 260): { text: string; truncated: boolean } {
+  const lines = text.split("\n");
+  let truncated = lines.length > maxLines || Buffer.byteLength(text, "utf8") > maxBytes;
+  let out = lines.slice(0, maxLines).join("\n");
+  while (Buffer.byteLength(out, "utf8") > maxBytes) {
+    out = out.slice(0, Math.max(0, out.length - 512));
+    truncated = true;
+  }
+  if (truncated) out += "\n… truncated; use git/read tools for authoritative full content";
+  return { text: out, truncated };
+}
+
+function isSafeGitPath(path: string): boolean {
+  return path.length > 0 && !path.startsWith("/") && !path.includes("\0") && !path.split("/").includes("..");
+}
+
+async function gitRootForPath(inputPath: string): Promise<string | null> {
+  const absolute = resolvePath(inputPath);
+  let candidate = absolute;
+  try {
+    const info = statSync(absolute);
+    if (info.isFile()) candidate = dirname(absolute);
+  } catch {}
+  const res = await run("git", ["-C", candidate, "rev-parse", "--show-toplevel"], { timeoutMs: 4000 });
+  if (res.code !== 0) return null;
+  const root = res.stdout.trim();
+  return root ? canonical(root) : null;
+}
+
+async function resolveOverlayRepo(args: string, cwd: string): Promise<string | null> {
+  const trimmed = args.trim();
+  if (!trimmed || trimmed === "--pi") return gitRootForPath(cwd);
+  if (trimmed === "--help" || trimmed === "-h") return null;
+  const repoArg = trimmed.startsWith("--repo=") ? trimmed.slice("--repo=".length) : trimmed;
+  return gitRootForPath(resolvePath(cwd, repoArg));
+}
+
+function parsePorcelainZ(output: string): Array<{ status: string; path: string; previousPath?: string }> {
+  const parts = output.split("\0").filter((part) => part.length > 0);
+  const files: Array<{ status: string; path: string; previousPath?: string }> = [];
+  for (let i = 0; i < parts.length; i += 1) {
+    const entry = parts[i];
+    if (!entry || entry.length < 4) continue;
+    const status = entry.slice(0, 2);
+    const path = entry.slice(3);
+    let previousPath: string | undefined;
+    if (status.includes("R") || status.includes("C")) {
+      previousPath = parts[i + 1];
+      i += 1;
+    }
+    if (!isSafeGitPath(path)) continue;
+    files.push({ status, path, previousPath });
+  }
+  return files;
+}
+
+async function fileDiffPreview(repo: string, file: { status: string; path: string }): Promise<{ preview: string; truncated: boolean }> {
+  if (file.status === "??") return untrackedFilePreview(repo, file.path);
+
+  const chunks: string[] = [];
+  const staged = await run("git", ["-C", repo, "diff", "--cached", "--", file.path], { timeoutMs: 5000 });
+  if (staged.code === 0 && staged.stdout.trim()) chunks.push(`--- staged changes ---\n${staged.stdout}`);
+
+  const unstaged = await run("git", ["-C", repo, "diff", "--", file.path], { timeoutMs: 5000 });
+  if (unstaged.code === 0 && unstaged.stdout.trim()) chunks.push(`--- unstaged changes ---\n${unstaged.stdout}`);
+
+  if (chunks.length === 0) {
+    const nameOnly = await run("git", ["-C", repo, "diff", "--name-status", "HEAD", "--", file.path], {
+      timeoutMs: 5000,
+    });
+    if (nameOnly.code === 0 && nameOnly.stdout.trim()) chunks.push(nameOnly.stdout);
+  }
+
+  const text = chunks.join("\n").trim() || `${file.status} ${file.path}`;
+  const truncated = truncateReviewText(text);
+  return { preview: truncated.text, truncated: truncated.truncated };
+}
+
+function untrackedFilePreview(repo: string, relativePath: string): { preview: string; truncated: boolean } {
+  const absolute = resolvePath(repo, relativePath);
+  if (!absolute.startsWith(`${repo}/`) && absolute !== repo) {
+    return { preview: "Untracked file path is outside the repository", truncated: false };
+  }
+  try {
+    const info = statSync(absolute);
+    if (info.isDirectory()) return { preview: "Untracked directory; expand it with git/read tools if needed", truncated: false };
+    const bytes = readFileSync(absolute);
+    if (bytes.includes(0)) return { preview: "Binary untracked file", truncated: false };
+    const content = bytes.toString("utf8");
+    const text = [`--- untracked file: ${relativePath} ---`, content].join("\n");
+    const truncated = truncateReviewText(text);
+    return { preview: truncated.text, truncated: truncated.truncated };
+  } catch (error) {
+    return { preview: `Could not read untracked file: ${error instanceof Error ? error.message : String(error)}`, truncated: false };
+  }
+}
+
+async function loadReviewFiles(repo: string): Promise<ReviewFile[]> {
+  const status = await run("git", ["-C", repo, "status", "--porcelain=v1", "-z"], { timeoutMs: 5000 });
+  if (status.code !== 0) throw new Error(status.stderr.trim() || "git status failed");
+  const entries = parsePorcelainZ(status.stdout);
+  const files: ReviewFile[] = [];
+  for (const entry of entries.slice(0, 100)) {
+    const preview = await fileDiffPreview(repo, entry);
+    files.push({ ...entry, preview: preview.preview, truncated: preview.truncated });
+  }
+  return files;
+}
+
+function makePiOverlayPayload(repo: string, notes: OverlayNote[]): any {
+  return {
+    version: 1,
+    submission_id: `pi-overlay-${Date.now()}-${process.pid}-${randomBytes(3).toString("hex")}`,
+    repo,
+    hunk_pane_id: "pi-overlay",
+    hunk_session_id: "pi-overlay",
+    comments: notes.map((note) => ({
+      source: "user",
+      noteId: note.id,
+      filePath: note.filePath,
+      body: note.body,
+      createdAt: note.createdAt,
+    })),
+  };
+}
+
+function sendSubmittedComments(pi: any, payload: any): void {
+  pi.sendMessage(
+    {
+      customType: "hunk-review-comments",
+      content: formatSubmittedComments(payload),
+      display: true,
+      details: {
+        submissionId: payload.submission_id,
+        repo: payload.repo,
+        hunkSessionId: payload.hunk_session_id,
+        comments: payload.comments,
+      },
+    },
+    { deliverAs: "followUp", triggerTurn: true },
+  );
+}
+
+async function openPiHunkOverlay(pi: any, args: string, ctx: any): Promise<void> {
+  if (ctx.mode !== "tui") {
+    ctx.ui?.notify?.("/hunk requires Pi TUI mode", "warning");
+    return;
+  }
+  if (args.trim() === "--help" || args.trim() === "-h") {
+    ctx.ui.notify("Usage: /hunk [repo-or-path]", "info");
+    return;
+  }
+
+  const repo = await resolveOverlayRepo(args, ctx.cwd);
+  if (!repo) {
+    ctx.ui.notify("No Git repository found for /hunk", "warning");
+    return;
+  }
+  if (!(await hasChanges(repo))) {
+    ctx.ui.notify(`No uncommitted changes in ${basename(repo)}`, "info");
+    return;
+  }
+
+  let files = await loadReviewFiles(repo);
+  if (files.length === 0) {
+    ctx.ui.notify(`No reviewable changes in ${basename(repo)}`, "info");
+    return;
+  }
+
+  const notes: OverlayNote[] = [];
+  let selected = 0;
+  while (true) {
+    const action = await ctx.ui.custom<OverlayAction>(
+      (_tui: any, theme: any, _keybindings: any, done: any) =>
+        new HunkOverlayComponent(theme, repo, files, notes, selected, (nextSelected: number) => {
+          selected = nextSelected;
+        }, done),
+      {
+        overlay: true,
+        overlayOptions: { anchor: "right-center", width: "88%", maxHeight: "90%", margin: 1 },
+      },
+    );
+
+    if (action.kind === "refresh") {
+      files = await loadReviewFiles(repo);
+      if (selected >= files.length) selected = Math.max(0, files.length - 1);
+      continue;
+    }
+
+    if (action.kind === "note") {
+      const file = files[action.index];
+      if (!file) continue;
+      const body = await ctx.ui.editor(`Hunk note for ${file.path}`, "");
+      if (body?.trim()) {
+        notes.push({
+          id: `pi:${Date.now()}:${notes.length}`,
+          filePath: file.path,
+          body: body.trim(),
+          createdAt: new Date().toISOString(),
+        });
+      }
+      continue;
+    }
+
+    if (action.kind === "submit") {
+      if (notes.length === 0) {
+        ctx.ui.notify("No Hunk notes to submit", "warning");
+        continue;
+      }
+      try {
+        sendSubmittedComments(pi, makePiOverlayPayload(repo, notes));
+        ctx.ui.notify(`${notes.length} Hunk note(s) sent to Pi`, "info");
+        return;
+      } catch (error) {
+        ctx.ui.notify(`Could not send Hunk notes: ${error instanceof Error ? error.message : String(error)}`, "error");
+        continue;
+      }
+    }
+
+    if (notes.length === 0) return;
+    const discard = await ctx.ui.confirm("Discard Hunk notes?", `${notes.length} unsent note(s) will be discarded.`);
+    if (discard) return;
+  }
+}
+
+class HunkOverlayComponent {
+  private selected: number;
+
+  constructor(
+    private theme: any,
+    private repo: string,
+    private files: ReviewFile[],
+    private notes: OverlayNote[],
+    initialSelected: number,
+    private onSelected: (selected: number) => void,
+    private done: (action: OverlayAction) => void,
+  ) {
+    this.selected = Math.min(Math.max(0, initialSelected), Math.max(0, files.length - 1));
+  }
+
+  handleInput(data: string): void {
+    if (matchesKey(data, "escape") || matchesKey(data, "q")) {
+      this.onSelected(this.selected);
+      this.done({ kind: "close" });
+      return;
+    }
+    if (matchesKey(data, "up") || data === "k") {
+      this.selected = Math.max(0, this.selected - 1);
+      this.onSelected(this.selected);
+      return;
+    }
+    if (matchesKey(data, "down") || data === "j") {
+      this.selected = Math.min(this.files.length - 1, this.selected + 1);
+      this.onSelected(this.selected);
+      return;
+    }
+    if (data === "c" || data === "n") {
+      this.onSelected(this.selected);
+      this.done({ kind: "note", index: this.selected });
+      return;
+    }
+    if (data === "s" || matchesKey(data, "return") || matchesKey(data, "enter")) {
+      this.onSelected(this.selected);
+      this.done({ kind: "submit" });
+      return;
+    }
+    if (data === "r") {
+      this.onSelected(this.selected);
+      this.done({ kind: "refresh" });
+    }
+  }
+
+  render(width: number): string[] {
+    const th = this.theme;
+    const panelWidth = Math.max(48, Math.min(width, 120));
+    const innerWidth = panelWidth - 2;
+    const selectedFile = this.files[this.selected];
+    const lines: string[] = [];
+    const border = (text: string) => th.fg("border", text);
+    const pad = (text: string) => text + " ".repeat(Math.max(0, innerWidth - visibleWidth(text)));
+    const row = (text = "") => border("│") + truncateToWidth(pad(text), innerWidth, "", true) + border("│");
+
+    lines.push(border(`╭${"─".repeat(innerWidth)}╮`));
+    lines.push(row(` ${th.fg("accent", th.bold(`Hunk review: ${basename(this.repo)}`))} ${th.fg("dim", this.repo)}`));
+    lines.push(row(` ${th.fg("dim", "↑↓/jk select • c note • s/enter submit • r refresh • q/esc close")}`));
+    lines.push(row(""));
+
+    lines.push(row(` ${th.fg("accent", "Changed files")}`));
+    const fileWindow = this.windowedFiles();
+    for (const item of fileWindow) {
+      const file = this.files[item.index];
+      const prefix = item.index === this.selected ? th.fg("accent", "▶") : " ";
+      const noteCount = this.notes.filter((note) => note.filePath === file.path).length;
+      const noteSuffix = noteCount > 0 ? th.fg("success", `  ${noteCount} note(s)`) : "";
+      lines.push(row(` ${prefix} ${th.fg("muted", file.status)} ${file.path}${noteSuffix}`));
+    }
+    if (this.files.length > fileWindow.length) lines.push(row(` ${th.fg("dim", `… ${this.files.length - fileWindow.length} more file(s)`)}`));
+    lines.push(row(""));
+
+    if (selectedFile) {
+      lines.push(row(` ${th.fg("accent", "Preview")}: ${selectedFile.path}`));
+      if (selectedFile.previousPath) lines.push(row(` ${th.fg("dim", `renamed from ${selectedFile.previousPath}`)}`));
+      const previewLines = selectedFile.preview.split("\n").slice(0, 20);
+      for (const previewLine of previewLines) {
+        lines.push(row(` ${this.colorDiffLine(previewLine)}`));
+      }
+      if (selectedFile.preview.split("\n").length > previewLines.length || selectedFile.truncated) {
+        lines.push(row(` ${th.fg("warning", "preview truncated")}`));
+      }
+    }
+
+    lines.push(row(""));
+    lines.push(row(` ${th.fg("accent", "Notes")}: ${this.notes.length}`));
+    for (const note of this.notes.slice(-4)) {
+      lines.push(row(` ${th.fg("success", "•")} ${note.filePath}: ${note.body.replace(/\s+/g, " ")}`));
+    }
+    lines.push(border(`╰${"─".repeat(innerWidth)}╯`));
+    return lines.map((line) => truncateToWidth(line, width, "", true));
+  }
+
+  private windowedFiles(): Array<{ index: number }> {
+    const max = 8;
+    if (this.files.length <= max) return this.files.map((_file, index) => ({ index }));
+    const start = Math.min(Math.max(0, this.selected - Math.floor(max / 2)), Math.max(0, this.files.length - max));
+    return this.files.slice(start, start + max).map((_file, offset) => ({ index: start + offset }));
+  }
+
+  private colorDiffLine(line: string): string {
+    if (line.startsWith("+")) return this.theme.fg("success", line);
+    if (line.startsWith("-")) return this.theme.fg("error", line);
+    if (line.startsWith("@@")) return this.theme.fg("accent", line);
+    if (line.startsWith("---")) return this.theme.fg("muted", line);
+    return line;
+  }
+
+  invalidate(): void {}
+  dispose(): void {}
 }
 
 export default function (pi: any) {
+  pi.registerCommand("hunk", {
+    description: "Open a Pi-native Hunk review overlay for the current dirty Git repository",
+    handler: async (args: string, ctx: any) => {
+      try {
+        await openPiHunkOverlay(pi, args ?? "", ctx);
+      } catch (error) {
+        ctx.ui?.notify?.(`Hunk review failed: ${error instanceof Error ? error.message : String(error)}`, "error");
+      }
+    },
+  });
+
   // Contribute the current Hunk review skill whenever hunk is installed,
   // regardless of herdr, so pi can drive a live session.
   pi.on("resources_discover", async () => {
@@ -582,44 +956,46 @@ export default function (pi: any) {
     return { skillPaths: [dirname(skillFile)] };
   });
 
-  if (!herdrActive()) return;
-  pruneReviewState();
+  if (herdrActive()) {
+    pruneReviewState();
 
-  let receiverRuntime: ReceiverRuntime | null = null;
-  let receiverTransition = Promise.resolve();
-  const queueReceiverTransition = (work: () => Promise<void>) => {
-    receiverTransition = receiverTransition.then(work, work);
-    return receiverTransition;
-  };
+    let receiverRuntime: ReceiverRuntime | null = null;
+    let receiverTransition = Promise.resolve();
+    const queueReceiverTransition = (work: () => Promise<void>) => {
+      receiverTransition = receiverTransition.then(work, work);
+      return receiverTransition;
+    };
 
-  pi.on("session_start", async (_event: any, ctx: any) => {
-    await queueReceiverTransition(async () => {
-      await stopCommentReceiver(receiverRuntime);
-      receiverRuntime = null;
-      if (!ctx?.sessionManager) {
-        console.error("herdr-hunk-review: session_start did not provide a session manager");
-        return;
-      }
-      try {
-        receiverRuntime = await startCommentReceiver(pi, ctx);
-      } catch (error) {
-        console.error("herdr-hunk-review: failed to start comment receiver", error);
-        ctx.ui?.notify?.("Hunk comments cannot reach this Pi session", "warning");
-      }
+    pi.on("session_start", async (_event: any, ctx: any) => {
+      await queueReceiverTransition(async () => {
+        await stopCommentReceiver(receiverRuntime);
+        receiverRuntime = null;
+        if (!ctx?.sessionManager) {
+          console.error("hunk: session_start did not provide a session manager");
+          return;
+        }
+        try {
+          receiverRuntime = await startCommentReceiver(pi, ctx);
+        } catch (error) {
+          console.error("hunk: failed to start Herdr comment receiver", error);
+          ctx.ui?.notify?.("Hunk comments cannot reach this Pi session", "warning");
+        }
+      });
     });
-  });
 
-  pi.on("session_shutdown", async () => {
-    await queueReceiverTransition(async () => {
-      const runtime = receiverRuntime;
-      receiverRuntime = null;
-      await stopCommentReceiver(runtime);
+    pi.on("session_shutdown", async () => {
+      await queueReceiverTransition(async () => {
+        const runtime = receiverRuntime;
+        receiverRuntime = null;
+        await stopCommentReceiver(runtime);
+      });
     });
-  });
+  }
 
   const pendingPaths = new Map<string, string>();
   const dirtyRepos = new Set<string>();
   let busy = false;
+  let piOverlayOpen = false;
 
   pi.on("tool_execution_start", (event: any) => {
     if (!EDIT_TOOLS.has(event?.toolName)) return;
@@ -636,7 +1012,7 @@ export default function (pi: any) {
     if (root) dirtyRepos.add(root);
   });
 
-  pi.on("agent_settled", async () => {
+  pi.on("agent_settled", async (_event: any, ctx: any) => {
     if (busy || dirtyRepos.size === 0) return;
     busy = true;
     try {
@@ -646,10 +1022,31 @@ export default function (pi: any) {
         const ready: string[] = [];
         for (const repo of repos) {
           try {
-            if (await reconcile(repo)) ready.push(repo);
+            if (herdrActive()) {
+              if (await reconcile(repo)) ready.push(repo);
+            } else if (await hasChanges(repo)) {
+              ready.push(repo);
+            }
           } catch {}
         }
-        if (mode !== "auto-tab" && ready.length > 0) await notifyReady(ready);
+
+        if (ready.length === 0) continue;
+        if (herdrActive()) {
+          if (mode !== "auto-tab") await notifyReady(ready);
+          continue;
+        }
+
+        const latest = ready[ready.length - 1];
+        if (ctx.mode === "tui" && process.env.HUNK_AUTO_OPEN !== "0" && !piOverlayOpen) {
+          piOverlayOpen = true;
+          try {
+            await openPiHunkOverlay(pi, latest, ctx);
+          } finally {
+            piOverlayOpen = false;
+          }
+        } else {
+          ctx.ui?.notify?.(`Hunk review ready for ${basename(latest)}; run /hunk`, "info");
+        }
       }
     } finally {
       busy = false;
