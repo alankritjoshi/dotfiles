@@ -36,7 +36,6 @@ alias e="exit"
 alias gwc="g wc --format=oneline | wc -l"
 
 # shortcuts
-alias dev="z ~/dev"
 alias src="z ~/src"
 alias cz="chezmoi"
 
