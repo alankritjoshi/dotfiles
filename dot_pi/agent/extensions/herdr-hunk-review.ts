@@ -245,17 +245,22 @@ function validateSubmission(payload: unknown, receiver: ReceiverRegistration): a
 }
 
 function formatSubmittedComments(payload: any): string {
-  const lines = payload.comments.map((comment: any) => {
+  const lines: string[] = [];
+  for (const comment of payload.comments) {
     const line = comment.newRange?.[0] ?? comment.oldRange?.[0];
     const location = line !== undefined && line !== null ? `${comment.filePath}:${line}` : comment.filePath;
-    return `- ${location}: ${comment.body}`;
-  });
+    lines.push(`- ${location}`);
+    lines.push("  User note:");
+    lines.push(...comment.body.split("\n").map((bodyLine: string) => `    > ${bodyLine}`));
+  }
   return [
-    `The user submitted Hunk review comments for ${payload.repo}:`,
+    `The user submitted code-review comments for ${payload.repo}:`,
     "",
     ...lines,
     "",
-    "Address every submitted comment, use the live Hunk session for context when available, and summarize the changes.",
+    "This submission is complete. Do not load review-UI skills or query external review-session state.",
+    "Work from the repository directly: inspect git status and the referenced path or diff. Read untracked files directly because ordinary git diff output omits them.",
+    "Address every note. For questions, investigate and explain the rationale, changing or removing code when it is unjustified. Implement and test requested changes, then summarize the result.",
   ].join("\n");
 }
 
