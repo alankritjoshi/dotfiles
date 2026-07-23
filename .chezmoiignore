@@ -42,6 +42,11 @@ LICENSE
 .config/dev/
 .config/graphite/
 
+# Shopify-only Herdr configuration
+{{ if ne .machine "vanik" }}
+.config/herdr/plugins/config/shopify.world/config.json
+{{ end }}
+
 # Machine-specific SSH keys
 {{ if ne .machine "vanik" }}
 .ssh/id_ed25519_vanik
