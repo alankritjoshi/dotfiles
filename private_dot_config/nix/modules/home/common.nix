@@ -55,7 +55,6 @@
     # neovide # Commented out as in original
     lazygit
     gh           # GitHub CLI (config managed by chezmoi)
-    delta        # Better git diff
     
     # === Build Tools ===
     cmake
@@ -213,6 +212,7 @@
         autocrlf = "input";
         fsmonitor = true;
         untrackedcache = true;
+        pager = lib.mkIf pkgs.stdenv.isDarwin "hunk pager";
       };
       init.defaultBranch = "main";
       merge.conflictstyle = "zdiff3";
@@ -226,6 +226,7 @@
       fetch.prune = true;
       diff.colorMoved = "default";
       rerere.enabled = true;
+      interactive.diffFilter = lib.mkIf pkgs.stdenv.isDarwin "delta --color-only";
 
       # Git LFS
       filter.lfs = {
@@ -240,7 +241,7 @@
   # Delta for better diffs
   programs.delta = {
     enable = true;
-    enableGitIntegration = true;
+    enableGitIntegration = !pkgs.stdenv.isDarwin;
     options = {
       navigate = true;
       dark = true;

@@ -44,6 +44,13 @@ focus_pane_down = ["prefix+j", "ctrl+alt+j"]
 focus_pane_up = ["prefix+k", "ctrl+alt+k"]
 focus_pane_right = ["prefix+l", "ctrl+alt+l"]
 
+# Worktree actions (dev tree via the herdr-worldtree provider). new_worktree is
+# herdr's default prefix+shift+g — with the 0005 patch it works from any shop/world
+# tree checkout, not just root/src. open/remove are unset by default; bind them in
+# the same prefix+shift family. remove deletes the checkout (herdr confirms first).
+open_worktree = "prefix+shift+o"
+remove_worktree = "prefix+shift+backspace"
+
 [[keys.command]]
 key = "prefix+d"
 type = "plugin_action"
@@ -53,3 +60,6 @@ command = "shopify.hunk-review.open"
 key = "prefix+enter"
 type = "plugin_action"
 command = "shopify.hunk-review.submit"
+
+[experimental]
+kitty_graphics = true
