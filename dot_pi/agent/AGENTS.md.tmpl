@@ -31,6 +31,16 @@ When using `bash`, prefer modern CLI tools over legacy ones:
 - Caveats and unresearched items: one minimal list at the end of the brief. No paragraphs about them.
 - After building a brief: serve it, start the annotate bridge, and reply in chat with just the URL + up to 3 lines.
 
+## PR Descriptions
+
+- Sections: `## Problem`, `## Solution`, optionally `## Tophat`. Nothing else.
+- The code explains the PR; the description only explains the problem and the solution.
+- Problem and Solution: one mermaid diagram each, at most one compact table, barely any prose.
+- Tophat: 2-4 copy-paste commands, one short comment line max. No narrated validation.
+- No changelog sections, evidence essays, implementation history, or AI confidence scores.
+- Always read the current description before editing; preserve user trims; write minimal the FIRST time.
+- Mermaid on GitHub: avoid `[]` inside node labels (breaks parsing).
+
 ## Code Style
 
 - Be concise and direct
