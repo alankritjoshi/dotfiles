@@ -10,10 +10,6 @@
 - Provide clear, actionable options when available
 - Include a `context` field to guide the question
 
-## Markdown
-
-- After creating or writing a markdown file, preview it with `md <file>` in a background job
-
 ## CLI Tool Preferences
 
 When using `bash`, prefer modern CLI tools over legacy ones:
@@ -22,6 +18,19 @@ When using `bash`, prefer modern CLI tools over legacy ones:
 - `sd` instead of `sed` (simpler syntax, no escaping hell)
 - NEVER use `grep`, `find`, or `sed` in bash commands
 
+## Writing Style
+
+- NEVER use the em dash character (—) in any output: chat, docs, commits, comments, PR bodies. Use a plain hyphen, comma, colon, or restructure the sentence.
+- Chat replies are terse. Never large paragraphs or long bullet lists.
+- Trivial explanations: under 300 words in chat. Anything longer is nontrivial by definition.
+
+## Explanations & Briefs
+
+- Nontrivial explanations (investigations, designs, root causes, proposals, reviews) go in an annotatable HTML brief, NOT chat. Read the `html-brief` skill and follow it.
+- Brief structure: TLDR, Context, Problem, Solution. Mermaid or animated diagrams carry the content; prose is minimal framing only.
+- Caveats and unresearched items: one minimal list at the end of the brief. No paragraphs about them.
+- After building a brief: serve it, start the annotate bridge, and reply in chat with just the URL + up to 3 lines.
+
 ## Code Style
 
 - Be concise and direct
@@ -29,7 +38,8 @@ When using `bash`, prefer modern CLI tools over legacy ones:
 - Conventional Commits format for commit messages
 - Explain what you're about to do before doing it
 - When making multiple changes, commit frequently with focused messages
-- Fish shell, not Zsh or Bash
+- The user's shell is fish: when giving the user a command to run, show both fish and bash equivalents (or one if identical)
+- For your own command execution (bash tool), always use bash syntax
 - Never add comments when removing code
 - Don't add explanatory comments unless asked
 {{ if eq .machine "vanik" }}
