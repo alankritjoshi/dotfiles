@@ -2,7 +2,7 @@
 name: review-nullsafety
 description: Null safety review — nil/null/undefined dereferences, missing guards, unsafe optional chaining, and type narrowing gaps in Ruby and TypeScript
 tools: read, grep, find, ls
-model: claude-sonnet-4-5
+model: openai/gpt-5.6-luna
 ---
 
 # Null Safety Reviewer

@@ -2,7 +2,7 @@
 name: review-operations
 description: Operational readiness review — observability, rollback, feature flags, deploy safety
 tools: read, grep, find, ls
-model: claude-sonnet-4-5
+model: openai/gpt-5.6-luna
 ---
 
 # Operational Readiness Reviewer

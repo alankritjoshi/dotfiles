@@ -2,7 +2,7 @@
 name: review-architecture
 description: Architecture & design review — SOLID, coupling, API contracts, tech debt
 tools: read, grep, find, ls
-model: claude-sonnet-4-5
+model: openai/gpt-5.6-sol
 ---
 
 # Architecture & Design Reviewer

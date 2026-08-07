@@ -2,7 +2,7 @@
 name: review-performance
 description: Performance & scalability review — queries, algorithms, memory, caching
 tools: read, grep, find, ls
-model: claude-sonnet-4-5
+model: openai/gpt-5.6-sol
 ---
 
 # Performance & Scalability Reviewer

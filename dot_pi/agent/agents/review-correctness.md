@@ -2,7 +2,7 @@
 name: review-correctness
 description: Correctness & logic review — business logic, edge cases, error handling, data integrity
 tools: read, grep, find, ls
-model: claude-sonnet-4-5
+model: openai/gpt-5.6-sol
 ---
 
 # Correctness & Logic Reviewer

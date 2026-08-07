@@ -2,7 +2,7 @@
 name: review-security
 description: Security review — vulnerabilities, auth, input validation, secrets, SSRF
 tools: read, grep, find, ls
-model: claude-sonnet-4-5
+model: openai/gpt-5.6-sol
 ---
 
 # Security Reviewer

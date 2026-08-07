@@ -1,7 +1,7 @@
 ---
 name: planner
 description: Creates detailed implementation plans from context
-model: claude-sonnet-4-5
+model: openai/gpt-5.6-sol
 tools: read, grep, find, ls
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: deep-researcher
 description: Multi-source research with cross-referencing and gap analysis
-model: claude-sonnet-4-5
+model: openai/gpt-5.6-sol
 tools: vault_search, slack_search, grokt_search, grokt_bulk_search, grokt_get_file, web_search, web_search_summary, perplexity_search, perplexity_fetch, read, grep, find, ls, gh_issue_view, gh_issue_list, gh_pr_view, gh_pr_list, query_bq, slack_thread, slack_canvas
 ---
 

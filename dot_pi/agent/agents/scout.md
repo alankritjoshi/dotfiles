@@ -1,7 +1,7 @@
 ---
 name: scout
 description: Fast codebase reconnaissance — finds relevant files quickly
-model: claude-sonnet-4-5
+model: openai/gpt-5.6-terra
 tools: read, grep, find, ls, bash
 ---
 

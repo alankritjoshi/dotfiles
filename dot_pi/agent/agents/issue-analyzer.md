@@ -1,7 +1,7 @@
 ---
 name: issue-analyzer
 description: Analyzes GitHub issues — scope, priority, affected code, approach
-model: claude-sonnet-4-5
+model: openai/gpt-5.6-luna
 tools: gh_issue_view, gh_issue_list, gh_pr_list, gh_pr_view, grokt_search, read, grep, find, ls
 ---
 

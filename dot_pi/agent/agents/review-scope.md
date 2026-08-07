@@ -2,7 +2,7 @@
 name: review-scope
 description: PR scope & size review — changeset focus, splitting opportunities, cognitive load
 tools: read, bash
-model: claude-sonnet-4-5
+model: openai/gpt-5.6-luna
 ---
 
 # PR Scope & Size Reviewer

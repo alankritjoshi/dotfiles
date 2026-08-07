@@ -2,7 +2,7 @@
 name: review-testing
 description: Testing & quality review — coverage gaps, test quality, missing scenarios
 tools: read, grep, find, ls
-model: claude-sonnet-4-5
+model: openai/gpt-5.6-luna
 ---
 
 # Testing & Quality Reviewer

@@ -1,7 +1,7 @@
 ---
 name: validator
 description: Validates implementation against requirements
-model: claude-sonnet-4-5
+model: openai/gpt-5.6-luna
 tools: read, bash, grep, find, ls
 ---
 

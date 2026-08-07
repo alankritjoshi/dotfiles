@@ -1,7 +1,7 @@
 ---
 name: executor
 description: Implements one focused change — no planning, just execution
-model: claude-sonnet-4-5
+model: openai/gpt-5.6-luna
 ---
 
 # Executor
