@@ -60,7 +60,7 @@
     # mason.nvim can't install these on vanik: tec's npm shim rejects npm
     # installs (pnpm-only) and go isn't on the global PATH
     gopls
-    pyright
+    ty           # python type checker LSP (matches Shopify zones: ruff + ty)
     vtsls
     vscode-langservers-extracted  # jsonls
     gotools      # goimports

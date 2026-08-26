@@ -46,13 +46,15 @@ return {
             },
           },
         },
+        -- ty replaces pyright: matches Shopify Python zones (ruff + ty), see dev.yml typecheck
         pyright = {
-          mason = false,
-          enabled = vim.g.lazyvim_python_lsp ~= "basedpyright",
+          enabled = false,
         },
         basedpyright = {
+          enabled = false,
+        },
+        ty = {
           mason = false,
-          enabled = vim.g.lazyvim_python_lsp == "basedpyright",
         },
         vtsls = {
           mason = false,
