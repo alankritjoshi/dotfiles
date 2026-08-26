@@ -170,6 +170,11 @@ return {
           root_dir = root,
           capabilities = get_capabilities(),
           filetypes = { "ruby" },
+          on_init = function(client)
+            -- ruby-lsp owns symbols; avoid duplicate outline/symbol results
+            client.server_capabilities.documentSymbolProvider = false
+            client.server_capabilities.workspaceSymbolProvider = false
+          end,
         }
         local client_id = vim.lsp.start(config, {
           bufnr = bufnr,
