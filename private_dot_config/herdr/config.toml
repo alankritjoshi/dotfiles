@@ -51,15 +51,5 @@ focus_pane_right = ["prefix+l", "ctrl+alt+l"]
 open_worktree = "prefix+shift+o"
 remove_worktree = "prefix+shift+backspace"
 
-[[keys.command]]
-key = "prefix+d"
-type = "plugin_action"
-command = "shopify.hunk-review.open"
-
-[[keys.command]]
-key = "prefix+enter"
-type = "plugin_action"
-command = "shopify.hunk-review.submit"
-
 [experimental]
 kitty_graphics = true

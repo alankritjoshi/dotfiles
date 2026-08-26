@@ -9,3 +9,4 @@
 .config/nix/machines/vanik/scripts/claude-statusline.rb
 .pi/agent/extensions/herdr-hunk-review.ts
 .pi/agent/extensions/hunk.ts
+.pi/agent/extensions/herdr-hunk.ts
