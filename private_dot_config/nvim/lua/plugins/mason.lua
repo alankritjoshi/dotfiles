@@ -5,13 +5,7 @@ return {
       opts.ensure_installed = opts.ensure_installed or {}
 
       vim.list_extend(opts.ensure_installed, {
-        "goimports",
-        "gofumpt",
-        "gomodifytags",
-        "impl",
-        "delve",
         "markdownlint",
-        "markdown-toc",
       })
 
       if vim.g.lazyvim_python_lsp == "basedpyright" then
