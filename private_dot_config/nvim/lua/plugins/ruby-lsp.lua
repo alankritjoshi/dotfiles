@@ -1,11 +1,8 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    enabled = false,
     lazy = true,
     init = function()
-      local util = require("lspconfig.util")
-
       local function get_capabilities()
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         local ok_blink, blink = pcall(require, "blink.cmp")
@@ -33,13 +30,13 @@ return {
         if vim.fn.executable("shadowenv") ~= 1 then
           return false
         end
-        local shadowenv_dir = util.path.join(root, ".shadowenv.d")
+        local shadowenv_dir = vim.fs.joinpath(root, ".shadowenv.d")
         return vim.loop.fs_stat(shadowenv_dir) ~= nil
       end
 
       local function ruby_cmd(root)
         if has_shadowenv(root) then
-          local bin = util.path.join(root, "bin", "ruby-lsp")
+          local bin = vim.fs.joinpath(root, "bin", "ruby-lsp")
           if bin and vim.loop.fs_stat(bin) then
             return { "shadowenv", "exec", "--", bin }
           end
@@ -47,12 +44,12 @@ return {
         end
 
         if root and root ~= "" then
-          local bin = util.path.join(root, "bin", "ruby-lsp")
+          local bin = vim.fs.joinpath(root, "bin", "ruby-lsp")
           if bin and vim.loop.fs_stat(bin) then
             return { bin }
           end
           -- If Gemfile exists, use bundle exec
-          local gemfile = util.path.join(root, "Gemfile")
+          local gemfile = vim.fs.joinpath(root, "Gemfile")
           if vim.loop.fs_stat(gemfile) then
             return { "bundle", "exec", "ruby-lsp" }
           end
