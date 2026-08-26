@@ -4,6 +4,7 @@ return {
     opts = {
       servers = {
         gopls = {
+          mason = false,
           keys = {
             -- Workaround for the lack of a DAP strategy in neotest-go: https://github.com/nvim-neotest/neotest-go/issues/12
             { "<leader>td", "<cmd>lua require('dap-go').debug_test()<CR>", desc = "Debug Nearest (Go)" },
@@ -46,10 +47,18 @@ return {
           },
         },
         pyright = {
+          mason = false,
           enabled = vim.g.lazyvim_python_lsp ~= "basedpyright",
         },
         basedpyright = {
+          mason = false,
           enabled = vim.g.lazyvim_python_lsp == "basedpyright",
+        },
+        vtsls = {
+          mason = false,
+        },
+        jsonls = {
+          mason = false,
         },
         ruff_lsp = {
           keys = {

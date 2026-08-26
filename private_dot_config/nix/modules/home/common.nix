@@ -56,6 +56,20 @@
     lazygit
     gh           # GitHub CLI (config managed by chezmoi)
     
+    # === Language Servers & Dev Tools (nvim LSP) ===
+    # mason.nvim can't install these on vanik: tec's npm shim rejects npm
+    # installs (pnpm-only) and go isn't on the global PATH
+    gopls
+    pyright
+    vtsls
+    vscode-langservers-extracted  # jsonls
+    gotools      # goimports
+    gofumpt
+    gomodifytags
+    impl
+    delve
+    markdownlint-cli2
+
     # === Build Tools ===
     cmake
     gnumake
